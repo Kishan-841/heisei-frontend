@@ -4,7 +4,6 @@ import "./globals.css";
 import { CartProvider } from "@/lib/cart";
 import CartDrawer from "@/components/CartDrawer";
 import Preloader from "@/components/Preloader";
-import GrainOverlay from "@/components/GrainOverlay";
 import AuthInit from "@/components/AuthInit";
 
 const geistSans = Geist({
@@ -29,7 +28,6 @@ export default function RootLayout({
         <CartProvider>
           <AuthInit />
           <Preloader />
-          <GrainOverlay />
           {children}
           <CartDrawer />
         </CartProvider>

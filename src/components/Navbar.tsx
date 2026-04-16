@@ -1,32 +1,9 @@
 "use client";
 
-import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/lib/cart";
 import { useAuthStore } from "@/lib/auth-store";
 import { useState } from "react";
-
-function NavLink({
-  href,
-  children,
-  direction = "left",
-}: {
-  href: string;
-  children: React.ReactNode;
-  direction?: "left" | "right";
-}) {
-  return (
-    <a
-      href={href}
-      className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 group pb-1"
-    >
-      {children}
-      <span
-        className={`absolute bottom-0 ${direction === "left" ? "left-0" : "right-0"} h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full`}
-        style={{ transformOrigin: direction === "left" ? "left" : "right" }}
-      />
-    </a>
-  );
-}
 
 const mobileLinks = [
   { href: "/collection", label: "Explore" },
@@ -37,67 +14,83 @@ const mobileLinks = [
 ];
 
 export default function Navbar() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 80, damping: 20 });
   const { totalItems, setIsOpen } = useCart();
   const user = useAuthStore((s) => s.user);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 bg-bg"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 h-[60px] flex items-center justify-between">
-          {/* LEFT LINKS */}
-          <div className="hidden md:flex items-center gap-8">
-            <NavLink href="/collection" direction="left">
+      <nav className="sticky top-0 w-full bg-bg" style={{ zIndex: 10000 }}>
+        {/* DESKTOP */}
+        <div className="hidden md:flex items-center h-[60px] px-12">
+          <div className="flex-1 flex items-center gap-8">
+            <a href="/collection" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
               Explore
-            </NavLink>
-            <NavLink href="/our-story" direction="left">
+              <span className="absolute bottom-3 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            </a>
+            <a href="/our-story" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
               Our Story
-            </NavLink>
+              <span className="absolute bottom-3 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            </a>
           </div>
 
-          {/* CENTER — BRAND */}
-          <a
-            href="/"
-            className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center leading-none z-[52]"
-          >
+          <a href="/" className="flex flex-col items-center leading-none px-8 shrink-0">
             <span className="text-[11px] text-text/70 tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-text/30">
               平成
             </span>
-            <span className="text-xl md:text-2xl font-medium tracking-[0.15em]">
+            <span className="text-2xl font-medium tracking-[0.15em]">
               HEISEI
             </span>
           </a>
 
-          {/* RIGHT LINKS */}
-          <div className="hidden md:flex items-center gap-8">
-            <NavLink href="/collection" direction="right">
+          <div className="flex-1 flex items-center justify-end gap-8">
+            <a href="/collection" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
               Collection
-            </NavLink>
-            <NavLink href="/contact" direction="right">
+              <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            </a>
+            <a href="/contact" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
               Contact
-            </NavLink>
+              <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            </a>
+            <a href={user ? "/account" : "/login"} className="hover:text-accent transition-colors duration-200 ml-2">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </a>
+            <button onClick={() => setIsOpen(true)} className="hover:text-accent transition-colors duration-200 relative">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 01-8 0" />
+              </svg>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-[9px] rounded-full flex items-center justify-center leading-none">
+                  {totalItems}
+                </span>
+              )}
+            </button>
           </div>
+        </div>
 
-          {/* HAMBURGER — mobile only */}
+        {/* MOBILE */}
+        <div className="flex md:hidden items-center justify-center h-[60px] px-6 relative">
+          <a href="/" className="flex flex-col items-center leading-none">
+            <span className="text-[11px] text-text/70 tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-text/30">
+              平成
+            </span>
+            <span className="text-xl font-medium tracking-[0.15em]">
+              HEISEI
+            </span>
+          </a>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden ml-auto w-6 h-5 relative cursor-pointer z-[52]"
+            className="absolute right-6 w-6 h-5"
             aria-label="Toggle menu"
           >
             <motion.span
               className="absolute left-0 w-full h-[1.5px] bg-text block"
-              animate={
-                menuOpen
-                  ? { top: "50%", rotate: 45, translateY: "-50%" }
-                  : { top: "0%", rotate: 0, translateY: "0%" }
-              }
+              animate={menuOpen ? { top: "50%", rotate: 45, translateY: "-50%" } : { top: "0%", rotate: 0, translateY: "0%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
@@ -107,86 +100,28 @@ export default function Navbar() {
             />
             <motion.span
               className="absolute left-0 w-full h-[1.5px] bg-text block"
-              animate={
-                menuOpen
-                  ? { bottom: "50%", rotate: -45, translateY: "50%" }
-                  : { bottom: "0%", rotate: 0, translateY: "0%" }
-              }
+              animate={menuOpen ? { bottom: "50%", rotate: -45, translateY: "50%" } : { bottom: "0%", rotate: 0, translateY: "0%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
           </button>
         </div>
+      </nav>
 
-        {/* SCROLL PROGRESS BAR */}
-        <motion.div
-          className="h-[2px] w-full bg-accent origin-left"
-          style={{ scaleX }}
-        />
-      </motion.nav>
-
-      {/* ACCOUNT ICON — hidden on mobile, accessible via mobile menu */}
-      <a
-        href={user ? "/account" : "/login"}
-        className="hidden md:block fixed top-4 md:right-16 z-[51] cursor-pointer hover:text-accent transition-colors duration-200"
-      >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      </a>
-
-      {/* CART ICON — hidden on mobile, accessible via mobile menu */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="hidden md:block fixed top-4 md:right-6 z-[51] cursor-pointer hover:text-accent transition-colors duration-200"
-      >
-        <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <path d="M16 10a4 4 0 01-8 0" />
-        </svg>
-        {totalItems > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-accent text-white text-[9px] rounded-full flex items-center justify-center leading-none">
-            {totalItems}
-          </span>
-        )}
-      </button>
-
-      {/* MOBILE MENU OVERLAY */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* BACKDROP */}
             <motion.div
-              className="fixed inset-0 bg-black/20 z-40 md:hidden"
+              className="fixed inset-0 bg-black/20 md:hidden"
+              style={{ zIndex: 9998 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
               onClick={() => setMenuOpen(false)}
             />
-
-            {/* MENU PANEL */}
             <motion.div
-              className="fixed inset-0 top-0 bg-bg z-40 md:hidden flex flex-col items-center justify-center"
+              className="fixed inset-0 bg-bg md:hidden flex flex-col items-center justify-center"
+              style={{ zIndex: 9999 }}
               initial={{ clipPath: "circle(0% at calc(100% - 30px) 28px)" }}
               animate={{ clipPath: "circle(150% at calc(100% - 30px) 28px)" }}
               exit={{ clipPath: "circle(0% at calc(100% - 30px) 28px)" }}
@@ -207,18 +142,13 @@ export default function Navbar() {
                     {link.label}
                   </motion.a>
                 ))}
-
-                {/* CART LINK IN MOBILE MENU */}
                 <motion.button
-                  className="text-2xl tracking-wide text-text hover:text-accent transition-colors duration-200 cursor-pointer flex items-center gap-3"
+                  className="text-2xl tracking-wide text-text hover:text-accent transition-colors duration-200 flex items-center gap-3"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ delay: 0.15 + mobileLinks.length * 0.08, duration: 0.4 }}
-                  onClick={() => {
-                    setMenuOpen(false);
-                    setIsOpen(true);
-                  }}
+                  onClick={() => { setMenuOpen(false); setIsOpen(true); }}
                 >
                   Cart
                   {totalItems > 0 && (
@@ -227,8 +157,6 @@ export default function Navbar() {
                     </span>
                   )}
                 </motion.button>
-
-                {/* JAPANESE ACCENT */}
                 <motion.p
                   className="text-accent text-xs tracking-widest mt-8"
                   initial={{ opacity: 0 }}

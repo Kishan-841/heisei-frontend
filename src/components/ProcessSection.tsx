@@ -17,7 +17,7 @@ const steps = [
   {
     title: "Knitting Fabric",
     jp: "編み",
-    img: "/knitting.png",
+    img: "/fabric-knitting.png",
     desc: "Structured for softness and durability.",
     detail:
       "Each panel is knitted on fine-gauge machines at controlled tension — creating a fabric that holds its shape without stiffness.",
@@ -26,7 +26,7 @@ const steps = [
   {
     title: "Garment Construction",
     jp: "構造",
-    img: "/garment.png",
+    img: "/garment-construction.png",
     desc: "Designed for natural movement.",
     detail:
       "Flat-lock seams eliminate bulk. Every stitch is placed for comfort against the skin — no friction, no irritation, just movement.",
@@ -155,7 +155,8 @@ function StepRow({
               src={step.img}
               alt={step.title}
               fill
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover object-top scale-[1.15] -translate-y-[7%] transition-transform duration-700 group-hover:scale-[1.18]"
             />
           </div>
         </motion.div>

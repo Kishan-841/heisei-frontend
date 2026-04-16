@@ -7,8 +7,8 @@ import MagneticButton from "@/components/MagneticButton";
 export default function Hero() {
   return (
     <section className="relative h-screen w-full text-text overflow-hidden">
-      {/* BACKGROUND IMAGE — full cover, starts below navbar */}
-      <div className="absolute top-[60px] left-0 right-0 bottom-0">
+      {/* BACKGROUND IMAGE */}
+      <div className="absolute inset-0">
         <Image
           src="/hero-main.png"
           alt="HEISEI — Japanese interior with boxer brief on stone table"
@@ -20,26 +20,26 @@ export default function Hero() {
       </div>
 
       {/* Top gradient for text legibility */}
-      <div className="absolute top-[60px] left-0 right-0 bottom-0 bg-gradient-to-b from-black/40 via-black/10 to-transparent pointer-events-none z-[2]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-transparent pointer-events-none" />
 
-      {/* Bottom vignette — hides the Gemini watermark in the source image */}
-      <div className="absolute left-0 right-0 bottom-0 h-[22%] bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none z-[2]" />
+      {/* Bottom vignette */}
+      <div className="absolute left-0 right-0 bottom-0 h-[22%] bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
 
-      {/* Right-bottom corner darkener — extra coverage where the logo sits */}
-      <div className="absolute right-0 bottom-0 w-[30%] h-[28%] bg-gradient-to-tl from-black via-black/60 to-transparent pointer-events-none z-[2]" />
+      {/* Right-bottom corner darkener */}
+      <div className="absolute right-0 bottom-0 w-[30%] h-[28%] bg-gradient-to-tl from-black via-black/60 to-transparent pointer-events-none" />
 
       {/* LEFT JP VERTICAL */}
-      <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#F5F1E8]/80 text-sm font-medium tracking-[0.5em] writing-mode-vertical select-none hidden md:block z-[3] [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 text-[#F5F1E8]/80 text-sm font-medium tracking-[0.5em] writing-mode-vertical select-none hidden md:block [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
         平成
       </div>
 
       {/* RIGHT EN VERTICAL */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 text-[#F5F1E8]/80 text-sm font-medium tracking-[0.5em] writing-mode-vertical select-none hidden md:block z-[3] [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 text-[#F5F1E8]/80 text-sm font-medium tracking-[0.5em] writing-mode-vertical select-none hidden md:block [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
         HEISEI
       </div>
 
-      {/* CONTENT OVERLAY — centered, positioned in upper area above the boxer */}
-      <div className="relative z-[3] h-full flex flex-col items-center pt-[18vh] md:pt-[20vh] px-6">
+      {/* CONTENT OVERLAY */}
+      <div className="relative h-full flex flex-col items-center pt-[15vh] md:pt-[18vh] px-6 pointer-events-none">
         <div className="flex flex-col items-center text-center max-w-2xl space-y-5 [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]">
           <motion.p
             className="text-sm text-[#EAE4D9]/85 font-light tracking-widest"
@@ -72,7 +72,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="pt-3 [text-shadow:none]"
+            className="pt-3 [text-shadow:none] pointer-events-auto"
           >
             <MagneticButton
               as="a"
