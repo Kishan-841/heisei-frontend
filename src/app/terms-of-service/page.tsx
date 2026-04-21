@@ -35,7 +35,7 @@ const sections = [
     jp: "注文",
     content: [
       "Placing an order constitutes an offer to purchase. We reserve the right to accept or decline any order. An order confirmation does not guarantee product availability.",
-      "Currently, we accept Cash on Delivery (COD) as the payment method. The full amount is due at the time of delivery. Refusal to accept delivery may result in the order being cancelled and future order restrictions.",
+      "All payments are processed securely online via Razorpay. We accept UPI, credit/debit cards, net banking, and wallets. Payment must be completed at the time of placing the order.",
     ],
   },
   {

@@ -24,7 +24,7 @@ export default function VideoSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-bg text-text py-24 md:py-32 px-6 relative overflow-hidden"
+      className="bg-bg text-text py-10 md:py-14 px-6 relative overflow-hidden"
     >
       {/* DECORATIVE VERTICAL JP TEXT — left side */}
       <motion.div
@@ -38,7 +38,7 @@ export default function VideoSection() {
 
       <div className="max-w-7xl mx-auto">
         {/* HEADING */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 md:mb-16 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-6 md:mb-8 gap-4">
           <div>
             <motion.p
               className="text-accent text-sm tracking-widest"
@@ -46,7 +46,7 @@ export default function VideoSection() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7 }}
             >
-              フィルム
+              動き
             </motion.p>
             <motion.h2
               className="text-3xl md:text-4xl mt-3 font-normal tracking-tight"
@@ -154,7 +154,7 @@ export default function VideoSection() {
 
         {/* BOTTOM DECORATIVE LINE */}
         <motion.div
-          className="mt-12 h-[1px] bg-text/5"
+          className="mt-6 h-[1px] bg-text/5"
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
           transition={{ duration: 1.5, delay: 0.8 }}

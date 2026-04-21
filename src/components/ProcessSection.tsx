@@ -56,11 +56,11 @@ export default function ProcessSection() {
   return (
     <section
       ref={sectionRef}
-      className="bg-bg py-24 md:py-32 px-6 overflow-hidden"
+      className="bg-bg py-10 md:py-14 px-6 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto">
         {/* HEADING */}
-        <div className="mb-20 md:mb-28">
+        <div className="mb-6 md:mb-10">
           <motion.p
             className="text-accent text-sm tracking-widest"
             initial={{ opacity: 0, y: 10 }}
@@ -117,7 +117,7 @@ function StepRow({
   return (
     <div
       ref={rowRef}
-      className={`relative ${index > 0 ? "mt-20 md:mt-32" : ""}`}
+      className={`relative ${index > 0 ? "mt-10 md:mt-14" : ""}`}
     >
       {/* TIMELINE DOT — on the line */}
       <motion.div

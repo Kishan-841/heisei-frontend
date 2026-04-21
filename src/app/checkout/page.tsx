@@ -12,14 +12,40 @@ import { indianStates } from "@/lib/indian-states";
 import { useConfetti } from "@/components/SakuraConfetti";
 import Navbar from "@/components/Navbar";
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const FREE_SHIPPING_THRESHOLD = 4999;
 const SHIPPING_COST = 99;
+
+function useRazorpayScript() {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.Razorpay) {
+      setLoaded(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    script.onload = () => setLoaded(true);
+    document.body.appendChild(script);
+    return () => {
+      // Don't remove — Razorpay needs it
+    };
+  }, []);
+  return loaded;
+}
 
 export default function CheckoutPage() {
   const { items, totalPrice, totalItems, clearCart } = useCart();
   const user = useAuthStore((s) => s.user);
   const initialized = useAuthStore((s) => s.initialized);
   const router = useRouter();
+  const razorpayLoaded = useRazorpayScript();
 
   // Saved addresses
   const [savedAddresses, setSavedAddresses] = useState<Address[]>([]);
@@ -136,13 +162,67 @@ export default function CheckoutPage() {
         }),
       };
 
-      const { order } = await api.orders.create(orderData);
-      clearCart();
-      setOrderPlaced(true);
-      fireConfetti();
-      setTimeout(() => router.push(`/order-confirmation?id=${order.id}`), 1200);
+      // Step 1: Create order + Razorpay order on backend
+      const { order, razorpay: rzp } = await api.payment.createOrder(orderData);
+
+      if (!razorpayLoaded || !window.Razorpay) {
+        setError("Payment system is loading. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+
+      // Step 2: Open Razorpay checkout
+      const options = {
+        key: rzp.keyId,
+        amount: rzp.amount,
+        currency: rzp.currency,
+        name: "HEISEI",
+        description: `Order #${order.id.slice(0, 8).toUpperCase()}`,
+        order_id: rzp.orderId,
+        prefill: {
+          name: fullName,
+          contact: phone,
+        },
+        theme: {
+          color: "#1A1A2E",
+        },
+        handler: async (response: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) => {
+          // Step 3: Verify payment on backend
+          try {
+            await api.payment.verify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              orderId: order.id,
+            });
+            clearCart();
+            setOrderPlaced(true);
+            fireConfetti();
+            setTimeout(() => router.push(`/order-confirmation?id=${order.id}`), 1200);
+          } catch {
+            setError("Payment verification failed. Please contact support.");
+            setSubmitting(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            // User closed the Razorpay popup without paying
+            api.payment.failure(order.id).catch(() => {});
+            setError("Payment was cancelled. You can try again.");
+            setSubmitting(false);
+          },
+        },
+      };
+
+      const rzpInstance = new window.Razorpay(options);
+      rzpInstance.on("payment.failed", (resp: any) => {
+        api.payment.failure(order.id).catch(() => {});
+        setError(resp.error?.description || "Payment failed. Please try again.");
+        setSubmitting(false);
+      });
+      rzpInstance.open();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to place order");
+      setError(err instanceof Error ? err.message : "Failed to initiate payment");
       setSubmitting(false);
     }
   };
@@ -154,7 +234,7 @@ export default function CheckoutPage() {
         <main className="min-h-screen bg-bg flex items-center justify-center px-6 pt-20">
           <div className="text-center">
             <p className="text-muted text-sm tracking-widest uppercase mb-4">Your cart is empty</p>
-            <p className="text-xs text-muted mb-8">静けさ</p>
+            <p className="text-xs text-muted mb-8">空</p>
             <Link href="/collection" className="inline-block border border-text px-8 py-3 text-sm tracking-widest hover:bg-text hover:text-bg transition-colors">
               Browse Collection
             </Link>
@@ -247,7 +327,6 @@ export default function CheckoutPage() {
                           }`}
                           whileHover={{ y: -1 }}
                         >
-                          {/* Selected indicator */}
                           {selectedAddressId === addr.id && !useNewAddress && (
                             <div className="absolute top-0 left-0 w-[3px] h-full bg-accent" />
                           )}
@@ -269,7 +348,6 @@ export default function CheckoutPage() {
                               <p className="text-[11px] text-text/35 mt-1">{addr.phone}</p>
                             </div>
 
-                            {/* Radio indicator */}
                             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-1 transition-colors ${
                               selectedAddressId === addr.id && !useNewAddress
                                 ? "border-text"
@@ -283,7 +361,6 @@ export default function CheckoutPage() {
                         </motion.button>
                       ))}
 
-                      {/* Add new address option */}
                       <motion.button
                         type="button"
                         onClick={switchToNewAddress}
@@ -311,7 +388,7 @@ export default function CheckoutPage() {
                     </div>
                   )}
 
-                  {/* Address form — shown when adding new or no saved addresses */}
+                  {/* Address form */}
                   <AnimatePresence>
                     {(useNewAddress || savedAddresses.length === 0) && !loadingAddresses && (
                       <motion.div
@@ -442,11 +519,19 @@ export default function CheckoutPage() {
                       <div className="w-4 h-4 border-2 border-text rounded-full flex items-center justify-center">
                         <div className="w-2 h-2 bg-text rounded-full" />
                       </div>
-                      <span className="text-sm">Cash on Delivery (COD)</span>
+                      <span className="text-sm">Pay Online</span>
+                      <span className="text-[10px] text-text/30 tracking-wide">via Razorpay</span>
                     </div>
                     <p className="text-xs text-text/40 mt-2 ml-7">
-                      Pay when your order arrives. More options coming soon.
+                      UPI, Cards, Net Banking, Wallets &mdash; all payment methods supported.
                     </p>
+                    <div className="flex items-center gap-2 mt-3 ml-7">
+                      {["UPI", "Visa", "MC", "RuPay"].map((m) => (
+                        <span key={m} className="text-[9px] text-text/30 border border-text/10 px-1.5 py-0.5 rounded">
+                          {m}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -534,16 +619,29 @@ export default function CheckoutPage() {
                   {/* Place order button */}
                   <button
                     type="submit"
-                    disabled={submitting || orderPlaced || !isFormValid}
+                    disabled={submitting || orderPlaced || !isFormValid || !razorpayLoaded}
                     className="group relative w-full py-4 border border-text text-sm tracking-widest cursor-pointer overflow-hidden disabled:opacity-40 disabled:cursor-not-allowed mt-4"
                   >
                     <span className="absolute inset-0 bg-text origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
                     <span className="relative z-10 group-hover:text-bg transition-colors duration-500">
-                      {orderPlaced ? "Order Placed!" : submitting ? "Placing order..." : "Place Order — COD"}
+                      {orderPlaced
+                        ? "Order Placed!"
+                        : submitting
+                        ? "Processing..."
+                        : `Pay ₹${orderTotal.toLocaleString("en-IN")}`}
                     </span>
                   </button>
 
-                  <p className="text-[10px] text-text/30 text-center mt-4">
+                  <div className="flex items-center justify-center gap-2 mt-4">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-text/30">
+                      <rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0110 0v4" />
+                    </svg>
+                    <p className="text-[10px] text-text/30">
+                      Secured by Razorpay. Your payment info is encrypted.
+                    </p>
+                  </div>
+
+                  <p className="text-[10px] text-text/30 text-center mt-2">
                     By placing this order, you agree to our terms of service.
                   </p>
                 </div>

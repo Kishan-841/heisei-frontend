@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { api, Order } from "@/lib/api";
+import { api, Order, Pagination } from "@/lib/api";
 import { useAuthStore } from "@/lib/auth-store";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -21,17 +21,20 @@ export default function OrdersPage() {
   const initialized = useAuthStore((s) => s.initialized);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
 
   useEffect(() => {
     if (!initialized || !user) return;
-    api.orders.list().then(
-      (data) => { setOrders(data.orders); setLoading(false); },
+    setLoading(true);
+    api.orders.list(page, 8).then(
+      (data) => { setOrders(data.orders); setPagination(data.pagination); setLoading(false); },
       () => setLoading(false)
     );
-  }, [initialized, user]);
+  }, [initialized, user, page]);
 
-  const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
-  const totalItems = orders.reduce((sum, o) => o.items.reduce((s, it) => s + it.qty, 0) + sum, 0);
+  const totalSpent = pagination ? 0 : orders.reduce((sum, o) => sum + o.total, 0);
+  const totalItems = pagination ? 0 : orders.reduce((sum, o) => o.items.reduce((s, it) => s + it.qty, 0) + sum, 0);
 
   if (!initialized || loading) {
     return (
@@ -110,9 +113,9 @@ export default function OrdersPage() {
                 transition={{ duration: 0.6, delay: 0.15 }}
               >
                 {[
-                  { label: "Total Orders", value: orders.length.toString() },
-                  { label: "Items Purchased", value: totalItems.toString() },
-                  { label: "Total Spent", value: `₹${totalSpent.toLocaleString("en-IN")}` },
+                  { label: "Total Orders", value: (pagination?.total || orders.length).toString() },
+                  { label: "Items Purchased", value: orders.reduce((sum, o) => o.items.reduce((s, it) => s + it.qty, 0) + sum, 0).toString() },
+                  { label: "Page", value: `${pagination?.page || 1} of ${pagination?.totalPages || 1}` },
                 ].map((stat) => (
                   <div key={stat.label} className="border border-white/10 rounded-sm px-4 sm:px-5 py-3 sm:py-4 flex sm:block items-center justify-between">
                     <p className="text-[10px] text-[#A8A29E]/60 tracking-[0.2em] uppercase">{stat.label}</p>
@@ -261,6 +264,61 @@ export default function OrdersPage() {
                   </motion.div>
                 );
               })}
+
+              {/* Pagination */}
+              {pagination && pagination.totalPages > 1 && (
+                <motion.div
+                  className="flex items-center justify-center gap-2 pt-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.25 }}
+                >
+                  <button
+                    onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    disabled={page <= 1}
+                    className="px-4 py-2.5 border border-text/10 bg-white text-xs tracking-widest uppercase text-text/50 hover:text-text hover:border-text/25 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  >
+                    &larr; Prev
+                  </button>
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1)
+                      .filter((p) => {
+                        if (p === 1 || p === pagination!.totalPages) return true;
+                        if (Math.abs(p - page) <= 1) return true;
+                        return false;
+                      })
+                      .reduce<(number | "...")[]>((acc, p, i, arr) => {
+                        if (i > 0 && p - (arr[i - 1]) > 1) acc.push("...");
+                        acc.push(p);
+                        return acc;
+                      }, [])
+                      .map((p, i) =>
+                        p === "..." ? (
+                          <span key={`dots-${i}`} className="w-9 h-9 flex items-center justify-center text-text/25 text-xs">...</span>
+                        ) : (
+                          <button
+                            key={p}
+                            onClick={() => { setPage(p); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                            className={`w-9 h-9 flex items-center justify-center text-xs font-medium cursor-pointer transition-colors ${
+                              page === p
+                                ? "bg-text text-bg"
+                                : "bg-white border border-text/10 text-text/50 hover:text-text hover:border-text/25"
+                            }`}
+                          >
+                            {p}
+                          </button>
+                        )
+                      )}
+                  </div>
+                  <button
+                    onClick={() => { setPage((p) => Math.min(pagination!.totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    disabled={page >= pagination.totalPages}
+                    className="px-4 py-2.5 border border-text/10 bg-white text-xs tracking-widest uppercase text-text/50 hover:text-text hover:border-text/25 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                  >
+                    Next &rarr;
+                  </button>
+                </motion.div>
+              )}
 
               {/* Bottom CTA */}
               <motion.div

@@ -69,22 +69,48 @@ export const api = {
       request<{ message: string }>(`/api/addresses/${id}`, { method: "DELETE" }),
   },
   orders: {
-    create: (data: CreateOrderInput) =>
-      request<{ order: Order }>("/api/orders", {
-        method: "POST",
-        body: JSON.stringify(data),
-      }),
     cancel: (id: string) =>
       request<{ order: Order }>(`/api/orders/${id}/cancel`, {
         method: "POST",
       }),
-    list: () => request<{ orders: Order[] }>("/api/orders"),
+    list: (page = 1, limit = 10) =>
+      request<{ orders: Order[]; pagination: Pagination }>(`/api/orders?page=${page}&limit=${limit}`),
     get: (id: string) => request<{ order: Order }>(`/api/orders/${id}`),
+  },
+  payment: {
+    createOrder: (data: CreateOrderInput) =>
+      request<{ order: Order; razorpay: RazorpayOrderResponse }>("/api/payment/create-order", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    verify: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string; orderId: string }) =>
+      request<{ order: Order; verified: boolean }>("/api/payment/verify", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
+    failure: (orderId: string) =>
+      request<{ message: string }>("/api/payment/failure", {
+        method: "POST",
+        body: JSON.stringify({ orderId }),
+      }),
   },
   admin: {
     stats: () => request<{ stats: AdminStats }>("/api/admin/stats"),
-    orders: (status?: string) =>
-      request<{ orders: AdminOrder[] }>(`/api/admin/orders${status && status !== "ALL" ? `?status=${status}` : ""}`),
+    dashboard: (period?: string, from?: string, to?: string) => {
+      const params = new URLSearchParams();
+      if (period) params.set("period", period);
+      if (from) params.set("from", from);
+      if (to) params.set("to", to);
+      const qs = params.toString();
+      return request<{ dashboard: DashboardData }>(`/api/admin/dashboard${qs ? `?${qs}` : ""}`);
+    },
+    orders: (status?: string, page = 1, limit = 15) => {
+      const params = new URLSearchParams();
+      if (status && status !== "ALL") params.set("status", status);
+      params.set("page", String(page));
+      params.set("limit", String(limit));
+      return request<{ orders: AdminOrder[]; pagination: Pagination }>(`/api/admin/orders?${params.toString()}`);
+    },
     order: (id: string) => request<{ order: AdminOrder }>(`/api/admin/orders/${id}`),
     advanceStatus: (id: string, status: string) =>
       request<{ order: AdminOrder }>(`/api/admin/orders/${id}/status`, {
@@ -143,6 +169,7 @@ export type OrderItem = {
   size: string;
   qty: number;
   price: number;
+  product?: { img: string; slug: string };
 };
 
 export type Order = {
@@ -160,6 +187,7 @@ export type Order = {
   shippingPincode: string;
   shippingLandmark?: string;
   paymentMethod: string;
+  paymentStatus: string;
   createdAt: string;
   items: OrderItem[];
 };
@@ -175,6 +203,55 @@ export type AdminStats = {
   delivered: number;
   cancelled: number;
   todayOrders: number;
+};
+
+export type DailyRevenue = {
+  label: string;
+  revenue: number;
+  orders: number;
+};
+
+export type TopProduct = {
+  productId: string;
+  name: string;
+  color: string;
+  qtySold: number;
+  revenue: number;
+};
+
+export type ChartPoint = {
+  label: string;
+  revenue: number;
+  orders: number;
+};
+
+export type DashboardData = {
+  stats: AdminStats;
+  revenue: {
+    total: number;
+    today: number;
+    month: number;
+    period: number;
+    periodOrders: number;
+  };
+  totalCustomers: number;
+  recentOrders: AdminOrder[];
+  topProducts: TopProduct[];
+  chartData: ChartPoint[];
+};
+
+export type RazorpayOrderResponse = {
+  orderId: string;
+  amount: number;
+  currency: string;
+  keyId: string;
+};
+
+export type Pagination = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
 };
 
 export type CreateOrderInput = {

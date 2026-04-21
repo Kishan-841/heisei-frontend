@@ -16,7 +16,7 @@ export default function CartDrawer() {
         <>
           {/* BACKDROP */}
           <motion.div
-            className="fixed inset-0 bg-black/30 z-[60]"
+            className="fixed inset-0 bg-black/30 z-[10001]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -25,7 +25,7 @@ export default function CartDrawer() {
 
           {/* DRAWER */}
           <motion.div
-            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-bg z-[70] flex flex-col"
+            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-bg z-[10002] flex flex-col"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -54,7 +54,7 @@ export default function CartDrawer() {
                   <p className="text-sm tracking-widest uppercase">
                     Your cart is empty
                   </p>
-                  <p className="text-xs mt-2">静けさ</p>
+                  <p className="text-xs mt-2">空</p>
                 </div>
               ) : (
                 <div className="space-y-6">

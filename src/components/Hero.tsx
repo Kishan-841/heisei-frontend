@@ -40,9 +40,9 @@ export default function Hero() {
 
       {/* CONTENT OVERLAY */}
       <div className="relative h-full flex flex-col items-center pt-[15vh] md:pt-[18vh] px-6 pointer-events-none">
-        <div className="flex flex-col items-center text-center max-w-2xl space-y-5 [text-shadow:0_2px_20px_rgba(0,0,0,0.45)]">
+        <div className="flex flex-col items-center text-center max-w-2xl space-y-5 [text-shadow:0_2px_24px_rgba(0,0,0,0.7)]">
           <motion.p
-            className="text-sm text-[#EAE4D9]/85 font-light tracking-widest"
+            className="text-sm text-[#F5F1E8] font-light tracking-widest"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -60,7 +60,7 @@ export default function Hero() {
           </motion.h1>
 
           <motion.p
-            className="text-[#EAE4D9]/80 text-base md:text-lg max-w-md leading-relaxed"
+            className="text-[#F5F1E8] text-base md:text-lg max-w-md leading-relaxed"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}

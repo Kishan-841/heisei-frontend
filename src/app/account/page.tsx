@@ -336,7 +336,7 @@ export default function AccountPage() {
             transition={{ delay: 0.3 }}
           >
             {[
-              { href: "/collection", label: "Shop Collection", jp: "買い物", icon: "→" },
+              { href: "/collection", label: "Shop Collection", jp: "コレクション", icon: "→" },
               { href: "/contact", label: "Contact Us", jp: "お問合せ", icon: "→" },
               { href: "/our-story", label: "Our Story", jp: "物語", icon: "→" },
               { href: "/checkout", label: "Checkout", jp: "精算", icon: "→" },

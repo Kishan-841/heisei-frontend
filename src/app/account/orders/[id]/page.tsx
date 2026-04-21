@@ -165,7 +165,7 @@ export default function OrderDetailPage() {
               </div>
               <div className="border border-white/10 rounded-sm px-5 py-4 hidden md:block">
                 <p className="text-[10px] text-[#A8A29E]/60 tracking-[0.2em] uppercase">Payment</p>
-                <p className="text-sm mt-1.5 font-light">Cash on Delivery</p>
+                <p className="text-sm mt-1.5 font-light">{order.paymentMethod === "RAZORPAY" ? "Paid Online" : order.paymentMethod}</p>
               </div>
             </motion.div>
           </div>
@@ -202,9 +202,15 @@ export default function OrderDetailPage() {
                   {order.items.map((item) => (
                     <div key={item.id} className="px-6 py-4 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-[#F7F6F2] rounded-sm flex items-center justify-center flex-shrink-0">
-                          <span className="text-[10px] text-text/30 font-mono">{item.qty}x</span>
-                        </div>
+                        {item.product?.img ? (
+                          <div className="w-12 h-14 bg-[#F7F6F2] rounded-sm overflow-hidden flex-shrink-0">
+                            <img src={item.product.img} alt={item.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-14 bg-[#F7F6F2] rounded-sm flex items-center justify-center flex-shrink-0">
+                            <span className="text-[10px] text-text/30 font-mono">{item.qty}x</span>
+                          </div>
+                        )}
                         <div>
                           <p className="text-sm text-text/80">{item.name}</p>
                           <div className="flex items-center gap-2 mt-1">
@@ -255,7 +261,7 @@ export default function OrderDetailPage() {
                   </div>
                   <p className="text-[10px] text-text/50 tracking-[0.25em] uppercase">Payment</p>
                 </div>
-                <p className="text-sm">Cash on Delivery</p>
+                <p className="text-sm">{order.paymentMethod === "RAZORPAY" ? "Paid Online" : order.paymentMethod}</p>
               </div>
             </motion.div>
 

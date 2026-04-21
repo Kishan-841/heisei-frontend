@@ -114,8 +114,8 @@ function OrderConfirmationContent() {
           transition={{ delay: 0.3 }}
         >
           <p className="text-[10px] text-muted tracking-[0.25em] uppercase">Payment</p>
-          <p className="text-lg mt-2">Cash on Delivery</p>
-          <p className="text-[10px] text-accent tracking-widest mt-1">代引き</p>
+          <p className="text-lg mt-2">Paid Online</p>
+          <p className="text-[10px] text-accent tracking-widest mt-1">支払い</p>
         </motion.div>
       </div>
 
@@ -134,7 +134,17 @@ function OrderConfirmationContent() {
             {order.items.map((item) => (
               <div key={item.id} className="flex items-center justify-between py-3 border-b border-text/5 last:border-0">
                 <div className="flex items-center gap-4">
-                  <div className="w-2 h-2 rounded-full bg-accent/60" />
+                  {item.product?.img ? (
+                    <div className="w-12 h-14 bg-surface overflow-hidden flex-shrink-0">
+                      <img
+                        src={item.product.img}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-14 bg-surface flex-shrink-0" />
+                  )}
                   <div>
                     <p className="text-sm">{item.color} — {item.name}</p>
                     <p className="text-xs text-muted mt-0.5">Size {item.size} &middot; Qty {item.qty}</p>
