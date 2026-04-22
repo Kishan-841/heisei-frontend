@@ -143,21 +143,37 @@ function StepRow({
 
       {/* CONTENT ROW */}
       <div className={`md:pl-20 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 ${index % 2 !== 0 ? "md:[direction:rtl]" : ""}`}>
-        {/* IMAGE */}
+        {/* IMAGE + CAPTION */}
         <motion.div
-          className="overflow-hidden group relative md:[direction:ltr]"
+          className="group relative md:[direction:ltr]"
           initial={{ opacity: 0, y: 30 }}
           animate={visible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         >
-          <div className="w-full aspect-[3/4] bg-surface relative overflow-hidden">
+          <div className="w-full max-w-[420px] md:max-w-[440px] aspect-[3/4] bg-surface relative overflow-hidden mx-auto md:mx-0">
             <Image
               src={step.img}
               alt={step.title}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 420px, 440px"
               className="object-cover object-top scale-[1.15] -translate-y-[7%] transition-transform duration-700 group-hover:scale-[1.18]"
             />
+          </div>
+
+          {/* Meta caption under image */}
+          <div className="mt-4 max-w-[420px] md:max-w-[440px] mx-auto md:mx-0 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] tracking-[0.3em] text-muted/60 uppercase">
+                Stage {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="w-6 h-[1px] bg-accent/40" />
+              <span className="text-[10px] tracking-[0.25em] text-accent/70 uppercase">
+                {["Raw Material", "Fabric Making", "Assembly", "Finishing"][index]}
+              </span>
+            </div>
+            <span className="text-[10px] tracking-widest text-muted/40">
+              0{index + 1} / 04
+            </span>
           </div>
         </motion.div>
 

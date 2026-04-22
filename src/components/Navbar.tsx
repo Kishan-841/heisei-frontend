@@ -40,7 +40,7 @@ export default function Navbar() {
         style={{ zIndex: 10000 }}
       >
         {/* DESKTOP */}
-        <div className="hidden md:flex items-center h-[60px] px-12">
+        <div className="hidden md:flex items-center h-[60px] max-w-7xl mx-auto px-6">
           <div className="flex-1 flex items-center gap-8">
             <a href="/collection" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
               Explore
