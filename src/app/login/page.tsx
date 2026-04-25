@@ -8,7 +8,7 @@ import { useAuthStore } from "@/lib/auth-store";
 import Navbar from "@/components/Navbar";
 
 export default function LoginPage() {
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -16,11 +16,13 @@ export default function LoginPage() {
   const loading = useAuthStore((s) => s.loading);
   const router = useRouter();
 
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     try {
-      await login(phone, password);
+      await login(email, password);
       router.push("/account");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
@@ -160,14 +162,13 @@ export default function LoginPage() {
               >
                 <div>
                   <label className="text-[10px] text-text/60 tracking-[0.3em] uppercase block mb-3">
-                    Phone Number
+                    Email Address
                   </label>
                   <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    placeholder="Enter your phone number"
-                    maxLength={10}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@example.com"
                     className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3.5 text-[15px] outline-none transition-all duration-300 placeholder:text-text/30"
                     required
                     autoFocus
@@ -175,9 +176,17 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-text/60 tracking-[0.3em] uppercase block mb-3">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-[10px] text-text/60 tracking-[0.3em] uppercase">
+                      Password
+                    </label>
+                    <Link
+                      href="/forgot-password"
+                      className="text-[10px] text-text/50 hover:text-accent tracking-wide transition-colors"
+                    >
+                      Forgot password?
+                    </Link>
+                  </div>
                   <div className="relative">
                     <input
                       type={showPassword ? "text" : "password"}
@@ -210,7 +219,7 @@ export default function LoginPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    disabled={loading || phone.length !== 10 || !password}
+                    disabled={loading || !isValidEmail || !password}
                     className="group relative w-full py-4 border border-text text-sm tracking-[0.2em] uppercase cursor-pointer overflow-hidden disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <span className="absolute inset-0 bg-text origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />

@@ -4,31 +4,39 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
 
+// Each slide can be either one full-width image, or two images shown side-by-side.
+// The render logic below switches layout based on `images.length`.
 type Slide = {
-  images: [string, string];
-  alts: [string, string];
+  images: string[];
+  alts: string[];
+  // Per-image vertical anchor; defaults to "object-top". Use "object-bottom"
+  // when the subject sits low in the frame and we want to crop empty space
+  // off the top.
+  imagePositions?: string[];
+  // When true, we extend the image container past the bottom of the section
+  // so the photo's bottom edge gets clipped. Useful for AI-generated images
+  // with a watermark in the corner.
+  cropBottom?: boolean;
+  // When true (single-image slides only), render the image on the right half
+  // with a clean cream block on the left half. Use for portrait images that
+  // shouldn't span the full width.
+  halfImage?: boolean;
 };
 
 const slides: Slide[] = [
   {
-    images: [
-      "/model-black.png",
-      "/model-white.png",
-    ],
-    alts: [
-      "Model wearing HEISEI Sumi Black boxer brief",
-      "Model wearing HEISEI Kumo White boxer brief",
-    ],
+    images: ["/landscape 2nd section.png"],
+    alts: ["Model wearing HEISEI boxer brief in a classical interior"],
+    cropBottom: true,
   },
   {
-    images: [
-      "/model-grayscale.png",
-      "/model-sitting.png",
-    ],
+    images: ["/section-two-half-left.png", "/section-two-half.png"],
     alts: [
-      "Model in cool pose — HEISEI editorial grayscale",
-      "Model sitting relaxed — HEISEI editorial",
+      "Model leaning on antique console — HEISEI navy boxer brief",
+      "Model wearing HEISEI boxer brief — half-frame editorial portrait",
     ],
+    imagePositions: ["object-center", "object-center"],
+    cropBottom: true,
   },
 ];
 
@@ -54,38 +62,139 @@ export default function SectionTwo() {
     setIndex((index + 1) % total);
   };
 
+  const isSingle = slide.images.length === 1;
+
   return (
     <section className="relative h-[80vh] sm:h-[95vh] w-full bg-bg text-text overflow-hidden">
-      {/* FULL SCREEN IMAGE CAROUSEL — slides left/right */}
+      {/* Image layer — slides left/right on change */}
       <div className="absolute inset-0">
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
           <motion.div
-            key={`imgs-${index}`}
+            key={`slide-${index}`}
             custom={direction}
             variants={slideVariants}
             initial="enter"
             animate="center"
             exit="exit"
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 grid grid-cols-1 sm:grid-cols-2"
+            className={
+              isSingle
+                ? "absolute inset-0"
+                : "absolute inset-0 grid grid-cols-1 sm:grid-cols-2"
+            }
           >
-            {slide.images.map((src, i) => (
+            {isSingle && slide.halfImage ? (
+              /*
+                HALF IMAGE. Cream block on the left, image on the right half.
+                On mobile (< sm), only the image shows full-width.
+              */
+              <div className="absolute inset-0 grid grid-cols-1 sm:grid-cols-2">
+                <div className="hidden sm:block bg-surface" />
+                <div className="relative bg-surface overflow-hidden">
+                  <div
+                    className={
+                      slide.cropBottom
+                        ? "absolute top-0 left-0 right-0 h-[calc(100%+90px)]"
+                        : "absolute inset-0"
+                    }
+                  >
+                    <Image
+                      src={slide.images[0]}
+                      alt={slide.alts[0]}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      priority
+                      className="object-cover object-center"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : isSingle ? (
+              /*
+                SINGLE IMAGE — full width. Container extends 90px below so its
+                bottom gets clipped by overflow-hidden on the parent (Gemini
+                watermark crop).
+              */
               <div
-                key={src}
-                className={`relative h-full w-full bg-surface overflow-hidden ${i === 1 ? "hidden sm:block" : ""}`}
+                className={
+                  slide.cropBottom
+                    ? "absolute top-0 left-0 right-0 h-[calc(100%+90px)]"
+                    : "absolute inset-0"
+                }
               >
                 <Image
-                  src={src}
-                  alt={slide.alts[i]}
+                  src={slide.images[0]}
+                  alt={slide.alts[0]}
                   fill
-                  sizes="(max-width: 640px) 100vw, 50vw"
+                  sizes="100vw"
+                  priority
                   className="object-cover object-top"
                 />
               </div>
-            ))}
+            ) : (
+              /* DUAL IMAGE — side-by-side split on sm+, stacked first on mobile */
+              slide.images.map((src, i) => (
+                <div
+                  key={src}
+                  className={`relative h-full w-full bg-surface overflow-hidden ${
+                    i === 1 ? "hidden sm:block" : ""
+                  }`}
+                >
+                  <div
+                    className={
+                      slide.cropBottom
+                        ? "absolute top-0 left-0 right-0 h-[calc(100%+90px)]"
+                        : "absolute inset-0"
+                    }
+                  >
+                    <Image
+                      src={src}
+                      alt={slide.alts[i]}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className={`object-cover ${slide.imagePositions?.[i] ?? "object-top"}`}
+                    />
+                  </div>
+                </div>
+              ))
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {/* VIGNETTE — radial darkening at corners */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.35) 85%, rgba(0,0,0,0.55) 100%)",
+        }}
+      />
+
+      {/* BOTTOM GRADIENT — anchors the CTA */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, transparent 100%)",
+        }}
+      />
+
+      {/* Top corner darkeners */}
+      <div
+        className="absolute top-0 left-0 w-[35%] h-[35%] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at top left, rgba(0,0,0,0.35) 0%, transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute top-0 right-0 w-[35%] h-[35%] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at top right, rgba(0,0,0,0.35) 0%, transparent 70%)",
+        }}
+      />
 
       {/* EXPLORE COLLECTION — centered pill button */}
       <a
@@ -96,8 +205,20 @@ export default function SectionTwo() {
         <span className="relative z-10 text-[11px] tracking-[0.3em] uppercase text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-500">
           Explore Collection
         </span>
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" className="relative z-10 text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-500">
-          <path d="M1 5 H12 M8 1 L12 5 L8 9" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+        <svg
+          width="14"
+          height="10"
+          viewBox="0 0 14 10"
+          fill="none"
+          className="relative z-10 text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-500"
+        >
+          <path
+            d="M1 5 H12 M8 1 L12 5 L8 9"
+            stroke="currentColor"
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </a>
 
@@ -106,10 +227,23 @@ export default function SectionTwo() {
         <button
           onClick={prev}
           aria-label="Previous slide"
-          className="group w-11 h-11 rounded-full border border-[#F5F1E8]/60 bg-[#0F0F0F]/40 backdrop-blur-sm flex items-center justify-center hover:bg-[#F5F1E8] transition-all duration-300 cursor-pointer"
+          disabled={total <= 1}
+          className="group w-11 h-11 rounded-full border border-[#F5F1E8]/60 bg-[#0F0F0F]/40 backdrop-blur-sm flex items-center justify-center hover:bg-[#F5F1E8] transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#0F0F0F]/40"
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-300">
-            <path d="M9 2 L3 7 L9 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            className="text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-300"
+          >
+            <path
+              d="M9 2 L3 7 L9 12"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
 
@@ -122,10 +256,23 @@ export default function SectionTwo() {
         <button
           onClick={next}
           aria-label="Next slide"
-          className="group w-11 h-11 rounded-full border border-[#F5F1E8]/60 bg-[#0F0F0F]/40 backdrop-blur-sm flex items-center justify-center hover:bg-[#F5F1E8] transition-all duration-300 cursor-pointer"
+          disabled={total <= 1}
+          className="group w-11 h-11 rounded-full border border-[#F5F1E8]/60 bg-[#0F0F0F]/40 backdrop-blur-sm flex items-center justify-center hover:bg-[#F5F1E8] transition-all duration-300 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#0F0F0F]/40"
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-300">
-            <path d="M5 2 L11 7 L5 12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            className="text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-300"
+          >
+            <path
+              d="M5 2 L11 7 L5 12"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </button>
       </div>

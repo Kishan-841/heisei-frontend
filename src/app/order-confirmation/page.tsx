@@ -88,32 +88,32 @@ function OrderConfirmationContent() {
       {/* Order info grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
         <motion.div
-          className="border border-text/8 p-6"
+          className="bg-white border border-text/10 p-6"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-[10px] text-muted tracking-[0.25em] uppercase">Order ID</p>
+          <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase">Order ID</p>
           <p className="text-lg font-mono mt-2">#{order.id.slice(0, 8).toUpperCase()}</p>
           <p className="text-[10px] text-accent tracking-widest mt-1">注文番号</p>
         </motion.div>
         <motion.div
-          className="border border-text/8 p-6"
+          className="bg-white border border-text/10 p-6"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <p className="text-[10px] text-muted tracking-[0.25em] uppercase">Status</p>
+          <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase">Status</p>
           <p className="text-lg mt-2">{order.status}</p>
           <p className="text-[10px] text-accent tracking-widest mt-1">状態</p>
         </motion.div>
         <motion.div
-          className="border border-text/8 p-6"
+          className="bg-white border border-text/10 p-6"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <p className="text-[10px] text-muted tracking-[0.25em] uppercase">Payment</p>
+          <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase">Payment</p>
           <p className="text-lg mt-2">Paid Online</p>
           <p className="text-[10px] text-accent tracking-widest mt-1">支払い</p>
         </motion.div>
@@ -127,8 +127,8 @@ function OrderConfirmationContent() {
         transition={{ delay: 0.35 }}
       >
         {/* Items & totals (3 cols) */}
-        <div className="md:col-span-3 border border-text/8 p-6 md:p-8">
-          <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-6">Items Ordered</p>
+        <div className="md:col-span-3 bg-white border border-text/10 p-6 md:p-8">
+          <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase mb-6">Items Ordered</p>
 
           <div className="space-y-4">
             {order.items.map((item) => (
@@ -147,7 +147,7 @@ function OrderConfirmationContent() {
                   )}
                   <div>
                     <p className="text-sm">{item.color} — {item.name}</p>
-                    <p className="text-xs text-muted mt-0.5">Size {item.size} &middot; Qty {item.qty}</p>
+                    <p className="text-xs text-text/55 mt-0.5">Size {item.size} &middot; Qty {item.qty}</p>
                   </div>
                 </div>
                 <p className="text-sm">₹{(item.price * item.qty).toLocaleString("en-IN")}</p>
@@ -157,11 +157,11 @@ function OrderConfirmationContent() {
 
           <div className="mt-6 pt-6 border-t border-text/8 space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted">Subtotal</span>
+              <span className="text-text/55">Subtotal</span>
               <span>₹{order.subtotal.toLocaleString("en-IN")}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted">Shipping</span>
+              <span className="text-text/55">Shipping</span>
               <span>{order.shipping === 0 ? <span className="text-accent">Free</span> : `₹${order.shipping}`}</span>
             </div>
             <div className="flex justify-between text-lg pt-3 border-t border-text/5">
@@ -173,21 +173,21 @@ function OrderConfirmationContent() {
 
         {/* Shipping info (2 cols) */}
         <div className="md:col-span-2 space-y-4">
-          <div className="border border-text/8 p-6">
-            <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-4">Shipping To</p>
+          <div className="bg-white border border-text/10 p-6">
+            <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase mb-4">Shipping To</p>
             <p className="text-sm font-medium">{order.shippingName}</p>
-            <p className="text-sm text-muted mt-1">{order.shippingAddress1}</p>
-            {order.shippingAddress2 && <p className="text-sm text-muted">{order.shippingAddress2}</p>}
-            <p className="text-sm text-muted">
+            <p className="text-sm text-text/60 mt-1">{order.shippingAddress1}</p>
+            {order.shippingAddress2 && <p className="text-sm text-text/60">{order.shippingAddress2}</p>}
+            <p className="text-sm text-text/60">
               {order.shippingCity}, {order.shippingState} — {order.shippingPincode}
             </p>
-            {order.shippingLandmark && <p className="text-xs text-muted/60 mt-2">Near: {order.shippingLandmark}</p>}
-            <p className="text-xs text-muted mt-3">{order.shippingPhone}</p>
+            {order.shippingLandmark && <p className="text-xs text-text/45 mt-2">Near: {order.shippingLandmark}</p>}
+            <p className="text-xs text-text/60 mt-3">{order.shippingPhone}</p>
           </div>
 
           {/* What's next */}
-          <div className="border border-text/8 p-6">
-            <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-4">What&apos;s Next</p>
+          <div className="bg-white border border-text/10 p-6">
+            <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase mb-4">What&apos;s Next</p>
             <div className="space-y-4">
               {[
                 { step: "01", text: "Order received and being processed" },
@@ -196,10 +196,10 @@ function OrderConfirmationContent() {
                 { step: "04", text: "Delivered to your door" },
               ].map((s, i) => (
                 <div key={s.step} className="flex items-start gap-3">
-                  <span className={`text-[10px] font-mono mt-0.5 ${i === 0 ? "text-accent" : "text-muted/40"}`}>
+                  <span className={`text-[10px] font-mono mt-0.5 ${i === 0 ? "text-accent" : "text-text/35"}`}>
                     {s.step}
                   </span>
-                  <p className={`text-xs leading-relaxed ${i === 0 ? "text-text" : "text-muted/50"}`}>
+                  <p className={`text-xs leading-relaxed ${i === 0 ? "text-text" : "text-text/45"}`}>
                     {s.text}
                   </p>
                 </div>
@@ -227,7 +227,7 @@ function OrderConfirmationContent() {
         </Link>
         <Link
           href="/account/orders"
-          className="flex-1 text-center py-4 border border-text/15 text-sm tracking-[0.15em] text-muted hover:border-text/40 hover:text-text transition-colors"
+          className="flex-1 text-center py-4 bg-white border border-text/15 text-sm tracking-[0.15em] text-text/70 hover:border-text/40 hover:text-text transition-colors"
         >
           View All Orders
         </Link>

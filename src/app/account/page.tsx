@@ -94,7 +94,6 @@ export default function AccountPage() {
     );
   }
 
-  const totalSpent = orders.reduce((sum, o) => sum + o.total, 0);
   const recentOrder = orders[0];
   const defaultAddr = addresses.find((a) => a.isDefault);
 
@@ -133,14 +132,27 @@ export default function AccountPage() {
                 <h1 className="text-3xl md:text-4xl font-light tracking-tight">
                   Welcome, {user.name}
                 </h1>
-                <p className="text-[#A8A29E] text-sm mt-2">{user.phone}</p>
+                <p className="text-[#A8A29E] text-sm mt-2">{user.email || user.phone}</p>
               </div>
-              <button
-                onClick={handleLogout}
-                className="text-xs text-[#A8A29E] hover:text-[#C23B22] transition-colors cursor-pointer tracking-widest uppercase self-start md:self-auto"
-              >
-                Sign Out
-              </button>
+              <div className="flex items-center gap-4 self-start md:self-auto">
+                <Link
+                  href="/account/security"
+                  className="group flex items-center gap-2 text-xs text-[#A8A29E] hover:text-[#F7F6F2] transition-colors tracking-widest uppercase"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" />
+                    <path d="M7 11V7a5 5 0 0110 0v4" />
+                  </svg>
+                  Change Password
+                </Link>
+                <span className="w-[1px] h-3 bg-white/15" />
+                <button
+                  onClick={handleLogout}
+                  className="text-xs text-[#A8A29E] hover:text-[#C23B22] transition-colors cursor-pointer tracking-widest uppercase"
+                >
+                  Sign Out
+                </button>
+              </div>
             </div>
 
             {user.isGuest && (
@@ -159,14 +171,13 @@ export default function AccountPage() {
           {/* Stats row */}
           {loaded && (
             <motion.div
-              className="grid grid-cols-3 gap-3 md:gap-4 mb-8"
+              className="grid grid-cols-2 gap-3 md:gap-4 mb-8"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
               {[
                 { label: "Orders", value: orders.length.toString(), sub: "注文", color: "bg-[#0F0F0F]" },
-                { label: "Total Spent", value: `₹${totalSpent.toLocaleString("en-IN")}`, sub: "合計", color: "bg-[#C23B22]" },
                 { label: "Addresses", value: addresses.length.toString(), sub: "住所", color: "bg-[#0F0F0F]" },
               ].map((stat, i) => (
                 <motion.div
@@ -337,9 +348,9 @@ export default function AccountPage() {
           >
             {[
               { href: "/collection", label: "Shop Collection", jp: "コレクション", icon: "→" },
+              { href: "/account/security", label: "Security", jp: "セキュリティ", icon: "→" },
               { href: "/contact", label: "Contact Us", jp: "お問合せ", icon: "→" },
               { href: "/our-story", label: "Our Story", jp: "物語", icon: "→" },
-              { href: "/checkout", label: "Checkout", jp: "精算", icon: "→" },
             ].map((link, i) => (
               <motion.div
                 key={link.href}

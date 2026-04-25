@@ -77,8 +77,14 @@ export default function ProductDetail({
   const [sizeModalOpen, setSizeModalOpen] = useState(false);
   const { addItem } = useCart();
 
+  const selectedVariant = product.variants?.find((v) => v.size === selectedSize);
+  const selectedStock = selectedVariant?.stock ?? Number.POSITIVE_INFINITY;
+  const exceedsStock = selectedSize && selectedVariant && quantity > selectedStock;
+
   const handleAddToCart = () => {
     if (!selectedSize) return;
+    if (selectedStock === 0) return;
+    if (exceedsStock) return;
     for (let i = 0; i < quantity; i++) {
       addItem({
         slug: product.slug,
@@ -299,11 +305,18 @@ export default function ProductDetail({
                 <option value="" disabled>
                   Select size
                 </option>
-                {product.sizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
+                {product.sizes.map((size) => {
+                  const variant = product.variants?.find((v) => v.size === size);
+                  const stock = variant?.stock ?? 0;
+                  const isOOS = variant !== undefined && stock === 0;
+                  const isLow = stock > 0 && stock <= 3;
+                  return (
+                    <option key={size} value={size} disabled={isOOS}>
+                      {size}
+                      {isOOS ? " — Out of Stock" : isLow ? ` — Only ${stock} left` : ""}
+                    </option>
+                  );
+                })}
               </select>
               <svg
                 width="10"
@@ -347,30 +360,34 @@ export default function ProductDetail({
           <div>
             <button
               onClick={handleAddToCart}
-              disabled={!selectedSize}
+              disabled={!selectedSize || !!exceedsStock || selectedStock === 0}
               className={`group relative w-full h-12 text-[11px] tracking-[0.25em] uppercase cursor-pointer overflow-hidden border transition-all duration-300 ${
-                !selectedSize
+                !selectedSize || exceedsStock || selectedStock === 0
                   ? "bg-text/5 text-muted cursor-not-allowed border-transparent"
                   : added
                     ? "bg-accent text-white border-accent"
                     : "bg-text text-bg border-text"
               }`}
             >
-              {selectedSize && !added && (
+              {selectedSize && !added && !exceedsStock && selectedStock !== 0 && (
                 <span className="absolute inset-0 bg-bg origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
               )}
               <span
                 className={`relative z-10 ${
-                  selectedSize && !added
+                  selectedSize && !added && !exceedsStock && selectedStock !== 0
                     ? "group-hover:text-text transition-colors duration-500"
                     : ""
                 }`}
               >
                 {!selectedSize
                   ? "Select a Size"
-                  : added
-                    ? "Added to Cart ✓"
-                    : "Add to Cart"}
+                  : selectedStock === 0
+                    ? "Out of Stock"
+                    : exceedsStock
+                      ? `Only ${selectedStock} left`
+                      : added
+                        ? "Added to Cart ✓"
+                        : "Add to Cart"}
               </span>
             </button>
             <p className="text-[11px] text-muted text-center mt-3 tracking-wide">
@@ -480,24 +497,14 @@ export default function ProductDetail({
                             size
                           </th>
                           <th className="py-3 pr-4 font-normal text-text/70 align-top">
-                            Dress-
-                            <br />
-                            size
-                          </th>
-                          <th className="py-3 pr-4 font-normal text-text/70 align-top">
-                            Chest
-                            <br />
-                            (A)
-                          </th>
-                          <th className="py-3 pr-4 font-normal text-text/70 align-top">
                             Waist
                             <br />
-                            (B)
+                            (A)
                           </th>
                           <th className="py-3 font-normal text-text/70 align-top">
                             Hip
                             <br />
-                            (C)
+                            (B)
                           </th>
                         </tr>
                       </thead>
@@ -505,43 +512,31 @@ export default function ProductDetail({
                         {[
                           {
                             intl: "S",
-                            dress: "48",
-                            chest: ["92–95 cm", "36–37 in"],
                             waist: ["82–85 cm", "32–33 in"],
                             hip: ["98–101 cm", "38–39 in"],
                           },
                           {
                             intl: "M",
-                            dress: "50",
-                            chest: ["96–99 cm", "38–39 in"],
                             waist: ["86–89 cm", "34–35 in"],
                             hip: ["102–105 cm", "40–41 in"],
                           },
                           {
                             intl: "L",
-                            dress: "52",
-                            chest: ["100–103 cm", "39–41 in"],
                             waist: ["90–93 cm", "35–37 in"],
                             hip: ["106–109 cm", "42–43 in"],
                           },
                           {
                             intl: "XL",
-                            dress: "54",
-                            chest: ["104–109 cm", "41–43 in"],
                             waist: ["94–99 cm", "37–39 in"],
                             hip: ["110–113 cm", "43–44 in"],
                           },
                           {
                             intl: "XXL",
-                            dress: "56",
-                            chest: ["110–115 cm", "43–45 in"],
                             waist: ["100–105 cm", "39–41 in"],
                             hip: ["114–117 cm", "45–46 in"],
                           },
                           {
                             intl: "3XL",
-                            dress: "58",
-                            chest: ["116–121 cm", "46–48 in"],
                             waist: ["106–111 cm", "42–44 in"],
                             hip: ["118–121 cm", "47–48 in"],
                           },
@@ -551,11 +546,6 @@ export default function ProductDetail({
                             className="border-b border-text/8 align-top"
                           >
                             <td className="py-4 pr-4">{row.intl}</td>
-                            <td className="py-4 pr-4">{row.dress}</td>
-                            <td className="py-4 pr-4">
-                              <div>{row.chest[0]}</div>
-                              <div className="text-muted">{row.chest[1]}</div>
-                            </td>
                             <td className="py-4 pr-4">
                               <div>{row.waist[0]}</div>
                               <div className="text-muted">{row.waist[1]}</div>
