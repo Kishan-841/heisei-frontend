@@ -30,9 +30,9 @@ const slides: Slide[] = [
     cropBottom: true,
   },
   {
-    images: ["/section-two-half-left.png", "/section-two-half.png"],
+    images: ["/collections/2nd section 3rd iamge.png", "/section-two-half.png"],
     alts: [
-      "Model leaning on antique console — HEISEI navy boxer brief",
+      "Model reading on bed in HEISEI black boxer — quiet morning editorial",
       "Model wearing HEISEI boxer brief — half-frame editorial portrait",
     ],
     imagePositions: ["object-center", "object-center"],

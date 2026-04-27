@@ -31,7 +31,7 @@ export default function FeaturedCollection() {
   return (
     <section
       ref={ref}
-      className="bg-bg py-20 md:py-28 px-6 overflow-hidden"
+      className="bg-bg py-20 md:py-16 px-6 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}

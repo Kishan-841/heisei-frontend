@@ -18,9 +18,7 @@ export default function Home() {
       <SectionTwo />
       <FeaturedCollection />
       <AboutSection />
-      <InkDivider />
       <VideoSection />
-      <InkDivider />
       <Footer />
     </>
   );

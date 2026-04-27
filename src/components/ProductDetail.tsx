@@ -53,7 +53,13 @@ function ZoomTile({
   );
 }
 
-type AccordionKey = "description" | "material" | "care" | "item" | "size";
+type AccordionKey =
+  | "description"
+  | "material"
+  | "care"
+  | "item"
+  | "size"
+  | "returns";
 
 const accordionOrder: { key: AccordionKey; label: string }[] = [
   { key: "description", label: "Description" },
@@ -61,6 +67,7 @@ const accordionOrder: { key: AccordionKey; label: string }[] = [
   { key: "care", label: "Care instructions" },
   { key: "item", label: "Item number" },
   { key: "size", label: "Size Guide" },
+  { key: "returns", label: "Returns" },
 ];
 
 export default function ProductDetail({
@@ -138,12 +145,12 @@ export default function ProductDetail({
     ),
     size: (
       <div className="text-muted text-[14px] leading-relaxed space-y-3">
-        <p>Quick reference — find your size by your waist measurement:</p>
+        <p>Indian sizing — find your size by your waist measurement:</p>
         <ul className="space-y-1">
-          <li>S — 32–33&quot; (82–85 cm)</li>
-          <li>M — 34–35&quot; (86–89 cm)</li>
-          <li>L — 35–37&quot; (90–93 cm)</li>
-          <li>XL — 37–39&quot; (94–99 cm)</li>
+          <li>S — 28–30&quot; (71–76 cm)</li>
+          <li>M — 30–32&quot; (76–81 cm)</li>
+          <li>L — 32–34&quot; (81–86 cm)</li>
+          <li>XL — 34–36&quot; (86–91 cm)</li>
         </ul>
         <button
           onClick={() => setSizeModalOpen(true)}
@@ -152,6 +159,19 @@ export default function ProductDetail({
           View Full Chart
           <span>→</span>
         </button>
+      </div>
+    ),
+    returns: (
+      <div className="text-muted text-[14px] leading-relaxed space-y-3">
+        <p>
+          <span className="text-text">All innerwear sales are final.</span>{" "}
+          For hygiene reasons, we do not accept returns or exchanges on opened
+          products.
+        </p>
+        <p>
+          If your order arrives damaged or you receive the wrong item, please
+          contact us within 48 hours of delivery and we&rsquo;ll make it right.
+        </p>
       </div>
     ),
   };
@@ -483,16 +503,19 @@ export default function ProductDetail({
                   <p className="text-accent text-[11px] tracking-[0.25em] uppercase mb-2">
                     サイズ
                   </p>
-                  <h2 className="text-2xl md:text-3xl font-normal tracking-tight mb-8">
+                  <h2 className="text-2xl md:text-3xl font-normal tracking-tight">
                     Men Essentials Sizes
                   </h2>
+                  <p className="text-muted text-[12px] tracking-wide mt-1.5 mb-8">
+                    Indian men&rsquo;s sizing
+                  </p>
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-[11px] sm:text-[13px] md:text-[14px]">
                       <thead>
                         <tr className="border-b border-text/15">
                           <th className="py-3 pr-4 font-normal text-text/70 align-top">
-                            International
+                            Indian
                             <br />
                             size
                           </th>
@@ -512,33 +535,33 @@ export default function ProductDetail({
                         {[
                           {
                             intl: "S",
-                            waist: ["82–85 cm", "32–33 in"],
-                            hip: ["98–101 cm", "38–39 in"],
+                            waist: ["71–76 cm", "28–30 in"],
+                            hip: ["91–96 cm", "36–38 in"],
                           },
                           {
                             intl: "M",
-                            waist: ["86–89 cm", "34–35 in"],
-                            hip: ["102–105 cm", "40–41 in"],
+                            waist: ["76–81 cm", "30–32 in"],
+                            hip: ["96–101 cm", "38–40 in"],
                           },
                           {
                             intl: "L",
-                            waist: ["90–93 cm", "35–37 in"],
-                            hip: ["106–109 cm", "42–43 in"],
+                            waist: ["81–86 cm", "32–34 in"],
+                            hip: ["101–106 cm", "40–42 in"],
                           },
                           {
                             intl: "XL",
-                            waist: ["94–99 cm", "37–39 in"],
-                            hip: ["110–113 cm", "43–44 in"],
+                            waist: ["86–91 cm", "34–36 in"],
+                            hip: ["106–111 cm", "42–44 in"],
                           },
                           {
                             intl: "XXL",
-                            waist: ["100–105 cm", "39–41 in"],
-                            hip: ["114–117 cm", "45–46 in"],
+                            waist: ["91–96 cm", "36–38 in"],
+                            hip: ["111–116 cm", "44–46 in"],
                           },
                           {
                             intl: "3XL",
-                            waist: ["106–111 cm", "42–44 in"],
-                            hip: ["118–121 cm", "47–48 in"],
+                            waist: ["96–102 cm", "38–40 in"],
+                            hip: ["116–121 cm", "46–48 in"],
                           },
                         ].map((row) => (
                           <tr

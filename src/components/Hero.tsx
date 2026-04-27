@@ -6,7 +6,7 @@ import MagneticButton from "@/components/MagneticButton";
 
 export default function Hero() {
   return (
-    <section className="relative h-[95vh] w-full text-text overflow-hidden">
+    <section className="relative h-screen w-full text-text overflow-hidden">
       {/* BACKGROUND IMAGE */}
       <div className="absolute inset-0">
         <Image
@@ -18,6 +18,9 @@ export default function Hero() {
           className="object-cover object-bottom scale-145 origin-bottom"
         />
       </div>
+
+      {/* Top vignette — gives the transparent navbar a dark band to sit on */}
+      <div className="absolute left-0 right-0 top-0 h-[32%] bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none" />
 
       {/* Bottom vignette — anchors the CTA */}
       <div className="absolute left-0 right-0 bottom-0 h-[28%] bg-gradient-to-t from-black/70 via-black/25 to-transparent pointer-events-none" />
