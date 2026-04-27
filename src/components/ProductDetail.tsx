@@ -194,7 +194,7 @@ export default function ProductDetail({
         </span>
       </motion.div>
 
-      <div className="grid md:grid-cols-[1.6fr_1fr] gap-10 md:gap-16 items-start">
+      <div className="grid md:grid-cols-[1.6fr_1fr] gap-6 md:gap-16 items-start">
         {/* LEFT — IMAGE GRID (2x2) */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4"

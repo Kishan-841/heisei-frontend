@@ -7,15 +7,23 @@ import MagneticButton from "@/components/MagneticButton";
 export default function Hero() {
   return (
     <section className="relative h-screen w-full text-text overflow-hidden">
-      {/* BACKGROUND IMAGE */}
+      {/* BACKGROUND IMAGE — vertical 9:16 on mobile, landscape on tablet/desktop */}
       <div className="absolute inset-0">
+        <Image
+          src="/collections/hero section mobile.png"
+          alt="HEISEI — model on velvet chesterfield in classical interior"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center sm:hidden"
+        />
         <Image
           src="/section-two-slide-2.png"
           alt="HEISEI — Japanese interior with boxer brief on stone table"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-bottom scale-145 origin-bottom"
+          className="hidden object-cover object-bottom sm:block sm:scale-125 md:scale-145 origin-bottom"
         />
       </div>
 

@@ -78,7 +78,7 @@ export default function YouMayAlsoLike({
             {related.map((item, i) => (
               <motion.div
                 key={item.slug}
-                className="min-w-[72%] sm:min-w-[42%] md:min-w-0 snap-start"
+                className="min-w-[85%] sm:min-w-[42%] md:min-w-0 snap-start"
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.1, duration: 0.6, ease: "easeOut" }}

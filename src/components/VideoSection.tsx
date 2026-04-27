@@ -146,7 +146,7 @@ export default function VideoSection() {
 
           {/* BOTTOM BAR — subtle info strip */}
           <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black/20 to-transparent z-10 flex items-end px-6 pb-2">
-            <span className="text-[10px] tracking-widest text-white/40 uppercase">
+            <span className="text-[8px] sm:text-[10px] tracking-widest text-white/40 uppercase">
               HEISEI — Quiet Comfort
             </span>
           </div>

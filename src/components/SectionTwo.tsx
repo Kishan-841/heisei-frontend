@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Each slide can be either one full-width image, or two images shown side-by-side.
 // The render logic below switches layout based on `images.length`.
@@ -23,7 +23,8 @@ type Slide = {
   halfImage?: boolean;
 };
 
-const slides: Slide[] = [
+// Desktop: 2 slides — slide 2 is dual-image side-by-side.
+const slidesDesktop: Slide[] = [
   {
     images: ["/landscape 2nd section.png"],
     alts: ["Model wearing HEISEI boxer brief in a classical interior"],
@@ -40,6 +41,29 @@ const slides: Slide[] = [
   },
 ];
 
+// Mobile: 3 slides — one image per slide, anchored center so the model
+// stays in frame on portrait viewports.
+const slidesMobile: Slide[] = [
+  {
+    images: ["/landscape 2nd section.png"],
+    alts: ["Model wearing HEISEI boxer brief in a classical interior"],
+    imagePositions: ["object-center"],
+    cropBottom: true,
+  },
+  {
+    images: ["/collections/2nd section 3rd iamge.png"],
+    alts: ["Model reading on bed in HEISEI black boxer — quiet morning editorial"],
+    imagePositions: ["object-center"],
+    cropBottom: true,
+  },
+  {
+    images: ["/section-two-half.png"],
+    alts: ["Model wearing HEISEI boxer brief — half-frame editorial portrait"],
+    imagePositions: ["object-center"],
+    cropBottom: true,
+  },
+];
+
 const slideVariants = {
   enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 1 }),
   center: { x: 0, opacity: 1 },
@@ -47,11 +71,24 @@ const slideVariants = {
 };
 
 export default function SectionTwo() {
+  const [isMobile, setIsMobile] = useState(false);
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const update = () => {
+      setIsMobile(mq.matches);
+      setIndex(0);
+    };
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  const slides = isMobile ? slidesMobile : slidesDesktop;
   const total = slides.length;
-  const slide = slides[index];
+  const slide = slides[Math.min(index, total - 1)];
 
   const prev = () => {
     setDirection(-1);
@@ -65,7 +102,7 @@ export default function SectionTwo() {
   const isSingle = slide.images.length === 1;
 
   return (
-    <section className="relative h-[80vh] sm:h-[95vh] w-full bg-bg text-text overflow-hidden">
+    <section className="relative h-[60vh] sm:h-[80vh] md:h-[95vh] w-full bg-bg text-text overflow-hidden">
       {/* Image layer — slides left/right on change */}
       <div className="absolute inset-0">
         <AnimatePresence initial={false} custom={direction} mode="popLayout">
@@ -128,7 +165,7 @@ export default function SectionTwo() {
                   fill
                   sizes="100vw"
                   priority
-                  className="object-cover object-top"
+                  className={`object-cover ${slide.imagePositions?.[0] ?? "object-top"}`}
                 />
               </div>
             ) : (
@@ -199,7 +236,7 @@ export default function SectionTwo() {
       {/* EXPLORE COLLECTION — centered pill button */}
       <a
         href="/collection"
-        className="group absolute left-1/2 -translate-x-1/2 bottom-24 sm:bottom-16 md:bottom-20 z-[4] inline-flex items-center gap-3 px-7 py-3.5 bg-[#0F0F0F]/60 border border-[#F5F1E8]/40 backdrop-blur-md overflow-hidden"
+        className="group absolute left-1/2 -translate-x-1/2 bottom-16 sm:bottom-16 md:bottom-20 z-[4] hidden sm:inline-flex items-center gap-3 px-7 py-3.5 bg-[#0F0F0F]/60 border border-[#F5F1E8]/40 backdrop-blur-md overflow-hidden"
       >
         <span className="absolute inset-0 bg-[#F5F1E8] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
         <span className="relative z-10 text-[11px] tracking-[0.3em] uppercase text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-500">
@@ -223,7 +260,7 @@ export default function SectionTwo() {
       </a>
 
       {/* CAROUSEL CONTROLS — bottom right */}
-      <div className="absolute bottom-8 sm:bottom-16 md:bottom-20 right-4 sm:right-8 md:right-16 z-[4] flex items-center gap-3 sm:gap-5">
+      <div className="absolute bottom-8 sm:bottom-12 md:bottom-20 right-4 sm:right-8 md:right-16 z-[4] flex items-center gap-3 sm:gap-5">
         <button
           onClick={prev}
           aria-label="Previous slide"

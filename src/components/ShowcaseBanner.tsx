@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function ShowcaseBanner() {
   return (
     <section className="relative w-full bg-bg overflow-hidden">
-      <div className="relative w-full aspect-[2/1]">
+      <div className="relative w-full aspect-[16/9] sm:aspect-[2/1]">
         {/* IMAGE — container extends 100px below the section so the Gemini
             watermark in the bottom-right corner gets clipped by overflow-hidden
             on the parent. Same pattern as SectionTwo's cropBottom slides. */}

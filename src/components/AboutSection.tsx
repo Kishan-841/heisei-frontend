@@ -32,7 +32,7 @@ export default function AboutSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.9, ease: "easeOut" }}
-        className="absolute left-6 right-6 sm:left-12 md:left-20 lg:left-28 bottom-12 md:bottom-20 max-w-xl space-y-5 [text-shadow:0_2px_28px_rgba(0,0,0,0.85)]"
+        className="absolute left-6 right-6 sm:left-12 sm:right-12 md:left-20 md:right-20 lg:left-28 lg:right-28 bottom-12 md:bottom-20 max-w-xl space-y-5 [text-shadow:0_2px_28px_rgba(0,0,0,0.85)]"
       >
         <p className="text-accent text-[11px] tracking-[0.35em]">
           私たちについて

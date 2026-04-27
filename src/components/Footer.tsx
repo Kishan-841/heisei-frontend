@@ -129,7 +129,7 @@ export default function Footer() {
       {/* GIANT BRAND NAME — bottom */}
       <div className="relative w-full overflow-hidden pb-4 md:pb-0 max-w-full">
         <motion.h2
-          className="text-[18vw] sm:text-[22vw] md:text-[18vw] font-normal leading-[0.85] tracking-tight text-center select-none whitespace-nowrap"
+          className="text-[14vw] sm:text-[18vw] md:text-[18vw] font-normal leading-[0.85] tracking-tight text-center select-none whitespace-nowrap"
           style={{
             color: "#FFFFFF",
             fontFamily: "Georgia, 'Times New Roman', serif",

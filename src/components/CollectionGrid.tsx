@@ -162,7 +162,7 @@ function ProductCard({
 
 export default function CollectionGrid() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-8 md:px-16 py-12 md:py-20">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-16 py-12 md:py-20">
       {/* PAGE HEADER */}
       <div className="mb-16 md:mb-24">
         <motion.p
