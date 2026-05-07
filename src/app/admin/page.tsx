@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { api, DashboardData, AdminOrder, ChartPoint, Pagination } from "@/lib/api";
+import { api, DashboardData, AdminOrder, ChartPoint, Pagination, AdminProduct } from "@/lib/api";
 import { useAdminStore } from "@/lib/admin-store";
 import AdminGuard from "@/components/AdminGuard";
 import Navbar from "@/components/Navbar";
@@ -26,7 +26,7 @@ const pipelineConfig = [
   { key: "Cancelled", color: "#EF4444", bg: "bg-red-500", light: "bg-red-100" },
 ];
 
-type Tab = "overview" | "orders";
+type Tab = "overview" | "orders" | "products";
 type Period = "7d" | "30d" | "6m" | "all" | "custom";
 
 const PERIOD_LABELS: Record<Period, string> = {
@@ -387,7 +387,7 @@ function DashboardContent() {
       <div className="bg-white border-b border-text/[0.06]">
         <div className="max-w-[1240px] mx-auto px-5 sm:px-8 flex items-center justify-between">
           <div className="flex gap-0">
-            {(["overview", "orders"] as Tab[]).map((t) => (
+            {(["overview", "orders", "products"] as Tab[]).map((t) => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -395,7 +395,7 @@ function DashboardContent() {
                   tab === t ? "text-text" : "text-text/30 hover:text-text/55"
                 }`}
               >
-                {t === "overview" ? "Overview" : "Orders"}
+                {t === "overview" ? "Overview" : t === "orders" ? "Orders" : "Products"}
                 {tab === t && (
                   <motion.div
                     className="absolute bottom-0 left-2 right-2 h-[2px] bg-violet-600 rounded-full"
@@ -773,7 +773,7 @@ function DashboardContent() {
               </motion.div>
             </div>
           </motion.div>
-        ) : (
+        ) : tab === "orders" ? (
           /* ORDERS TAB */
           <motion.div key="orders" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
@@ -926,10 +926,337 @@ function DashboardContent() {
               </div>
             )}
           </motion.div>
+        ) : (
+          /* PRODUCTS TAB */
+          <ProductsTab />
         )}
       </div>
       </main>
     </>
+  );
+}
+
+/* ─── Products / Inventory Tab ─── */
+
+const SIZES = ["S", "M", "L", "XL", "XXL"] as const;
+
+type RowState = "idle" | "saving" | "saved" | "error";
+
+function ProductsTab() {
+  const [products, setProducts] = useState<AdminProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  // Currently edited row
+  const [editingId, setEditingId] = useState<string | null>(null);
+  // Edit draft values while editing (by size)
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  // Per-row save feedback
+  const [rowState, setRowState] = useState<Record<string, RowState>>({});
+  const [rowError, setRowError] = useState<Record<string, string>>({});
+
+  const load = () => {
+    setLoading(true);
+    api.admin.products().then((d) => {
+      setProducts(d.products);
+      setLoading(false);
+    });
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const startEdit = (product: AdminProduct) => {
+    const d: Record<string, string> = {};
+    for (const size of SIZES) {
+      const v = product.variants.find((v) => v.size === size);
+      if (v) d[size] = String(v.stock);
+    }
+    setDraft(d);
+    setEditingId(product.id);
+    setRowError((e) => { const n = { ...e }; delete n[product.id]; return n; });
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setDraft({});
+  };
+
+  const handleSave = async (product: AdminProduct) => {
+    // Validate all draft values first — fail fast if any are invalid
+    const changes: Array<{ size: string; newStock: number }> = [];
+    for (const size of SIZES) {
+      const variant = product.variants.find((v) => v.size === size);
+      if (!variant) continue;
+      const raw = draft[size];
+      if (raw === undefined || raw === "") {
+        setRowError((e) => ({ ...e, [product.id]: `Size ${size} cannot be empty` }));
+        return;
+      }
+      const n = parseInt(raw, 10);
+      if (isNaN(n) || n < 0 || !Number.isInteger(Number(raw))) {
+        setRowError((e) => ({ ...e, [product.id]: `Size ${size} must be a non-negative integer` }));
+        return;
+      }
+      if (n !== variant.stock) {
+        changes.push({ size, newStock: n });
+      }
+    }
+
+    if (changes.length === 0) {
+      // Nothing changed — just exit edit mode
+      cancelEdit();
+      return;
+    }
+
+    setRowState((s) => ({ ...s, [product.id]: "saving" }));
+    setRowError((e) => { const n = { ...e }; delete n[product.id]; return n; });
+
+    try {
+      // Update each changed variant in parallel
+      await Promise.all(
+        changes.map((c) =>
+          api.admin.updateVariantStock(product.id, c.size, c.newStock)
+        )
+      );
+
+      // Merge changes into local state
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id !== product.id
+            ? p
+            : {
+                ...p,
+                variants: p.variants.map((v) => {
+                  const c = changes.find((c) => c.size === v.size);
+                  return c ? { ...v, stock: c.newStock } : v;
+                }),
+              }
+        )
+      );
+
+      setEditingId(null);
+      setDraft({});
+      setRowState((s) => ({ ...s, [product.id]: "saved" }));
+      setTimeout(() => {
+        setRowState((s) => {
+          const n = { ...s };
+          if (n[product.id] === "saved") delete n[product.id];
+          return n;
+        });
+      }, 2500);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Save failed";
+      setRowState((s) => ({ ...s, [product.id]: "error" }));
+      setRowError((e) => ({ ...e, [product.id]: msg }));
+    }
+  };
+
+  const totalStock = (p: AdminProduct) =>
+    p.variants.reduce((sum, v) => sum + v.stock, 0);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-16">
+        <div className="w-5 h-5 border-2 border-violet-200 border-t-violet-600 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      key="products"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="mb-6">
+        <h2 className="text-[22px] font-light tracking-tight text-text/90">Products & Inventory</h2>
+        <p className="text-[11px] text-text/40 mt-1">
+          Click <span className="font-medium text-text/60">Edit</span> on a product to update stock. Save applies changes across all sizes.
+        </p>
+      </div>
+
+      <div className="bg-white border border-text/[0.06] rounded-xl overflow-hidden">
+        {/* Table header (desktop) */}
+        <div className="hidden md:grid grid-cols-[70px_1fr_52px_52px_52px_52px_52px_70px_130px] gap-3 px-5 py-3 border-b border-text/[0.06] bg-[#FAFAF8]">
+          <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium">Image</span>
+          <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium">Product</span>
+          {SIZES.map((s) => (
+            <span key={s} className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium text-center">{s}</span>
+          ))}
+          <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium text-right">Total</span>
+          <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium text-right">Actions</span>
+        </div>
+
+        {products.map((product, i) => {
+          // Images live in the frontend's /public folder, served from the same origin
+          // as the admin panel. Use the relative path as-is.
+          const imgSrc = product.img;
+          const total = totalStock(product);
+          const isEditing = editingId === product.id;
+          const state = rowState[product.id];
+          const errorMsg = rowError[product.id];
+          const anyOtherRowEditing = editingId !== null && !isEditing;
+
+          return (
+            <motion.div
+              key={product.id}
+              className={`md:grid md:grid-cols-[70px_1fr_52px_52px_52px_52px_52px_70px_130px] gap-3 px-5 py-4 border-b border-text/[0.04] last:border-0 items-center transition-colors ${
+                isEditing ? "bg-violet-50/40" : ""
+              } ${anyOtherRowEditing ? "opacity-40" : ""}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: i * 0.03 }}
+            >
+              {/* Image */}
+              <div className="w-[60px] h-[72px] bg-[#F7F6F2] overflow-hidden flex-shrink-0 rounded-sm">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={imgSrc}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              </div>
+
+              {/* Name */}
+              <div className="min-w-0 mt-3 md:mt-0">
+                <p className="text-[13px] text-text/80 truncate">
+                  {product.color} &mdash; {product.name}
+                </p>
+                <p className="text-[10px] text-text/40 mt-0.5">
+                  ₹{product.price.toLocaleString("en-IN")} &middot; <span className="font-mono">{product.slug}</span>
+                </p>
+              </div>
+
+              {/* Size cells */}
+              {SIZES.map((size) => {
+                const variant = product.variants.find((v) => v.size === size);
+                if (!variant) {
+                  return (
+                    <div key={size} className="flex items-center justify-center">
+                      <span className="text-[11px] text-text/20">—</span>
+                    </div>
+                  );
+                }
+
+                const isLow = variant.stock > 0 && variant.stock <= 5;
+                const isOOS = variant.stock === 0;
+
+                if (isEditing) {
+                  // Edit mode: show number input
+                  return (
+                    <div key={size} className="flex flex-col items-center gap-1">
+                      <span className="text-[9px] text-text/30 md:hidden">{size}</span>
+                      <input
+                        type="number"
+                        min={0}
+                        value={draft[size] ?? ""}
+                        onChange={(e) =>
+                          setDraft((prev) => ({ ...prev, [size]: e.target.value }))
+                        }
+                        className="w-full text-[12px] text-center tabular-nums py-1.5 rounded border border-violet-300 bg-white text-text focus:border-violet-600 focus:outline-none transition-colors"
+                        autoFocus={size === "S"}
+                      />
+                    </div>
+                  );
+                }
+
+                // Display mode
+                return (
+                  <div key={size} className="flex flex-col items-center gap-1">
+                    <span className="text-[9px] text-text/30 md:hidden">{size}</span>
+                    <div
+                      className={`w-full text-[12px] text-center tabular-nums py-1.5 rounded border ${
+                        isOOS
+                          ? "border-red-200 bg-red-50 text-red-500"
+                          : isLow
+                            ? "border-amber-200 bg-amber-50 text-amber-700"
+                            : "border-text/[0.06] bg-white text-text/70"
+                      }`}
+                    >
+                      {variant.stock}
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Total */}
+              <div className="text-right mt-3 md:mt-0">
+                <span
+                  className={`text-[13px] tabular-nums font-medium ${
+                    total === 0
+                      ? "text-red-500"
+                      : total < 15
+                        ? "text-amber-600"
+                        : "text-text/70"
+                  }`}
+                >
+                  {total}
+                </span>
+                <p className="text-[9px] text-text/30">units</p>
+              </div>
+
+              {/* Actions */}
+              <div className="mt-3 md:mt-0 flex items-center justify-end gap-2">
+                {isEditing ? (
+                  <>
+                    <button
+                      onClick={() => handleSave(product)}
+                      disabled={state === "saving"}
+                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-violet-600 text-white font-medium cursor-pointer hover:bg-violet-700 disabled:opacity-50 disabled:cursor-wait transition-colors"
+                    >
+                      {state === "saving" ? "Saving…" : "Save"}
+                    </button>
+                    <button
+                      onClick={cancelEdit}
+                      disabled={state === "saving"}
+                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-white border border-text/15 text-text/60 cursor-pointer hover:bg-text/[0.03] disabled:opacity-50 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {state === "saved" && (
+                      <span className="text-[10px] text-emerald-600 font-medium">✓ Saved</span>
+                    )}
+                    <button
+                      onClick={() => startEdit(product)}
+                      disabled={anyOtherRowEditing}
+                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-white border border-text/15 text-text/70 cursor-pointer hover:bg-text/[0.03] hover:border-text/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
+                    >
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg>
+                      Edit
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Error line (spans full width below) */}
+              {isEditing && errorMsg && (
+                <div className="md:col-span-9 mt-2">
+                  <p className="text-[11px] text-red-600">{errorMsg}</p>
+                </div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Legend */}
+      <div className="mt-5 flex flex-wrap items-center gap-4 text-[10px] text-text/40">
+        <span className="flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-sm bg-red-100 border border-red-200" /> Out of stock
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-sm bg-amber-100 border border-amber-200" /> Low stock (≤ 5)
+        </span>
+      </div>
+    </motion.div>
   );
 }
 

@@ -5,7 +5,7 @@ type AdminState = {
   admin: User | null;
   loading: boolean;
   initialized: boolean;
-  login: (phone: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   fetchAdmin: () => Promise<void>;
 };
@@ -29,10 +29,10 @@ export const useAdminStore = create<AdminState>((set) => ({
     }
   },
 
-  login: async (phone, password) => {
+  login: async (email, password) => {
     set({ loading: true });
     try {
-      const { user } = await api.auth.login(phone, password);
+      const { user } = await api.auth.login(email, password);
       if (!user.isAdmin) {
         await api.auth.logout();
         set({ loading: false });

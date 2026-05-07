@@ -68,9 +68,38 @@ export default function CheckoutPage() {
   const [landmark, setLandmark] = useState("");
 
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const fireConfetti = useConfetti();
+
+  const clearFieldError = (field: string) => {
+    setFieldErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    if (!user) {
+      if (!guestName.trim()) errors.guestName = "Name is required";
+      if (guestPhone.length !== 10) errors.guestPhone = "Enter a valid 10-digit phone number";
+    }
+
+    if (!fullName.trim()) errors.fullName = "Full name is required";
+    if (phone.length !== 10) errors.phone = "Enter a valid 10-digit phone number";
+    if (!address1.trim()) errors.address1 = "Address is required";
+    if (!city.trim()) errors.city = "City is required";
+    if (!state) errors.state = "Please select a state";
+    if (pincode.length !== 6) errors.pincode = "Enter a valid 6-digit pincode";
+
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const shipping = totalPrice >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const orderTotal = totalPrice + shipping;
@@ -139,6 +168,12 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!validateForm()) {
+      setError("Please fix the highlighted fields below");
+      return;
+    }
+
     setSubmitting(true);
 
     try {
@@ -244,8 +279,6 @@ export default function CheckoutPage() {
     );
   }
 
-  const isFormValid = fullName && phone.length === 10 && address1 && city && state && pincode.length === 6;
-
   return (
     <>
       <Navbar />
@@ -276,27 +309,37 @@ export default function CheckoutPage() {
                   <div className="space-y-6">
                     <h2 className="text-sm tracking-widest uppercase text-text/50">Contact Information</h2>
                     <div>
-                      <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">Name</label>
+                      <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                        Name <span className="text-accent">*</span>
+                      </label>
                       <input
                         type="text"
                         value={guestName}
-                        onChange={(e) => setGuestName(e.target.value)}
+                        onChange={(e) => { setGuestName(e.target.value); clearFieldError("guestName"); }}
                         placeholder="Your full name"
-                        className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                        className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.guestName ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                         required
                       />
+                      {fieldErrors.guestName && (
+                        <p className="text-[11px] text-accent mt-1.5">{fieldErrors.guestName}</p>
+                      )}
                     </div>
                     <div>
-                      <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">Phone Number</label>
+                      <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                        Phone Number <span className="text-accent">*</span>
+                      </label>
                       <input
                         type="tel"
                         value={guestPhone}
-                        onChange={(e) => setGuestPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                        onChange={(e) => { setGuestPhone(e.target.value.replace(/\D/g, "").slice(0, 10)); clearFieldError("guestPhone"); }}
                         placeholder="Enter your phone number"
                         maxLength={10}
-                        className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                        className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.guestPhone ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                         required
                       />
+                      {fieldErrors.guestPhone && (
+                        <p className="text-[11px] text-accent mt-1.5">{fieldErrors.guestPhone}</p>
+                      )}
                     </div>
                     <p className="text-xs text-text/40">
                       Already have an account?{" "}
@@ -400,39 +443,54 @@ export default function CheckoutPage() {
                       >
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div>
-                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">Full Name</label>
+                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                              Full Name <span className="text-accent">*</span>
+                            </label>
                             <input
                               type="text"
                               value={fullName}
-                              onChange={(e) => setFullName(e.target.value)}
-                              className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                              onChange={(e) => { setFullName(e.target.value); clearFieldError("fullName"); }}
+                              className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.fullName ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                               required
                             />
+                            {fieldErrors.fullName && (
+                              <p className="text-[11px] text-accent mt-1.5">{fieldErrors.fullName}</p>
+                            )}
                           </div>
                           <div>
-                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">Phone</label>
+                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                              Phone <span className="text-accent">*</span>
+                            </label>
                             <input
                               type="tel"
                               value={phone}
-                              onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                              onChange={(e) => { setPhone(e.target.value.replace(/\D/g, "").slice(0, 10)); clearFieldError("phone"); }}
                               placeholder="Phone number"
                               maxLength={10}
-                              className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                              className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.phone ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                               required
                             />
+                            {fieldErrors.phone && (
+                              <p className="text-[11px] text-accent mt-1.5">{fieldErrors.phone}</p>
+                            )}
                           </div>
                         </div>
 
                         <div>
-                          <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">Address Line 1</label>
+                          <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                            Address Line 1 <span className="text-accent">*</span>
+                          </label>
                           <input
                             type="text"
                             value={address1}
-                            onChange={(e) => setAddress1(e.target.value)}
+                            onChange={(e) => { setAddress1(e.target.value); clearFieldError("address1"); }}
                             placeholder="House no., Building, Street"
-                            className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                            className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.address1 ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                             required
                           />
+                          {fieldErrors.address1 && (
+                            <p className="text-[11px] text-accent mt-1.5">{fieldErrors.address1}</p>
+                          )}
                         </div>
 
                         <div>
@@ -450,21 +508,28 @@ export default function CheckoutPage() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div>
-                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">City</label>
+                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                              City <span className="text-accent">*</span>
+                            </label>
                             <input
                               type="text"
                               value={city}
-                              onChange={(e) => setCity(e.target.value)}
-                              className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                              onChange={(e) => { setCity(e.target.value); clearFieldError("city"); }}
+                              className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.city ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                               required
                             />
+                            {fieldErrors.city && (
+                              <p className="text-[11px] text-accent mt-1.5">{fieldErrors.city}</p>
+                            )}
                           </div>
                           <div>
-                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">State</label>
+                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                              State <span className="text-accent">*</span>
+                            </label>
                             <select
                               value={state}
-                              onChange={(e) => setState(e.target.value)}
-                              className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors text-text appearance-none cursor-pointer"
+                              onChange={(e) => { setState(e.target.value); clearFieldError("state"); }}
+                              className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors text-text appearance-none cursor-pointer ${fieldErrors.state ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                               required
                             >
                               <option value="">Select state</option>
@@ -472,20 +537,28 @@ export default function CheckoutPage() {
                                 <option key={s} value={s}>{s}</option>
                               ))}
                             </select>
+                            {fieldErrors.state && (
+                              <p className="text-[11px] text-accent mt-1.5">{fieldErrors.state}</p>
+                            )}
                           </div>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div>
-                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">Pincode</label>
+                            <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
+                              Pincode <span className="text-accent">*</span>
+                            </label>
                             <input
                               type="text"
                               value={pincode}
-                              onChange={(e) => setPincode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                              onChange={(e) => { setPincode(e.target.value.replace(/\D/g, "").slice(0, 6)); clearFieldError("pincode"); }}
                               placeholder="400001"
-                              className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3 text-sm outline-none transition-colors placeholder:text-text/30"
+                              className={`w-full bg-transparent border-b py-3 text-sm outline-none transition-colors placeholder:text-text/30 ${fieldErrors.pincode ? "border-accent focus:border-accent" : "border-text/20 focus:border-text/60"}`}
                               required
                             />
+                            {fieldErrors.pincode && (
+                              <p className="text-[11px] text-accent mt-1.5">{fieldErrors.pincode}</p>
+                            )}
                           </div>
                           <div>
                             <label className="text-xs text-text/60 tracking-widest uppercase block mb-2">
@@ -619,7 +692,7 @@ export default function CheckoutPage() {
                   {/* Place order button */}
                   <button
                     type="submit"
-                    disabled={submitting || orderPlaced || !isFormValid || !razorpayLoaded}
+                    disabled={submitting || orderPlaced || !razorpayLoaded}
                     className="group relative w-full py-4 border border-text text-sm tracking-widest cursor-pointer overflow-hidden disabled:opacity-40 disabled:cursor-not-allowed mt-4"
                   >
                     <span className="absolute inset-0 bg-text origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />

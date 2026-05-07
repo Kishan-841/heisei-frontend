@@ -29,8 +29,6 @@ export default function OrderDetailPage() {
   const id = params.id as string;
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
-  const [cancelling, setCancelling] = useState(false);
-  const [cancelError, setCancelError] = useState("");
   const user = useAuthStore((s) => s.user);
 
   useEffect(() => {
@@ -40,20 +38,6 @@ export default function OrderDetailPage() {
       () => setLoading(false)
     );
   }, [id]);
-
-  const handleCancel = async () => {
-    if (!order) return;
-    setCancelError("");
-    setCancelling(true);
-    try {
-      const { order: updated } = await api.orders.cancel(order.id);
-      setOrder(updated);
-    } catch (err) {
-      setCancelError(err instanceof Error ? err.message : "Failed to cancel order");
-    } finally {
-      setCancelling(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -358,26 +342,6 @@ export default function OrderDetailPage() {
                   )}
                 </div>
               </div>
-
-              {/* Cancel Order */}
-              {(order.status === "PENDING" || order.status === "CONFIRMED") && (
-                <div className="bg-white border border-text/10 p-6">
-                  <p className="text-[10px] text-text/50 tracking-[0.25em] uppercase mb-3">Cancel Order</p>
-                  <p className="text-xs text-text/40 leading-relaxed mb-4">
-                    You can cancel this order while it hasn&apos;t been shipped yet.
-                  </p>
-                  {cancelError && (
-                    <p className="text-xs text-accent mb-3">{cancelError}</p>
-                  )}
-                  <button
-                    onClick={handleCancel}
-                    disabled={cancelling}
-                    className="text-xs text-accent hover:text-accent/70 border-b border-accent/30 hover:border-accent pb-0.5 transition-colors cursor-pointer disabled:opacity-50"
-                  >
-                    {cancelling ? "Cancelling..." : "Cancel this order"}
-                  </button>
-                </div>
-              )}
 
               {/* Need Help */}
               <div className="bg-white border border-text/10 p-6">

@@ -53,7 +53,13 @@ function ZoomTile({
   );
 }
 
-type AccordionKey = "description" | "material" | "care" | "item" | "size";
+type AccordionKey =
+  | "description"
+  | "material"
+  | "care"
+  | "item"
+  | "size"
+  | "returns";
 
 const accordionOrder: { key: AccordionKey; label: string }[] = [
   { key: "description", label: "Description" },
@@ -61,6 +67,7 @@ const accordionOrder: { key: AccordionKey; label: string }[] = [
   { key: "care", label: "Care instructions" },
   { key: "item", label: "Item number" },
   { key: "size", label: "Size Guide" },
+  { key: "returns", label: "Returns" },
 ];
 
 export default function ProductDetail({
@@ -77,8 +84,14 @@ export default function ProductDetail({
   const [sizeModalOpen, setSizeModalOpen] = useState(false);
   const { addItem } = useCart();
 
+  const selectedVariant = product.variants?.find((v) => v.size === selectedSize);
+  const selectedStock = selectedVariant?.stock ?? Number.POSITIVE_INFINITY;
+  const exceedsStock = selectedSize && selectedVariant && quantity > selectedStock;
+
   const handleAddToCart = () => {
     if (!selectedSize) return;
+    if (selectedStock === 0) return;
+    if (exceedsStock) return;
     for (let i = 0; i < quantity; i++) {
       addItem({
         slug: product.slug,
@@ -132,12 +145,12 @@ export default function ProductDetail({
     ),
     size: (
       <div className="text-muted text-[14px] leading-relaxed space-y-3">
-        <p>Quick reference — find your size by your waist measurement:</p>
+        <p>Indian sizing — find your size by your waist measurement:</p>
         <ul className="space-y-1">
-          <li>S — 32–33&quot; (82–85 cm)</li>
-          <li>M — 34–35&quot; (86–89 cm)</li>
-          <li>L — 35–37&quot; (90–93 cm)</li>
-          <li>XL — 37–39&quot; (94–99 cm)</li>
+          <li>S — 28–30&quot; (71–76 cm)</li>
+          <li>M — 30–32&quot; (76–81 cm)</li>
+          <li>L — 32–34&quot; (81–86 cm)</li>
+          <li>XL — 34–36&quot; (86–91 cm)</li>
         </ul>
         <button
           onClick={() => setSizeModalOpen(true)}
@@ -146,6 +159,19 @@ export default function ProductDetail({
           View Full Chart
           <span>→</span>
         </button>
+      </div>
+    ),
+    returns: (
+      <div className="text-muted text-[14px] leading-relaxed space-y-3">
+        <p>
+          <span className="text-text">All innerwear sales are final.</span>{" "}
+          For hygiene reasons, we do not accept returns or exchanges on opened
+          products.
+        </p>
+        <p>
+          If your order arrives damaged or you receive the wrong item, please
+          contact us within 48 hours of delivery and we&rsquo;ll make it right.
+        </p>
       </div>
     ),
   };
@@ -168,7 +194,7 @@ export default function ProductDetail({
         </span>
       </motion.div>
 
-      <div className="grid md:grid-cols-[1.6fr_1fr] gap-10 md:gap-16 items-start">
+      <div className="grid md:grid-cols-[1.6fr_1fr] gap-6 md:gap-16 items-start">
         {/* LEFT — IMAGE GRID (2x2) */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4"
@@ -299,11 +325,18 @@ export default function ProductDetail({
                 <option value="" disabled>
                   Select size
                 </option>
-                {product.sizes.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
+                {product.sizes.map((size) => {
+                  const variant = product.variants?.find((v) => v.size === size);
+                  const stock = variant?.stock ?? 0;
+                  const isOOS = variant !== undefined && stock === 0;
+                  const isLow = stock > 0 && stock <= 3;
+                  return (
+                    <option key={size} value={size} disabled={isOOS}>
+                      {size}
+                      {isOOS ? " — Out of Stock" : isLow ? ` — Only ${stock} left` : ""}
+                    </option>
+                  );
+                })}
               </select>
               <svg
                 width="10"
@@ -347,30 +380,34 @@ export default function ProductDetail({
           <div>
             <button
               onClick={handleAddToCart}
-              disabled={!selectedSize}
+              disabled={!selectedSize || !!exceedsStock || selectedStock === 0}
               className={`group relative w-full h-12 text-[11px] tracking-[0.25em] uppercase cursor-pointer overflow-hidden border transition-all duration-300 ${
-                !selectedSize
+                !selectedSize || exceedsStock || selectedStock === 0
                   ? "bg-text/5 text-muted cursor-not-allowed border-transparent"
                   : added
                     ? "bg-accent text-white border-accent"
                     : "bg-text text-bg border-text"
               }`}
             >
-              {selectedSize && !added && (
+              {selectedSize && !added && !exceedsStock && selectedStock !== 0 && (
                 <span className="absolute inset-0 bg-bg origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
               )}
               <span
                 className={`relative z-10 ${
-                  selectedSize && !added
+                  selectedSize && !added && !exceedsStock && selectedStock !== 0
                     ? "group-hover:text-text transition-colors duration-500"
                     : ""
                 }`}
               >
                 {!selectedSize
                   ? "Select a Size"
-                  : added
-                    ? "Added to Cart ✓"
-                    : "Add to Cart"}
+                  : selectedStock === 0
+                    ? "Out of Stock"
+                    : exceedsStock
+                      ? `Only ${selectedStock} left`
+                      : added
+                        ? "Added to Cart ✓"
+                        : "Add to Cart"}
               </span>
             </button>
             <p className="text-[11px] text-muted text-center mt-3 tracking-wide">
@@ -466,38 +503,31 @@ export default function ProductDetail({
                   <p className="text-accent text-[11px] tracking-[0.25em] uppercase mb-2">
                     サイズ
                   </p>
-                  <h2 className="text-2xl md:text-3xl font-normal tracking-tight mb-8">
+                  <h2 className="text-2xl md:text-3xl font-normal tracking-tight">
                     Men Essentials Sizes
                   </h2>
+                  <p className="text-muted text-[12px] tracking-wide mt-1.5 mb-8">
+                    Indian men&rsquo;s sizing
+                  </p>
 
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-[11px] sm:text-[13px] md:text-[14px]">
                       <thead>
                         <tr className="border-b border-text/15">
                           <th className="py-3 pr-4 font-normal text-text/70 align-top">
-                            International
+                            Indian
                             <br />
                             size
-                          </th>
-                          <th className="py-3 pr-4 font-normal text-text/70 align-top">
-                            Dress-
-                            <br />
-                            size
-                          </th>
-                          <th className="py-3 pr-4 font-normal text-text/70 align-top">
-                            Chest
-                            <br />
-                            (A)
                           </th>
                           <th className="py-3 pr-4 font-normal text-text/70 align-top">
                             Waist
                             <br />
-                            (B)
+                            (A)
                           </th>
                           <th className="py-3 font-normal text-text/70 align-top">
                             Hip
                             <br />
-                            (C)
+                            (B)
                           </th>
                         </tr>
                       </thead>
@@ -505,45 +535,33 @@ export default function ProductDetail({
                         {[
                           {
                             intl: "S",
-                            dress: "48",
-                            chest: ["92–95 cm", "36–37 in"],
-                            waist: ["82–85 cm", "32–33 in"],
-                            hip: ["98–101 cm", "38–39 in"],
+                            waist: ["71–76 cm", "28–30 in"],
+                            hip: ["91–96 cm", "36–38 in"],
                           },
                           {
                             intl: "M",
-                            dress: "50",
-                            chest: ["96–99 cm", "38–39 in"],
-                            waist: ["86–89 cm", "34–35 in"],
-                            hip: ["102–105 cm", "40–41 in"],
+                            waist: ["76–81 cm", "30–32 in"],
+                            hip: ["96–101 cm", "38–40 in"],
                           },
                           {
                             intl: "L",
-                            dress: "52",
-                            chest: ["100–103 cm", "39–41 in"],
-                            waist: ["90–93 cm", "35–37 in"],
-                            hip: ["106–109 cm", "42–43 in"],
+                            waist: ["81–86 cm", "32–34 in"],
+                            hip: ["101–106 cm", "40–42 in"],
                           },
                           {
                             intl: "XL",
-                            dress: "54",
-                            chest: ["104–109 cm", "41–43 in"],
-                            waist: ["94–99 cm", "37–39 in"],
-                            hip: ["110–113 cm", "43–44 in"],
+                            waist: ["86–91 cm", "34–36 in"],
+                            hip: ["106–111 cm", "42–44 in"],
                           },
                           {
                             intl: "XXL",
-                            dress: "56",
-                            chest: ["110–115 cm", "43–45 in"],
-                            waist: ["100–105 cm", "39–41 in"],
-                            hip: ["114–117 cm", "45–46 in"],
+                            waist: ["91–96 cm", "36–38 in"],
+                            hip: ["111–116 cm", "44–46 in"],
                           },
                           {
                             intl: "3XL",
-                            dress: "58",
-                            chest: ["116–121 cm", "46–48 in"],
-                            waist: ["106–111 cm", "42–44 in"],
-                            hip: ["118–121 cm", "47–48 in"],
+                            waist: ["96–102 cm", "38–40 in"],
+                            hip: ["116–121 cm", "46–48 in"],
                           },
                         ].map((row) => (
                           <tr
@@ -551,11 +569,6 @@ export default function ProductDetail({
                             className="border-b border-text/8 align-top"
                           >
                             <td className="py-4 pr-4">{row.intl}</td>
-                            <td className="py-4 pr-4">{row.dress}</td>
-                            <td className="py-4 pr-4">
-                              <div>{row.chest[0]}</div>
-                              <div className="text-muted">{row.chest[1]}</div>
-                            </td>
                             <td className="py-4 pr-4">
                               <div>{row.waist[0]}</div>
                               <div className="text-muted">{row.waist[1]}</div>

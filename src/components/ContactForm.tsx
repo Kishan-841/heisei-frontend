@@ -73,7 +73,7 @@ export default function ContactForm() {
 
       {/* FORM + INFO */}
       <section className="py-10 md:py-14 px-6">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_340px] gap-16 md:gap-24">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_340px] gap-8 md:gap-24">
           {/* FORM */}
           <motion.div
             ref={formRef}

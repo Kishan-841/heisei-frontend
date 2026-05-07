@@ -25,7 +25,7 @@ export default function CartDrawer() {
 
           {/* DRAWER */}
           <motion.div
-            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-bg z-[10002] flex flex-col"
+            className="fixed right-0 top-0 bottom-0 w-[95vw] max-w-md bg-bg z-[10002] flex flex-col"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}

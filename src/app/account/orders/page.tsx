@@ -33,8 +33,6 @@ export default function OrdersPage() {
     );
   }, [initialized, user, page]);
 
-  const totalSpent = pagination ? 0 : orders.reduce((sum, o) => sum + o.total, 0);
-  const totalItems = pagination ? 0 : orders.reduce((sum, o) => o.items.reduce((s, it) => s + it.qty, 0) + sum, 0);
 
   if (!initialized || loading) {
     return (
