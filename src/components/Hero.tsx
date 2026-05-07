@@ -18,20 +18,29 @@ export default function Hero() {
           className="object-cover object-center sm:hidden"
         />
         <Image
-          src="/section-two-slide-2.png"
-          alt="HEISEI — Japanese interior with boxer brief on stone table"
+          src="/hero section.png"
+          alt="HEISEI — model on velvet chesterfield in classical interior"
           fill
           priority
           sizes="100vw"
-          className="hidden object-cover object-bottom sm:block sm:scale-125 md:scale-145 origin-bottom"
+          className="hidden object-cover object-center sm:block"
         />
       </div>
 
       {/* Top vignette — gives the transparent navbar a dark band to sit on */}
       <div className="absolute left-0 right-0 top-0 h-[32%] bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-      {/* Bottom vignette — anchors the CTA */}
-      <div className="absolute left-0 right-0 bottom-0 h-[28%] bg-gradient-to-t from-black/70 via-black/25 to-transparent pointer-events-none" />
+      {/* Bottom vignette — anchors the CTA, also helps cover any watermark */}
+      <div className="absolute left-0 right-0 bottom-0 h-[35%] bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
+
+      {/* Bottom-right corner darkener — hides the Gemini watermark */}
+      <div
+        className="absolute bottom-0 right-0 w-[45%] h-[45%] pointer-events-none hidden sm:block"
+        style={{
+          background:
+            "radial-gradient(ellipse at bottom right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 35%, transparent 75%)",
+        }}
+      />
 
       {/* CTA — centered, bottom */}
       <div className="absolute inset-x-0 bottom-6 sm:bottom-8 md:bottom-10 flex justify-center pointer-events-none">

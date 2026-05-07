@@ -53,15 +53,17 @@ export default function Navbar() {
         style={{ zIndex: 10000 }}
       >
         {/* DESKTOP */}
-        <div className="hidden md:flex items-center h-[60px] max-w-7xl mx-auto px-6">
+        <div className="hidden md:flex items-center h-[76px] max-w-7xl mx-auto px-6">
           <div className="flex-1 flex items-center gap-8">
-            <a href="/collection" className={`relative text-sm tracking-wide ${tx} hover:text-accent transition-colors duration-200 py-5 group`}>
-              Explore
-              <span className="absolute bottom-3 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            <a href="/collection" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
+              <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">探索</span>
+              <span className="text-sm tracking-wide">Explore</span>
+              <span className="absolute bottom-1 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
             </a>
-            <a href="/our-story" className={`relative text-sm tracking-wide ${tx} hover:text-accent transition-colors duration-200 py-5 group`}>
-              Our Story
-              <span className="absolute bottom-3 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            <a href="/our-story" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
+              <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">物語</span>
+              <span className="text-sm tracking-wide">Our Story</span>
+              <span className="absolute bottom-1 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
             </a>
           </div>
 
@@ -79,25 +81,30 @@ export default function Navbar() {
 
           <div className="flex-1 flex items-center justify-end gap-8">
             {isAdmin ? (
-              <a href="/admin" className="relative text-sm tracking-wide text-accent hover:text-accent/70 transition-colors duration-200 py-5 group flex items-center gap-1.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="7" height="7" rx="1" />
-                  <rect x="14" y="3" width="7" height="7" rx="1" />
-                  <rect x="3" y="14" width="7" height="7" rx="1" />
-                  <rect x="14" y="14" width="7" height="7" rx="1" />
-                </svg>
-                Admin Dashboard
-                <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+              <a href="/admin" className="relative flex flex-col items-center leading-none py-3 text-accent hover:text-accent/70 transition-colors duration-200 group">
+                <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">管理</span>
+                <span className="flex items-center gap-1.5 text-sm tracking-wide">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                  </svg>
+                  Admin Dashboard
+                </span>
+                <span className="absolute bottom-1 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
               </a>
             ) : (
-              <a href="/collection" className={`relative text-sm tracking-wide ${tx} hover:text-accent transition-colors duration-200 py-5 group`}>
-                Collection
-                <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+              <a href="/collection" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
+                <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">商品</span>
+                <span className="text-sm tracking-wide">Collection</span>
+                <span className="absolute bottom-1 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
               </a>
             )}
-            <a href="/contact" className={`relative text-sm tracking-wide ${tx} hover:text-accent transition-colors duration-200 py-5 group`}>
-              Contact
-              <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            <a href="/contact" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
+              <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">連絡</span>
+              <span className="text-sm tracking-wide">Contact</span>
+              <span className="absolute bottom-1 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
             </a>
             <a href={user ? "/account" : "/login"} className={`${txStrong} hover:text-accent transition-colors duration-200 ml-2`}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
