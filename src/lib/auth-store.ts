@@ -5,8 +5,8 @@ type AuthState = {
   user: User | null;
   loading: boolean;
   initialized: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  login: (phone: string, password: string) => Promise<void>;
+  register: (name: string, phone: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   fetchUser: () => Promise<void>;
   setUser: (user: User | null) => void;
@@ -29,10 +29,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  login: async (email, password) => {
+  login: async (phone, password) => {
     set({ loading: true });
     try {
-      const { user } = await api.auth.login(email, password);
+      const { user } = await api.auth.login(phone, password);
       set({ user, loading: false });
     } catch (e) {
       set({ loading: false });
@@ -40,10 +40,10 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  register: async (name, email, password) => {
+  register: async (name, phone, password) => {
     set({ loading: true });
     try {
-      const { user } = await api.auth.register(name, email, password);
+      const { user } = await api.auth.register(name, phone, password);
       set({ user, loading: false });
     } catch (e) {
       set({ loading: false });

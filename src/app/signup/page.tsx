@@ -8,11 +8,11 @@ import { useAuthStore } from "@/lib/auth-store";
 import { api } from "@/lib/api";
 import Navbar from "@/components/Navbar";
 
-type Step = "email" | "otp" | "details";
+type Step = "phone" | "otp" | "details";
 
 export default function SignupPage() {
-  const [step, setStep] = useState<Step>("email");
-  const [email, setEmail] = useState("");
+  const [step, setStep] = useState<Step>("phone");
+  const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -22,17 +22,15 @@ export default function SignupPage() {
   const loading = useAuthStore((s) => s.loading);
   const router = useRouter();
 
-  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSending(true);
     try {
-      await api.auth.sendOtp(email);
+      await api.auth.sendOtp(phone);
       setStep("otp");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send code");
+      setError(err instanceof Error ? err.message : "Failed to send OTP");
     } finally {
       setSending(false);
     }
@@ -43,10 +41,10 @@ export default function SignupPage() {
     setError("");
     setSending(true);
     try {
-      await api.auth.verifyOtp(email, otp);
+      await api.auth.verifyOtp(phone, otp);
       setStep("details");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid code");
+      setError(err instanceof Error ? err.message : "Invalid OTP");
     } finally {
       setSending(false);
     }
@@ -56,7 +54,7 @@ export default function SignupPage() {
     e.preventDefault();
     setError("");
     try {
-      await register(name, email, password);
+      await register(name, phone, password);
       router.push("/account");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
@@ -64,7 +62,7 @@ export default function SignupPage() {
   };
 
   const steps = [
-    { key: "email" as Step, label: "Email", num: "01" },
+    { key: "phone" as Step, label: "Phone", num: "01" },
     { key: "otp" as Step, label: "Verify", num: "02" },
     { key: "details" as Step, label: "Details", num: "03" },
   ];
@@ -222,35 +220,36 @@ export default function SignupPage() {
                 </motion.div>
               )}
 
-              {/* Step 1: Email */}
-              {step === "email" && (
+              {/* Step 1: Phone */}
+              {step === "phone" && (
                 <motion.form
                   onSubmit={handleSendOtp}
                   className="space-y-7"
-                  key="email"
+                  key="phone"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3 }}
                 >
                   <div>
-                    <label className="text-[10px] text-text/60 tracking-[0.3em] uppercase block mb-3">Email Address</label>
+                    <label className="text-[10px] text-text/60 tracking-[0.3em] uppercase block mb-3">Phone Number</label>
                     <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                      placeholder="Enter your phone number"
+                      maxLength={10}
                       className="w-full bg-transparent border-b border-text/20 focus:border-text/60 py-3.5 text-[15px] outline-none transition-all duration-300 placeholder:text-text/30"
                       required
                       autoFocus
                     />
                     <p className="text-xs text-text/40 mt-3">
-                      We&apos;ll send a 6-digit verification code to this email.
+                      We&apos;ll send a 6-digit verification code to this number.
                     </p>
                   </div>
 
                   <button
                     type="submit"
-                    disabled={sending || !isValidEmail}
+                    disabled={sending || phone.length !== 10}
                     className="group relative w-full py-4 border border-text text-sm tracking-[0.2em] uppercase cursor-pointer overflow-hidden disabled:opacity-30 disabled:cursor-not-allowed"
                   >
                     <span className="absolute inset-0 bg-text origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
@@ -283,7 +282,7 @@ export default function SignupPage() {
                       required
                       autoFocus
                     />
-                    <p className="text-xs text-text/40 mt-3">Code sent to {email}</p>
+                    <p className="text-xs text-text/40 mt-3">Code sent to {phone}</p>
                   </div>
 
                   <button
@@ -299,10 +298,10 @@ export default function SignupPage() {
 
                   <button
                     type="button"
-                    onClick={() => { setStep("email"); setOtp(""); setError(""); }}
+                    onClick={() => { setStep("phone"); setOtp(""); setError(""); }}
                     className="w-full text-xs text-muted hover:text-text transition-colors cursor-pointer pt-2"
                   >
-                    Change email
+                    Change phone number
                   </button>
                 </motion.form>
               )}

@@ -25,40 +25,25 @@ async function request<T>(
 // Auth
 export const api = {
   auth: {
-    sendOtp: (email: string) =>
+    sendOtp: (phone: string) =>
       request<{ message: string }>("/api/auth/send-otp", {
         method: "POST",
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ phone }),
       }),
-    verifyOtp: (email: string, code: string) =>
+    verifyOtp: (phone: string, code: string) =>
       request<{ message: string }>("/api/auth/verify-otp", {
         method: "POST",
-        body: JSON.stringify({ email, code }),
+        body: JSON.stringify({ phone, code }),
       }),
-    register: (name: string, email: string, password: string) =>
+    register: (name: string, phone: string, password: string) =>
       request<{ user: User }>("/api/auth/register", {
         method: "POST",
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, phone, password }),
       }),
-    login: (email: string, password: string) =>
+    login: (phone: string, password: string) =>
       request<{ user: User }>("/api/auth/login", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
-      }),
-    forgotPassword: (email: string) =>
-      request<{ message: string }>("/api/auth/forgot-password", {
-        method: "POST",
-        body: JSON.stringify({ email }),
-      }),
-    resetPassword: (email: string, code: string, newPassword: string) =>
-      request<{ message: string }>("/api/auth/reset-password", {
-        method: "POST",
-        body: JSON.stringify({ email, code, newPassword }),
-      }),
-    changePassword: (currentPassword: string, newPassword: string) =>
-      request<{ message: string }>("/api/auth/change-password", {
-        method: "POST",
-        body: JSON.stringify({ currentPassword, newPassword }),
+        body: JSON.stringify({ phone, password }),
       }),
     logout: () =>
       request<{ message: string }>("/api/auth/logout", { method: "POST" }),
@@ -110,15 +95,6 @@ export const api = {
       }),
   },
   admin: {
-    products: () => request<{ products: AdminProduct[] }>("/api/admin/products"),
-    updateVariantStock: (productId: string, size: string, stock: number) =>
-      request<{ variant: AdminProductVariant }>(
-        `/api/admin/products/${productId}/variants/${size}`,
-        {
-          method: "PATCH",
-          body: JSON.stringify({ stock }),
-        }
-      ),
     stats: () => request<{ stats: AdminStats }>("/api/admin/stats"),
     dashboard: (period?: string, from?: string, to?: string) => {
       const params = new URLSearchParams();
@@ -148,17 +124,10 @@ export const api = {
 export type User = {
   id: string;
   name: string;
-  email?: string | null;
-  phone?: string | null;
+  phone: string;
   isGuest: boolean;
-  isEmailVerified?: boolean;
   isPhoneVerified?: boolean;
   isAdmin?: boolean;
-};
-
-export type ProductVariant = {
-  size: string;
-  stock: number;
 };
 
 export type Product = {
@@ -174,7 +143,6 @@ export type Product = {
   modelImg: string;
   description: string;
   sizes: string[];
-  variants?: ProductVariant[];
 };
 
 export type Address = {
@@ -225,27 +193,7 @@ export type Order = {
 };
 
 export type AdminOrder = Order & {
-  user: { name: string; email?: string | null; phone?: string | null };
-};
-
-export type AdminProductVariant = {
-  id: string;
-  productId: string;
-  size: string;
-  stock: number;
-};
-
-export type AdminProduct = {
-  id: string;
-  slug: string;
-  name: string;
-  category: string;
-  color: string;
-  colorHex: string;
-  price: number;
-  img: string;
-  sizes: string[];
-  variants: AdminProductVariant[];
+  user: { name: string; phone: string };
 };
 
 export type AdminStats = {

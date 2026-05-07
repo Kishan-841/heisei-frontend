@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/lib/cart";
 import { useAuthStore } from "@/lib/auth-store";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const { totalItems, setIsOpen } = useCart();
@@ -12,18 +11,6 @@ export default function Navbar() {
   const isAdmin = !!user?.isAdmin;
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-
-  // Transparent navbar only over the home hero (path "/" + above the scroll
-  // threshold). On all other pages — and after scroll — the bg engages and we
-  // revert to dark text on the warm cream background.
-  const transparent = pathname === "/" && !scrolled;
-
-  // Color tokens that swap based on the transparent state. Hover stays
-  // accent-red since #C23B22 reads on both warm cream and dark imagery.
-  const tx = transparent ? "text-bg/90" : "text-text/80";
-  const txStrong = transparent ? "text-bg" : "text-text";
-  const barColor = transparent ? "bg-bg" : "bg-text";
 
   const mobileLinks = [
     { href: "/collection", label: "Explore" },
@@ -45,7 +32,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`${pathname === "/" ? "fixed" : "sticky"} top-0 left-0 right-0 w-full transition-all duration-300 ${
+        className={`sticky top-0 w-full transition-all duration-300 ${
           scrolled
             ? "bg-bg/80 backdrop-blur-xl border-b border-text/[0.06] shadow-[0_1px_3px_rgba(0,0,0,0.04)]"
             : "bg-transparent"
@@ -53,22 +40,20 @@ export default function Navbar() {
         style={{ zIndex: 10000 }}
       >
         {/* DESKTOP */}
-        <div className="hidden md:flex items-center h-[76px] max-w-7xl mx-auto px-6">
+        <div className="hidden md:flex items-center h-[60px] max-w-7xl mx-auto px-6">
           <div className="flex-1 flex items-center gap-8">
-            <a href="/collection" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
-              <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">探索</span>
-              <span className="text-sm tracking-wide">Explore</span>
-              <span className="absolute bottom-1 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            <a href="/collection" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
+              Explore
+              <span className="absolute bottom-3 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
             </a>
-            <a href="/our-story" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
-              <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">物語</span>
-              <span className="text-sm tracking-wide">Our Story</span>
-              <span className="absolute bottom-1 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            <a href="/our-story" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
+              Our Story
+              <span className="absolute bottom-3 left-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
             </a>
           </div>
 
-          <a href="/" className={`flex flex-col items-center leading-none px-8 shrink-0 ${txStrong}`}>
-            <span className="text-[11px] text-accent tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-accent/30">
+          <a href="/" className="flex flex-col items-center leading-none px-8 shrink-0">
+            <span className="text-[11px] text-text/70 tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-text/30">
               平成
             </span>
             <span
@@ -81,38 +66,33 @@ export default function Navbar() {
 
           <div className="flex-1 flex items-center justify-end gap-8">
             {isAdmin ? (
-              <a href="/admin" className="relative flex flex-col items-center leading-none py-3 text-accent hover:text-accent/70 transition-colors duration-200 group">
-                <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">管理</span>
-                <span className="flex items-center gap-1.5 text-sm tracking-wide">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="7" height="7" rx="1" />
-                    <rect x="14" y="3" width="7" height="7" rx="1" />
-                    <rect x="3" y="14" width="7" height="7" rx="1" />
-                    <rect x="14" y="14" width="7" height="7" rx="1" />
-                  </svg>
-                  Admin Dashboard
-                </span>
-                <span className="absolute bottom-1 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+              <a href="/admin" className="relative text-sm tracking-wide text-accent hover:text-accent/70 transition-colors duration-200 py-5 group flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+                Admin Dashboard
+                <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
               </a>
             ) : (
-              <a href="/collection" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
-                <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">商品</span>
-                <span className="text-sm tracking-wide">Collection</span>
-                <span className="absolute bottom-1 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+              <a href="/collection" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
+                Collection
+                <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
               </a>
             )}
-            <a href="/contact" className={`relative flex flex-col items-center leading-none py-3 ${tx} hover:text-accent transition-colors duration-200 group`}>
-              <span className="text-[9px] text-accent tracking-[0.4em] mb-1.5">連絡</span>
-              <span className="text-sm tracking-wide">Contact</span>
-              <span className="absolute bottom-1 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
+            <a href="/contact" className="relative text-sm tracking-wide text-text/80 hover:text-accent transition-colors duration-200 py-5 group">
+              Contact
+              <span className="absolute bottom-3 right-0 h-[1px] w-0 bg-accent transition-all duration-300 ease-out group-hover:w-full" />
             </a>
-            <a href={user ? "/account" : "/login"} className={`${txStrong} hover:text-accent transition-colors duration-200 ml-2`}>
+            <a href={user ? "/account" : "/login"} className="hover:text-accent transition-colors duration-200 ml-2">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
             </a>
-            <button onClick={() => setIsOpen(true)} className={`${txStrong} hover:text-accent transition-colors duration-200 relative`}>
+            <button onClick={() => setIsOpen(true)} className="hover:text-accent transition-colors duration-200 relative">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                 <line x1="3" y1="6" x2="21" y2="6" />
@@ -129,8 +109,8 @@ export default function Navbar() {
 
         {/* MOBILE */}
         <div className="flex md:hidden items-center justify-center h-[60px] px-6 relative">
-          <a href="/" className={`flex flex-col items-center leading-none ${txStrong}`}>
-            <span className="text-[11px] text-accent tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-accent/30">
+          <a href="/" className="flex flex-col items-center leading-none">
+            <span className="text-[11px] text-text/70 tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-text/30">
               平成
             </span>
             <span
@@ -146,17 +126,17 @@ export default function Navbar() {
             aria-label="Toggle menu"
           >
             <motion.span
-              className={`absolute left-0 w-full h-[1.5px] ${barColor} block`}
+              className="absolute left-0 w-full h-[1.5px] bg-text block"
               animate={menuOpen ? { top: "50%", rotate: 45, translateY: "-50%" } : { top: "0%", rotate: 0, translateY: "0%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
             <motion.span
-              className={`absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1.5px] ${barColor} block`}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-[1.5px] bg-text block"
               animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
               transition={{ duration: 0.2 }}
             />
             <motion.span
-              className={`absolute left-0 w-full h-[1.5px] ${barColor} block`}
+              className="absolute left-0 w-full h-[1.5px] bg-text block"
               animate={menuOpen ? { bottom: "50%", rotate: -45, translateY: "50%" } : { bottom: "0%", rotate: 0, translateY: "0%" }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             />
