@@ -10,7 +10,7 @@ export default function Hero() {
       {/* BACKGROUND IMAGE — vertical 9:16 on mobile, landscape on tablet/desktop */}
       <div className="absolute inset-0">
         <Image
-          src="/collections/hero section mobile.png"
+          src="/hero/hero-mobile.png"
           alt="HEISEI — model on velvet chesterfield in classical interior"
           fill
           priority
@@ -18,7 +18,7 @@ export default function Hero() {
           className="object-cover object-center sm:hidden"
         />
         <Image
-          src="/hero 1.png"
+          src="/hero/hero.png"
           alt="HEISEI — model seated in golden wheat field at sunset"
           fill
           priority

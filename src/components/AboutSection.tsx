@@ -9,7 +9,7 @@ export default function AboutSection() {
       {/* Container extended 90px to clip Gemini watermark via overflow-hidden */}
       <div className="absolute top-0 left-0 right-0 h-[calc(100%+90px)]">
         <Image
-          src="/about-section.png"
+          src="/about/about.png"
           alt="HEISEI brand visual"
           fill
           sizes="100vw"

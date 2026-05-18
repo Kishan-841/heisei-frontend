@@ -26,18 +26,18 @@ type Slide = {
 // Desktop: 3 slides — slide 3 is dual-image side-by-side.
 const slidesDesktop: Slide[] = [
   {
-    images: ["/2nd section image.png"],
-    alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
-    cropBottom: true,
-  },
-  {
-    images: ["/2nd section 2nd image.png"],
-    alts: ["Model seated on stool in a wind-blown prairie — editorial wide"],
+    images: ["/section-two/slide-1.png"],
+    alts: ["Model on stool with billowing cloth in a wind-blown prairie — editorial wide"],
     imagePositions: ["object-center"],
     cropBottom: true,
   },
   {
-    images: ["/collections/2nd section 3rd iamge.png", "/section-two-half.png"],
+    images: ["/section-two/slide-2.png"],
+    alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
+    cropBottom: true,
+  },
+  {
+    images: ["/section-two/slide-3-left.png", "/section-two/slide-3-right.png"],
     alts: [
       "Model reading on bed in HEISEI black boxer — quiet morning editorial",
       "Model wearing HEISEI boxer brief — half-frame editorial portrait",
@@ -51,25 +51,25 @@ const slidesDesktop: Slide[] = [
 // stays in frame on portrait viewports.
 const slidesMobile: Slide[] = [
   {
-    images: ["/2nd section image.png"],
+    images: ["/section-two/slide-1.png"],
+    alts: ["Model on stool with billowing cloth in a wind-blown prairie — editorial wide"],
+    imagePositions: ["object-center"],
+    cropBottom: true,
+  },
+  {
+    images: ["/section-two/slide-2.png"],
     alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
     imagePositions: ["object-center"],
     cropBottom: true,
   },
   {
-    images: ["/2nd section 2nd image.png"],
-    alts: ["Model seated on stool in a wind-blown prairie — editorial wide"],
-    imagePositions: ["object-center"],
-    cropBottom: true,
-  },
-  {
-    images: ["/collections/2nd section 3rd iamge.png"],
+    images: ["/section-two/slide-3-left.png"],
     alts: ["Model reading on bed in HEISEI black boxer — quiet morning editorial"],
     imagePositions: ["object-center"],
     cropBottom: true,
   },
   {
-    images: ["/section-two-half.png"],
+    images: ["/section-two/slide-3-right.png"],
     alts: ["Model wearing HEISEI boxer brief — half-frame editorial portrait"],
     imagePositions: ["object-center"],
     cropBottom: true,

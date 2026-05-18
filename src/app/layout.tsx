@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/hero-main.png",
+        url: "/hero/hero-og.png",
         width: 1200,
         height: 630,
         alt: "HEISEI — premium underwear",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "HEISEI — Quiet Comfort, Precisely Made",
     description: SITE_DESCRIPTION,
-    images: ["/hero-main.png"],
+    images: ["/hero/hero-og.png"],
   },
   robots: {
     index: true,

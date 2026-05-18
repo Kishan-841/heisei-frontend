@@ -11,7 +11,7 @@ export default function ShowcaseBanner() {
             on the parent. Same pattern as SectionTwo's cropBottom slides. */}
         <div className="absolute top-0 left-0 right-0 h-[calc(100%+100px)]">
           <Image
-            src="/landscape-showcase.png"
+            src="/showcase/showcase.png"
             alt="HEISEI — model wearing navy boxer brief in a brutalist gallery"
             fill
             sizes="100vw"
