@@ -18,8 +18,8 @@ export default function Hero() {
           className="object-cover object-center sm:hidden"
         />
         <Image
-          src="/hero section.png"
-          alt="HEISEI — model on velvet chesterfield in classical interior"
+          src="/hero 1.png"
+          alt="HEISEI — model seated in golden wheat field at sunset"
           fill
           priority
           sizes="100vw"
