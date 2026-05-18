@@ -26,10 +26,12 @@ type Slide = {
 // Desktop: 3 slides — slide 3 is dual-image side-by-side.
 const slidesDesktop: Slide[] = [
   {
+    // Watermark pre-cropped from the source PNG. object-bottom anchors the
+    // model's feet at the section bottom so legs stay visible on wide-aspect
+    // viewports (where the image gets vertically cropped by object-cover).
     images: ["/section-two/slide-1.png"],
     alts: ["Model on stool with billowing cloth in a wind-blown prairie — editorial wide"],
-    imagePositions: ["object-center"],
-    cropBottom: true,
+    imagePositions: ["object-bottom"],
   },
   {
     images: ["/section-two/slide-2.png"],
@@ -53,8 +55,7 @@ const slidesMobile: Slide[] = [
   {
     images: ["/section-two/slide-1.png"],
     alts: ["Model on stool with billowing cloth in a wind-blown prairie — editorial wide"],
-    imagePositions: ["object-center"],
-    cropBottom: true,
+    imagePositions: ["object-bottom"],
   },
   {
     images: ["/section-two/slide-2.png"],
