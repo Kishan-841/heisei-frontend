@@ -26,8 +26,8 @@ type Slide = {
 // Desktop: 2 slides — slide 2 is dual-image side-by-side.
 const slidesDesktop: Slide[] = [
   {
-    images: ["/landscape 2nd section.png"],
-    alts: ["Model wearing HEISEI boxer brief in a classical interior"],
+    images: ["/2nd section image.png"],
+    alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
     cropBottom: true,
   },
   {
@@ -45,8 +45,8 @@ const slidesDesktop: Slide[] = [
 // stays in frame on portrait viewports.
 const slidesMobile: Slide[] = [
   {
-    images: ["/landscape 2nd section.png"],
-    alts: ["Model wearing HEISEI boxer brief in a classical interior"],
+    images: ["/2nd section image.png"],
+    alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
     imagePositions: ["object-center"],
     cropBottom: true,
   },
