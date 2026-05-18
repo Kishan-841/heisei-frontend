@@ -23,11 +23,17 @@ type Slide = {
   halfImage?: boolean;
 };
 
-// Desktop: 2 slides — slide 2 is dual-image side-by-side.
+// Desktop: 3 slides — slide 3 is dual-image side-by-side.
 const slidesDesktop: Slide[] = [
   {
     images: ["/2nd section image.png"],
     alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
+    cropBottom: true,
+  },
+  {
+    images: ["/2nd section 2nd image.png"],
+    alts: ["Model seated on stool in a wind-blown prairie — editorial wide"],
+    imagePositions: ["object-center"],
     cropBottom: true,
   },
   {
@@ -41,12 +47,18 @@ const slidesDesktop: Slide[] = [
   },
 ];
 
-// Mobile: 3 slides — one image per slide, anchored center so the model
+// Mobile: 4 slides — one image per slide, anchored center so the model
 // stays in frame on portrait viewports.
 const slidesMobile: Slide[] = [
   {
     images: ["/2nd section image.png"],
     alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
+    imagePositions: ["object-center"],
+    cropBottom: true,
+  },
+  {
+    images: ["/2nd section 2nd image.png"],
+    alts: ["Model seated on stool in a wind-blown prairie — editorial wide"],
     imagePositions: ["object-center"],
     cropBottom: true,
   },
