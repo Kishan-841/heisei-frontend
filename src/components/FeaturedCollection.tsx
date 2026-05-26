@@ -99,7 +99,7 @@ export default function FeaturedCollection() {
                   href={`/collection/${product.slug}`}
                   className="block group"
                 >
-                  <div className="relative aspect-[3/4] bg-white overflow-hidden mb-4">
+                  <div className="relative aspect-[3/4] bg-bg overflow-hidden mb-4">
                     <Image
                       src={product.img}
                       alt={`HEISEI ${product.color} ${product.name}`}

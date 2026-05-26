@@ -20,21 +20,6 @@ export default function NotFound() {
       <main className="min-h-screen bg-bg text-text">
         {/* ─── HERO BANNER ─── */}
         <section className="relative bg-[#0F0F0F] text-[#F7F6F2] overflow-hidden min-h-screen flex items-center">
-          {/* Giant watermark kanji */}
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 0.04, scale: 1 }}
-            transition={{ duration: 2 }}
-          >
-            <span
-              className="text-[52vw] md:text-[32vw] font-light leading-none text-white"
-              style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
-              迷
-            </span>
-          </motion.div>
-
           {/* Animated accent lines */}
           <motion.div
             className="absolute top-0 left-[20%] w-[1px] h-full bg-white/10"
@@ -61,7 +46,7 @@ export default function NotFound() {
             >
               <span className="w-8 h-[1px] bg-[#C23B22]" />
               <span className="text-[#C23B22] text-[10px] tracking-[0.4em] uppercase">
-                404 · 迷子になった
+                404
               </span>
               <span className="w-8 h-[1px] bg-[#C23B22]" />
             </motion.div>
@@ -154,7 +139,7 @@ export default function NotFound() {
           >
             <div>
               <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-2">
-                おすすめ · While you&rsquo;re here
+                While you&rsquo;re here
               </p>
               <h2 className="text-[26px] md:text-[32px] font-normal tracking-tight">
                 Our most-loved pieces

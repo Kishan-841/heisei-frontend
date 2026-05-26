@@ -384,7 +384,7 @@ function DashboardContent() {
       <main className="min-h-screen bg-[#F8F7F4] text-text">
 
       {/* Tabs + Period Filter */}
-      <div className="bg-white border-b border-text/[0.06]">
+      <div className="bg-bg border-b border-text/[0.06]">
         <div className="max-w-[1240px] mx-auto px-5 sm:px-8 flex items-center justify-between">
           <div className="flex gap-0">
             {(["overview", "orders", "products"] as Tab[]).map((t) => (
@@ -428,7 +428,7 @@ function DashboardContent() {
               <AnimatePresence>
                 {showCustom && (
                   <motion.div
-                    className="absolute right-0 top-full mt-2 bg-white border border-text/10 rounded-xl shadow-xl p-4 z-50 min-w-[280px]"
+                    className="absolute right-0 top-full mt-2 bg-bg border border-text/10 rounded-xl shadow-xl p-4 z-50 min-w-[280px]"
                     initial={{ opacity: 0, y: -8, scale: 0.96 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.96 }}
@@ -552,7 +552,7 @@ function DashboardContent() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-3 mb-6">
               {/* Revenue Chart */}
               <motion.div
-                className="lg:col-span-3 bg-white border border-text/[0.06] rounded-xl p-5 sm:p-6"
+                className="lg:col-span-3 bg-bg border border-text/[0.06] rounded-xl p-5 sm:p-6"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.25, duration: 0.4 }}
@@ -571,7 +571,7 @@ function DashboardContent() {
 
               {/* Order Pipeline */}
               <motion.div
-                className="lg:col-span-2 bg-white border border-text/[0.06] rounded-xl p-5 sm:p-6"
+                className="lg:col-span-2 bg-bg border border-text/[0.06] rounded-xl p-5 sm:p-6"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.4 }}
@@ -652,7 +652,7 @@ function DashboardContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
               {/* Top Products */}
               <motion.div
-                className="bg-white border border-text/[0.06] rounded-xl overflow-hidden"
+                className="bg-bg border border-text/[0.06] rounded-xl overflow-hidden"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.4 }}
@@ -716,7 +716,7 @@ function DashboardContent() {
 
               {/* Recent Orders */}
               <motion.div
-                className="bg-white border border-text/[0.06] rounded-xl overflow-hidden"
+                className="bg-bg border border-text/[0.06] rounded-xl overflow-hidden"
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45, duration: 0.4 }}
@@ -814,7 +814,7 @@ function DashboardContent() {
                     className={`text-[10px] tracking-[0.1em] uppercase px-3.5 py-2 transition-all cursor-pointer whitespace-nowrap rounded-lg font-medium ${
                       filter === s
                         ? filterStyles[s]
-                        : "bg-white border border-text/[0.08] text-text/40 hover:text-text/60 hover:border-text/15"
+                        : "bg-bg border border-text/[0.08] text-text/40 hover:text-text/60 hover:border-text/15"
                     }`}
                   >
                     {s}
@@ -828,11 +828,11 @@ function DashboardContent() {
                 <div className="w-5 h-5 border-2 border-violet-200 border-t-violet-600 rounded-full animate-spin" />
               </div>
             ) : orders.length === 0 ? (
-              <div className="text-center py-16 bg-white border border-text/[0.06] rounded-xl">
+              <div className="text-center py-16 bg-bg border border-text/[0.06] rounded-xl">
                 <p className="text-text/25 text-sm">No orders found</p>
               </div>
             ) : (
-              <div className="bg-white border border-text/[0.06] rounded-xl overflow-hidden">
+              <div className="bg-bg border border-text/[0.06] rounded-xl overflow-hidden">
                 <div className="hidden sm:grid grid-cols-[1fr_100px_100px_60px_130px] gap-4 px-5 py-3 border-b border-text/[0.06] bg-[#FAFAF8]">
                   <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium">Order</span>
                   <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium">Date</span>
@@ -882,7 +882,7 @@ function DashboardContent() {
                   <button
                     onClick={() => setOrdersPage((p) => Math.max(1, p - 1))}
                     disabled={ordersPage <= 1}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg text-text/40 hover:text-text hover:bg-white border border-text/[0.06] disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors text-sm"
+                    className="w-8 h-8 flex items-center justify-center rounded-lg text-text/40 hover:text-text hover:bg-bg border border-text/[0.06] disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors text-sm"
                   >
                     &larr;
                   </button>
@@ -908,7 +908,7 @@ function DashboardContent() {
                           className={`w-8 h-8 flex items-center justify-center rounded-lg text-[11px] font-medium cursor-pointer transition-colors ${
                             ordersPage === p
                               ? "bg-[#1A1A2E] text-white"
-                              : "text-text/40 hover:text-text hover:bg-white border border-text/[0.06]"
+                              : "text-text/40 hover:text-text hover:bg-bg border border-text/[0.06]"
                           }`}
                         >
                           {p}
@@ -918,7 +918,7 @@ function DashboardContent() {
                   <button
                     onClick={() => setOrdersPage((p) => Math.min(ordersPagination!.totalPages, p + 1))}
                     disabled={ordersPage >= ordersPagination.totalPages}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg text-text/40 hover:text-text hover:bg-white border border-text/[0.06] disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors text-sm"
+                    className="w-8 h-8 flex items-center justify-center rounded-lg text-text/40 hover:text-text hover:bg-bg border border-text/[0.06] disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors text-sm"
                   >
                     &rarr;
                   </button>
@@ -1074,7 +1074,7 @@ function ProductsTab() {
         </p>
       </div>
 
-      <div className="bg-white border border-text/[0.06] rounded-xl overflow-hidden">
+      <div className="bg-bg border border-text/[0.06] rounded-xl overflow-hidden">
         {/* Table header (desktop) */}
         <div className="hidden md:grid grid-cols-[70px_1fr_52px_52px_52px_52px_52px_70px_130px] gap-3 px-5 py-3 border-b border-text/[0.06] bg-[#FAFAF8]">
           <span className="text-[9px] text-text/30 tracking-[0.2em] uppercase font-medium">Image</span>
@@ -1107,7 +1107,7 @@ function ProductsTab() {
               transition={{ delay: i * 0.03 }}
             >
               {/* Image */}
-              <div className="w-[60px] h-[72px] bg-[#F7F6F2] overflow-hidden flex-shrink-0 rounded-sm">
+              <div className="w-[60px] h-[72px] bg-bg overflow-hidden flex-shrink-0 rounded-sm">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={imgSrc}
@@ -1155,7 +1155,7 @@ function ProductsTab() {
                         onChange={(e) =>
                           setDraft((prev) => ({ ...prev, [size]: e.target.value }))
                         }
-                        className="w-full text-[12px] text-center tabular-nums py-1.5 rounded border border-violet-300 bg-white text-text focus:border-violet-600 focus:outline-none transition-colors"
+                        className="w-full text-[12px] text-center tabular-nums py-1.5 rounded border border-violet-300 bg-bg text-text focus:border-violet-600 focus:outline-none transition-colors"
                         autoFocus={size === "S"}
                       />
                     </div>
@@ -1172,7 +1172,7 @@ function ProductsTab() {
                           ? "border-red-200 bg-red-50 text-red-500"
                           : isLow
                             ? "border-amber-200 bg-amber-50 text-amber-700"
-                            : "border-text/[0.06] bg-white text-text/70"
+                            : "border-text/[0.06] bg-bg text-text/70"
                       }`}
                     >
                       {variant.stock}
@@ -1211,7 +1211,7 @@ function ProductsTab() {
                     <button
                       onClick={cancelEdit}
                       disabled={state === "saving"}
-                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-white border border-text/15 text-text/60 cursor-pointer hover:bg-text/[0.03] disabled:opacity-50 transition-colors"
+                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-bg border border-text/15 text-text/60 cursor-pointer hover:bg-text/[0.03] disabled:opacity-50 transition-colors"
                     >
                       Cancel
                     </button>
@@ -1224,7 +1224,7 @@ function ProductsTab() {
                     <button
                       onClick={() => startEdit(product)}
                       disabled={anyOtherRowEditing}
-                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-white border border-text/15 text-text/70 cursor-pointer hover:bg-text/[0.03] hover:border-text/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
+                      className="text-[10px] tracking-[0.1em] uppercase px-3 py-1.5 rounded-md bg-bg border border-text/15 text-text/70 cursor-pointer hover:bg-text/[0.03] hover:border-text/30 disabled:opacity-30 disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
                     >
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />

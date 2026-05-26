@@ -26,30 +26,12 @@ export default function VideoSection() {
       ref={sectionRef}
       className="bg-bg text-text py-10 md:py-14 px-6 relative overflow-hidden"
     >
-      {/* DECORATIVE VERTICAL JP TEXT — left side */}
-      <motion.div
-        className="absolute left-6 top-1/2 -translate-y-1/2 text-muted text-xs tracking-[0.5em] writing-mode-vertical opacity-30 select-none hidden md:block"
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 0.3 } : {}}
-        transition={{ duration: 1, delay: 0.5 }}
-      >
-        映像
-      </motion.div>
-
       <div className="max-w-7xl mx-auto">
         {/* HEADING */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-6 md:mb-8 gap-4">
           <div>
-            <motion.p
-              className="text-accent text-sm tracking-widest"
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-            >
-              動き
-            </motion.p>
             <motion.h2
-              className="text-3xl md:text-4xl mt-3 font-normal tracking-tight"
+              className="text-3xl md:text-4xl font-normal tracking-tight"
               initial={{ opacity: 0, y: 15 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.15 }}

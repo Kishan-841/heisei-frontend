@@ -66,7 +66,7 @@ function ProductCard({
       <Link href={`/collection/${product.slug}`} className="block group">
         {/* IMAGE CONTAINER */}
         <div
-          className="relative aspect-[3/4] bg-white overflow-hidden cursor-pointer mb-4"
+          className="relative aspect-[3/4] bg-bg overflow-hidden cursor-pointer mb-4"
           onMouseEnter={() => {
             if (window.matchMedia("(hover: hover)").matches) setImgIndex(1);
           }}

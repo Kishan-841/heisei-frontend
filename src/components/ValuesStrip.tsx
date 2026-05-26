@@ -4,7 +4,6 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 type Value = {
-  jp: string;
   title: string;
   desc: string;
   icon: React.ReactNode;
@@ -14,7 +13,6 @@ const stroke = "#0F0F0F";
 
 const values: Value[] = [
   {
-    jp: "静雅",
     title: "Quiet Luxury",
     desc: "An intimate dialogue between skin and substance — the rarest fiber, curated for absolute equilibrium.",
     icon: (
@@ -37,7 +35,6 @@ const values: Value[] = [
     ),
   },
   {
-    jp: "合作",
     title: "Japanese Purity, Indian Intent",
     desc: "Fabric milled in Japan, hand-finished by Indian artisans — the discipline of one tradition, the heart of another.",
     icon: (
@@ -59,7 +56,6 @@ const values: Value[] = [
     ),
   },
   {
-    jp: "極上",
     title: "The Most Exclusive Quality",
     desc: "The world's most disciplined micro-gauge knit — conceived for the skin.",
     icon: (
@@ -103,9 +99,6 @@ export default function ValuesStrip() {
             <div className="flex-shrink-0 mt-1">{v.icon}</div>
 
             <div className="space-y-2.5 max-w-xs">
-              <p className="text-accent text-[11px] tracking-[0.35em]">
-                {v.jp}
-              </p>
               <h3 className="text-lg md:text-xl font-normal tracking-tight leading-snug">
                 {v.title}
               </h3>

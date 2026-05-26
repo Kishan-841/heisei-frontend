@@ -56,7 +56,6 @@ export default function OrderDetailPage() {
         <Navbar />
         <main className="min-h-screen bg-[#ECECEC] flex items-center justify-center">
           <div className="text-center">
-            <div className="text-3xl mb-3" style={{ fontFamily: "serif" }}>無</div>
             <p className="text-text/50 text-sm">Order not found</p>
             <Link href="/account/orders" className="text-xs text-text/40 hover:text-accent mt-4 inline-block transition-colors">
               &larr; Back to orders
@@ -81,15 +80,6 @@ export default function OrderDetailPage() {
         {/* Dark Banner */}
         <div className="relative bg-[#0F0F0F] text-[#F7F6F2] overflow-hidden">
           <motion.div
-            className="absolute top-[8%] right-[6%] text-[220px] font-light select-none pointer-events-none leading-none"
-            style={{ fontFamily: "serif" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.03 }}
-            transition={{ duration: 2 }}
-          >
-            詳
-          </motion.div>
-          <motion.div
             className="absolute top-0 left-[30%] w-[1px] h-full bg-white"
             initial={{ scaleY: 0, opacity: 0 }}
             animate={{ scaleY: 1, opacity: 0.04 }}
@@ -113,7 +103,6 @@ export default function OrderDetailPage() {
               <Link href="/account/orders" className="text-xs text-[#A8A29E]/60 hover:text-[#A8A29E] transition-colors mb-6 inline-block">
                 &larr; All Orders
               </Link>
-              <p className="text-[#C23B22] text-[10px] tracking-[0.35em] uppercase mb-3">注文詳細</p>
               <h1 className="text-3xl md:text-4xl font-normal tracking-tight">
                 Order #{order.id.slice(0, 8).toUpperCase()}
               </h1>
@@ -167,7 +156,7 @@ export default function OrderDetailPage() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               {/* Items Card */}
-              <div className="bg-white border border-text/10 overflow-hidden">
+              <div className="bg-bg border border-text/10 overflow-hidden">
                 <div className="px-6 py-4 border-b border-text/5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-[#F5F0EB] rounded-sm flex items-center justify-center">
@@ -235,7 +224,7 @@ export default function OrderDetailPage() {
               </div>
 
               {/* Payment Card (mobile) */}
-              <div className="bg-white border border-text/10 p-6 md:hidden">
+              <div className="bg-bg border border-text/10 p-6 md:hidden">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-[#F5F0EB] rounded-sm flex items-center justify-center">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-text/50">
@@ -257,7 +246,7 @@ export default function OrderDetailPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               {/* Shipping Address Card */}
-              <div className="bg-white border border-text/10 overflow-hidden">
+              <div className="bg-bg border border-text/10 overflow-hidden">
                 <div className="px-6 py-4 border-b border-text/5 flex items-center gap-3">
                   <div className="w-8 h-8 bg-[#F5F0EB] rounded-sm flex items-center justify-center">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-text/50">
@@ -286,7 +275,7 @@ export default function OrderDetailPage() {
               </div>
 
               {/* Order Timeline */}
-              <div className="bg-white border border-text/10 overflow-hidden">
+              <div className="bg-bg border border-text/10 overflow-hidden">
                 <div className="px-6 py-4 border-b border-text/5 flex items-center gap-3">
                   <div className="w-8 h-8 bg-[#F5F0EB] rounded-sm flex items-center justify-center">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-text/50">
@@ -344,7 +333,7 @@ export default function OrderDetailPage() {
               </div>
 
               {/* Need Help */}
-              <div className="bg-white border border-text/10 p-6">
+              <div className="bg-bg border border-text/10 p-6">
                 <p className="text-[10px] text-text/50 tracking-[0.25em] uppercase mb-3">Need Help?</p>
                 <p className="text-xs text-text/40 leading-relaxed mb-4">
                   If you have questions about your order, reach out to us and we&apos;ll be happy to assist.

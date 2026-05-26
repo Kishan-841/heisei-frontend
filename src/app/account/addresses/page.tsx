@@ -169,7 +169,6 @@ export default function AddressesPage() {
             </Link>
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-accent text-xs tracking-widest mb-2">住所</p>
                 <h1 className="text-3xl font-normal tracking-tight">Saved Addresses</h1>
               </div>
               {!showForm && (

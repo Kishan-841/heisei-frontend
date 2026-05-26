@@ -34,9 +34,6 @@ export default function AboutSection() {
         transition={{ duration: 0.9, ease: "easeOut" }}
         className="absolute left-6 right-6 sm:left-12 sm:right-12 md:left-20 md:right-20 lg:left-28 lg:right-28 bottom-12 md:bottom-20 max-w-xl space-y-5 [text-shadow:0_2px_28px_rgba(0,0,0,0.85)]"
       >
-        <p className="text-accent text-[11px] tracking-[0.35em]">
-          私たちについて
-        </p>
         <h2 className="text-3xl md:text-4xl font-normal tracking-tight leading-tight text-[#F5F1E8]">
           About HEISEI
         </h2>

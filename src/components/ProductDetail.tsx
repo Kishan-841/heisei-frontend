@@ -500,9 +500,6 @@ export default function ProductDetail({
                 </button>
 
                 <div className="px-4 sm:px-8 md:px-12 py-8 sm:py-10 md:py-14">
-                  <p className="text-accent text-[11px] tracking-[0.25em] uppercase mb-2">
-                    サイズ
-                  </p>
                   <h2 className="text-2xl md:text-3xl font-normal tracking-tight">
                     Men Essentials Sizes
                   </h2>

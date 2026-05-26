@@ -68,16 +68,6 @@ export default function OrdersPage() {
       <main className="min-h-screen bg-[#ECECEC]">
         {/* Dark Banner */}
         <div className="relative bg-[#0F0F0F] text-[#F7F6F2] overflow-hidden">
-          {/* Decorative kanji */}
-          <motion.div
-            className="absolute top-[10%] right-[8%] text-[200px] font-light select-none pointer-events-none leading-none"
-            style={{ fontFamily: "serif" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.03 }}
-            transition={{ duration: 2 }}
-          >
-            注
-          </motion.div>
           <motion.div
             className="absolute top-0 left-[35%] w-[1px] h-full bg-white"
             initial={{ scaleY: 0, opacity: 0 }}
@@ -95,7 +85,6 @@ export default function OrdersPage() {
               <Link href="/account" className="text-xs text-[#A8A29E]/60 hover:text-[#A8A29E] transition-colors mb-6 inline-block">
                 &larr; Back to Account
               </Link>
-              <p className="text-[#C23B22] text-[10px] tracking-[0.35em] uppercase mb-3">注文履歴</p>
               <h1 className="text-3xl md:text-4xl font-normal tracking-tight">Order History</h1>
               <p className="text-[#A8A29E] text-sm mt-3 max-w-md leading-relaxed">
                 Track and manage all your purchases in one place.
@@ -129,11 +118,10 @@ export default function OrdersPage() {
         <div className="max-w-4xl mx-auto px-6 py-10">
           {orders.length === 0 ? (
             <motion.div
-              className="bg-white border border-text/10 text-center py-20 px-6"
+              className="bg-bg border border-text/10 text-center py-20 px-6"
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <div className="text-4xl mb-4" style={{ fontFamily: "serif" }}>空</div>
               <p className="text-text/60 text-sm tracking-widest uppercase mb-2">No orders yet</p>
               <p className="text-text/40 text-xs mb-8 max-w-xs mx-auto leading-relaxed">
                 Your order history will appear here once you make your first purchase.
@@ -162,7 +150,7 @@ export default function OrdersPage() {
                   >
                     <Link
                       href={`/account/orders/${order.id}`}
-                      className="group block bg-white border border-text/10 hover:border-text/25 transition-all duration-300 hover:shadow-sm overflow-hidden"
+                      className="group block bg-bg border border-text/10 hover:border-text/25 transition-all duration-300 hover:shadow-sm overflow-hidden"
                     >
                       {/* Top accent bar on hover */}
                       <div className="h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
@@ -274,7 +262,7 @@ export default function OrdersPage() {
                   <button
                     onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                     disabled={page <= 1}
-                    className="px-4 py-2.5 border border-text/10 bg-white text-xs tracking-widest uppercase text-text/50 hover:text-text hover:border-text/25 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    className="px-4 py-2.5 border border-text/10 bg-bg text-xs tracking-widest uppercase text-text/50 hover:text-text hover:border-text/25 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors"
                   >
                     &larr; Prev
                   </button>
@@ -300,7 +288,7 @@ export default function OrdersPage() {
                             className={`w-9 h-9 flex items-center justify-center text-xs font-medium cursor-pointer transition-colors ${
                               page === p
                                 ? "bg-text text-bg"
-                                : "bg-white border border-text/10 text-text/50 hover:text-text hover:border-text/25"
+                                : "bg-bg border border-text/10 text-text/50 hover:text-text hover:border-text/25"
                             }`}
                           >
                             {p}
@@ -311,7 +299,7 @@ export default function OrdersPage() {
                   <button
                     onClick={() => { setPage((p) => Math.min(pagination!.totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
                     disabled={page >= pagination.totalPages}
-                    className="px-4 py-2.5 border border-text/10 bg-white text-xs tracking-widest uppercase text-text/50 hover:text-text hover:border-text/25 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                    className="px-4 py-2.5 border border-text/10 bg-bg text-xs tracking-widest uppercase text-text/50 hover:text-text hover:border-text/25 disabled:opacity-25 disabled:cursor-not-allowed cursor-pointer transition-colors"
                   >
                     Next &rarr;
                   </button>

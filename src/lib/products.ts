@@ -42,6 +42,8 @@ export const products: Product[] = [
     closeUpImg: "/collections/black-boxer/closeup.png",
     sizes: ["S", "M", "L", "XL", "XXL"],
     cropBottom: true,
+    // Source image frames the product looser than white/navy — zoom in to match.
+    displayScale: 1.2,
     description:
       "Crafted from 90% micro modal and 10% elastane for an exceptionally soft, breathable fit. The longer leg design prevents ride-up while the tonal HEISEI waistband sits comfortably at the natural waist.",
   },
@@ -93,8 +95,8 @@ export const products: Product[] = [
     closeUpImg: "/collections/slate-boxer/closeup.png",
     sizes: ["S", "M", "L", "XL", "XXL"],
     cropBottom: true,
-    // Source image is framed tighter than black/white — zoom out slightly.
-    displayScale: 0.8,
+    // Source image renders smaller than navy/white — zoom in to match.
+    displayScale: 1.2,
     description:
       "Warm slate grey boxer brief with subtle sophistication. The medium-dark charcoal tone pairs effortlessly with any wardrobe while maintaining premium softness.",
   },

@@ -107,7 +107,6 @@ function OrderDetailContent() {
         >
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <p className="text-[10px] text-accent tracking-[0.35em] uppercase mb-2">注文詳細</p>
               <h1 className="text-2xl sm:text-3xl font-light tracking-tight">
                 #{order.id.slice(0, 8).toUpperCase()}
               </h1>
@@ -135,7 +134,7 @@ function OrderDetailContent() {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             {/* Customer */}
-            <div className="bg-white border border-text/8 p-5">
+            <div className="bg-bg border border-text/8 p-5">
               <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-4">Customer</p>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
@@ -147,7 +146,7 @@ function OrderDetailContent() {
             </div>
 
             {/* Items */}
-            <div className="bg-white border border-text/8 overflow-hidden">
+            <div className="bg-bg border border-text/8 overflow-hidden">
               <div className="px-5 py-3 border-b border-text/5">
                 <p className="text-[10px] text-muted tracking-[0.25em] uppercase">
                   Items ({order.items.reduce((s, it) => s + it.qty, 0)})
@@ -175,7 +174,7 @@ function OrderDetailContent() {
             </div>
 
             {/* Shipping Address */}
-            <div className="bg-white border border-text/8 p-5">
+            <div className="bg-bg border border-text/8 p-5">
               <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-4">Shipping Address</p>
               <p className="text-sm">{order.shippingName}</p>
               <p className="text-sm text-muted mt-1">{order.shippingAddress1}</p>
@@ -195,7 +194,7 @@ function OrderDetailContent() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             {/* Status Timeline */}
-            <div className="bg-white border border-text/8 p-5">
+            <div className="bg-bg border border-text/8 p-5">
               <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-5">Status Timeline</p>
               {isCancelled ? (
                 <div className="flex items-center gap-3 px-3 py-3 bg-red-50 rounded-sm">
@@ -234,7 +233,7 @@ function OrderDetailContent() {
 
             {/* Advance Status Button */}
             {next && !isCancelled && (
-              <div className="bg-white border border-text/8 p-5">
+              <div className="bg-bg border border-text/8 p-5">
                 <p className="text-[10px] text-muted tracking-[0.25em] uppercase mb-4">Update Status</p>
                 {error && (
                   <p className="text-xs text-accent mb-3">{error}</p>

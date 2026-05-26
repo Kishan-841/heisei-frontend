@@ -54,9 +54,6 @@ export default function YouMayAlsoLike({
           transition={{ duration: 0.6 }}
         >
           <div>
-            <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-2">
-              おすすめ
-            </p>
             <h2 className="text-[26px] md:text-[32px] font-normal tracking-tight">
               You may also like
             </h2>

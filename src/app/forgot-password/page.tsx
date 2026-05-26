@@ -85,16 +85,6 @@ export default function ForgotPasswordPage() {
           {/* LEFT — Brand panel */}
           <div className="hidden md:flex relative bg-[#0F0F0F] text-[#F7F6F2] flex-col justify-between p-16 overflow-hidden">
             <motion.div
-              className="absolute top-[10%] right-[8%] text-[280px] font-light select-none pointer-events-none leading-none"
-              style={{ fontFamily: "serif" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.04 }}
-              transition={{ duration: 2 }}
-            >
-              鍵
-            </motion.div>
-
-            <motion.div
               className="absolute top-0 left-[40%] w-[1px] h-full bg-white"
               initial={{ scaleY: 0, opacity: 0 }}
               animate={{ scaleY: 1, opacity: 0.04 }}
@@ -188,7 +178,7 @@ export default function ForgotPasswordPage() {
                 animate={{ opacity: 1, y: 0 }}
               >
                 <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-3">
-                  {step === "done" ? "完了" : "パスワード再設定"}
+                  {step === "done" ? "Done" : "Reset Password"}
                 </p>
                 <h1 className="text-3xl md:text-4xl font-normal tracking-tight">
                   {step === "email" ? "Forgot password?" : step === "reset" ? "Enter the code" : "All set."}

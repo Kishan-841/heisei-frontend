@@ -53,15 +53,6 @@ export default function AccountPage() {
         <main className="min-h-screen bg-bg">
           <div className="grid md:grid-cols-2 min-h-screen">
             <div className="hidden md:flex relative bg-[#0F0F0F] text-[#F7F6F2] flex-col justify-center p-16 overflow-hidden">
-              <motion.div
-                className="absolute top-[10%] right-[10%] text-[250px] font-light select-none pointer-events-none leading-none"
-                style={{ fontFamily: "serif" }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.03 }}
-                transition={{ duration: 2 }}
-              >
-                会
-              </motion.div>
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                 <span className="text-3xl font-medium tracking-[0.2em]">HEISEI</span>
                 <span className="block text-[10px] text-[#A8A29E] tracking-[0.5em] mt-1 mb-10">平成</span>
@@ -73,7 +64,6 @@ export default function AccountPage() {
             </div>
             <div className="flex items-center justify-center px-4 sm:px-8 md:px-16 py-20 pt-28 md:pt-20">
               <motion.div className="w-full max-w-sm text-center" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-3">アカウント</p>
                 <h1 className="text-3xl font-normal tracking-tight mb-3">Account</h1>
                 <p className="text-text/50 text-sm mb-10">Sign in to view your account</p>
                 <div className="space-y-3">
@@ -110,15 +100,6 @@ export default function AccountPage() {
             transition={{ duration: 0.6 }}
           >
             <motion.div
-              className="absolute top-[5%] right-[3%] text-[180px] font-light select-none pointer-events-none leading-none hidden md:block"
-              style={{ fontFamily: "serif" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.05 }}
-              transition={{ duration: 2, delay: 0.3 }}
-            >
-              人
-            </motion.div>
-            <motion.div
               className="absolute top-0 left-[60%] w-[1px] h-full bg-white hidden md:block"
               initial={{ scaleY: 0, opacity: 0 }}
               animate={{ scaleY: 1, opacity: 0.05 }}
@@ -128,7 +109,6 @@ export default function AccountPage() {
 
             <div className="relative z-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
               <div>
-                <p className="text-[#C23B22] text-[10px] tracking-[0.35em] uppercase mb-3">アカウント</p>
                 <h1 className="text-3xl md:text-4xl font-light tracking-tight">
                   Welcome, {user.name}
                 </h1>
@@ -177,12 +157,12 @@ export default function AccountPage() {
               transition={{ delay: 0.1, duration: 0.5 }}
             >
               {[
-                { label: "Orders", value: orders.length.toString(), sub: "注文", color: "bg-[#0F0F0F]" },
-                { label: "Addresses", value: addresses.length.toString(), sub: "住所", color: "bg-[#0F0F0F]" },
+                { label: "Orders", value: orders.length.toString(), color: "bg-[#0F0F0F]" },
+                { label: "Addresses", value: addresses.length.toString(), color: "bg-[#0F0F0F]" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
-                  className="group bg-white border border-text/10 p-3 sm:p-5 md:p-6 hover:border-text/25 transition-all duration-300 relative overflow-hidden cursor-default"
+                  className="group bg-bg border border-text/10 p-3 sm:p-5 md:p-6 hover:border-text/25 transition-all duration-300 relative overflow-hidden cursor-default"
                   whileHover={{ y: -2 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -192,7 +172,6 @@ export default function AccountPage() {
                   <div className={`absolute top-0 left-0 right-0 h-[3px] ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                   <p className="text-[10px] text-text/50 tracking-[0.25em] uppercase">{stat.label}</p>
                   <p className="text-lg sm:text-2xl md:text-3xl font-light mt-2 text-text truncate">{stat.value}</p>
-                  <p className="text-[10px] text-accent tracking-widest mt-1">{stat.sub}</p>
                 </motion.div>
               ))}
             </motion.div>
@@ -208,7 +187,7 @@ export default function AccountPage() {
             >
               <Link
                 href="/account/orders"
-                className="group block bg-white border border-text/10 hover:border-text/25 transition-all duration-300 h-full relative overflow-hidden"
+                className="group block bg-bg border border-text/10 hover:border-text/25 transition-all duration-300 h-full relative overflow-hidden"
               >
                 {/* Left accent bar on hover */}
                 <div className="absolute top-0 left-0 w-[3px] h-full bg-accent origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
@@ -216,7 +195,6 @@ export default function AccountPage() {
                 <div className="p-6 md:p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-accent text-[10px] tracking-[0.3em] mb-2">注文履歴</p>
                       <h2 className="text-xl text-text group-hover:text-accent transition-colors duration-300">Order History</h2>
                       <p className="text-xs text-text/45 mt-2 leading-relaxed max-w-xs">
                         View past orders, track shipments, and reorder your favorites.
@@ -280,14 +258,13 @@ export default function AccountPage() {
             >
               <Link
                 href="/account/addresses"
-                className="group block bg-white border border-text/10 hover:border-text/25 transition-all duration-300 h-full relative overflow-hidden"
+                className="group block bg-bg border border-text/10 hover:border-text/25 transition-all duration-300 h-full relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 w-[3px] h-full bg-accent origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
 
                 <div className="p-6 md:p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-accent text-[10px] tracking-[0.3em] mb-2">住所管理</p>
                       <h2 className="text-xl text-text group-hover:text-accent transition-colors duration-300">Saved Addresses</h2>
                       <p className="text-xs text-text/45 mt-2 leading-relaxed max-w-xs">
                         Manage your shipping addresses for faster checkout.
@@ -347,11 +324,11 @@ export default function AccountPage() {
             transition={{ delay: 0.3 }}
           >
             {[
-              { href: "/collection", label: "Shop Collection", jp: "コレクション", icon: "→" },
-              { href: "/account/security", label: "Security", jp: "セキュリティ", icon: "→" },
-              { href: "/contact", label: "Contact Us", jp: "お問合せ", icon: "→" },
-              { href: "/our-story", label: "Our Story", jp: "物語", icon: "→" },
-            ].map((link, i) => (
+              { href: "/collection", label: "Shop Collection", icon: "→" },
+              { href: "/account/security", label: "Security", icon: "→" },
+              { href: "/contact", label: "Contact Us", icon: "→" },
+              { href: "/our-story", label: "Our Story", icon: "→" },
+            ].map((link) => (
               <motion.div
                 key={link.href}
                 whileHover={{ y: -2 }}
@@ -359,11 +336,10 @@ export default function AccountPage() {
               >
                 <Link
                   href={link.href}
-                  className="group block bg-white border border-text/10 hover:border-text/25 p-5 text-center transition-all duration-300 relative overflow-hidden"
+                  className="group block bg-bg border border-text/10 hover:border-text/25 p-5 text-center transition-all duration-300 relative overflow-hidden"
                 >
                   <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
-                  <p className="text-[9px] text-accent tracking-widest">{link.jp}</p>
-                  <p className="text-xs text-text/50 group-hover:text-text transition-colors mt-1.5 flex items-center justify-center gap-1.5">
+                  <p className="text-xs text-text/50 group-hover:text-text transition-colors flex items-center justify-center gap-1.5">
                     {link.label}
                     <span className="inline-block group-hover:translate-x-1 transition-transform duration-300 text-accent opacity-0 group-hover:opacity-100">
                       {link.icon}

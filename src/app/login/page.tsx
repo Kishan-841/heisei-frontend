@@ -36,26 +36,6 @@ export default function LoginPage() {
         <div className="grid md:grid-cols-2 min-h-screen">
           {/* LEFT — Brand panel */}
           <div className="hidden md:flex relative bg-[#0F0F0F] text-[#F7F6F2] flex-col justify-between p-16 overflow-hidden">
-            {/* Decorative kanji */}
-            <motion.div
-              className="absolute top-[10%] right-[10%] text-[280px] font-light select-none pointer-events-none leading-none"
-              style={{ fontFamily: "serif" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.04 }}
-              transition={{ duration: 2 }}
-            >
-              入
-            </motion.div>
-            <motion.div
-              className="absolute bottom-[5%] left-[5%] text-[180px] font-light select-none pointer-events-none leading-none"
-              style={{ fontFamily: "serif" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.03 }}
-              transition={{ duration: 2, delay: 0.3 }}
-            >
-              口
-            </motion.div>
-
             {/* Thin lines */}
             <motion.div
               className="absolute top-0 left-[40%] w-[1px] h-full bg-white"
@@ -134,7 +114,6 @@ export default function LoginPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
               >
-                <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-3">ログイン</p>
                 <h1 className="text-3xl md:text-4xl font-normal tracking-tight">Welcome Back</h1>
                 <p className="text-text/50 text-sm mt-3 leading-relaxed">
                   Sign in to your account to continue.

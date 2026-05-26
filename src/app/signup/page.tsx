@@ -78,17 +78,6 @@ export default function SignupPage() {
         <div className="grid md:grid-cols-2 min-h-screen">
           {/* LEFT — Brand panel */}
           <div className="hidden md:flex relative bg-[#0F0F0F] text-[#F7F6F2] flex-col justify-between p-16 overflow-hidden">
-            {/* Decorative */}
-            <motion.div
-              className="absolute top-[8%] left-[8%] text-[300px] font-light select-none pointer-events-none leading-none"
-              style={{ fontFamily: "serif" }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.035 }}
-              transition={{ duration: 2 }}
-            >
-              新
-            </motion.div>
-
             <motion.div
               className="absolute top-0 right-[30%] w-[1px] h-full bg-white"
               initial={{ scaleY: 0, opacity: 0 }}
@@ -178,7 +167,6 @@ export default function SignupPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-3">アカウント作成</p>
                 <h1 className="text-3xl md:text-4xl font-normal tracking-tight">Create Account</h1>
               </motion.div>
 

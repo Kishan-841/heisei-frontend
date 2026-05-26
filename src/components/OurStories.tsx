@@ -5,22 +5,18 @@ import { useRef } from "react";
 
 const values = [
   {
-    jp: "抑制",
     title: "Restraint",
     text: "We remove until only what matters remains. Every seam, every stitch exists for a reason.",
   },
   {
-    jp: "均衡",
     title: "Balance",
     text: "Between softness and structure. Between visibility and subtlety. We find the middle ground.",
   },
   {
-    jp: "意図",
     title: "Intention",
     text: "Nothing is accidental. From fabric weight to waistband tension — each choice is deliberate.",
   },
   {
-    jp: "静寂",
     title: "Silence",
     text: "The best underwear is the kind you forget you're wearing. That silence is our highest standard.",
   },
@@ -47,26 +43,7 @@ export default function OurStories() {
     <div className="bg-bg text-text min-h-screen">
       {/* HERO */}
       <section ref={heroRef} className="relative pt-24 md:pt-28 pb-12 md:pb-16 px-6 overflow-hidden">
-        {/* LARGE WATERMARK */}
-        <motion.div
-          className="absolute right-[5%] top-[5%] text-[220px] md:text-[400px] font-light select-none pointer-events-none leading-none hidden md:block"
-          style={{ color: "rgba(15,15,15,0.03)" }}
-          initial={{ opacity: 0 }}
-          animate={heroInView ? { opacity: 1 } : {}}
-          transition={{ duration: 2, delay: 0.5 }}
-        >
-          物語
-        </motion.div>
-
         <div className="max-w-5xl mx-auto">
-          <motion.p
-            className="text-accent text-sm tracking-widest"
-            initial={{ opacity: 0, y: 10 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            私たちの物語
-          </motion.p>
           <motion.h1
             className="text-4xl md:text-6xl font-normal tracking-tight mt-4 leading-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -147,16 +124,8 @@ export default function OurStories() {
       <section ref={visionRef} className="py-14 md:py-20 px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-14">
           <div>
-            <motion.p
-              className="text-accent text-xs tracking-widest"
-              initial={{ opacity: 0, y: 10 }}
-              animate={visionInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-            >
-              ビジョン
-            </motion.p>
             <motion.h2
-              className="text-2xl md:text-3xl font-normal tracking-tight mt-3"
+              className="text-2xl md:text-3xl font-normal tracking-tight"
               initial={{ opacity: 0, y: 15 }}
               animate={visionInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 }}
@@ -199,29 +168,10 @@ export default function OurStories() {
 
       {/* HOW WE MADE IT */}
       <section ref={craftRef} className="py-14 md:py-20 px-6 relative overflow-hidden">
-        {/* WATERMARK */}
-        <motion.div
-          className="absolute right-[3%] top-[15%] text-[180px] md:text-[280px] font-light select-none pointer-events-none leading-none hidden md:block"
-          style={{ color: "rgba(15,15,15,0.03)" }}
-          initial={{ opacity: 0 }}
-          animate={craftInView ? { opacity: 1 } : {}}
-          transition={{ duration: 2, delay: 0.3 }}
-        >
-          工芸
-        </motion.div>
-
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-14">
           <div>
-            <motion.p
-              className="text-accent text-xs tracking-widest"
-              initial={{ opacity: 0, y: 10 }}
-              animate={craftInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-            >
-              製法
-            </motion.p>
             <motion.h2
-              className="text-2xl md:text-3xl font-normal tracking-tight mt-3"
+              className="text-2xl md:text-3xl font-normal tracking-tight"
               initial={{ opacity: 0, y: 15 }}
               animate={craftInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 }}
@@ -275,16 +225,8 @@ export default function OurStories() {
       <section ref={productRef} className="py-14 md:py-20 px-6">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-14">
           <div>
-            <motion.p
-              className="text-accent text-xs tracking-widest"
-              initial={{ opacity: 0, y: 10 }}
-              animate={productInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7 }}
-            >
-              製品
-            </motion.p>
             <motion.h2
-              className="text-2xl md:text-3xl font-normal tracking-tight mt-3"
+              className="text-2xl md:text-3xl font-normal tracking-tight"
               initial={{ opacity: 0, y: 15 }}
               animate={productInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 }}
@@ -374,28 +316,9 @@ export default function OurStories() {
 
       {/* VALUES */}
       <section ref={valuesRef} className="py-14 md:py-20 px-6 relative overflow-hidden">
-        {/* WATERMARK */}
-        <motion.div
-          className="absolute left-[3%] bottom-[10%] text-[180px] md:text-[280px] font-light select-none pointer-events-none leading-none hidden md:block"
-          style={{ color: "rgba(15,15,15,0.03)" }}
-          initial={{ opacity: 0 }}
-          animate={valuesInView ? { opacity: 1 } : {}}
-          transition={{ duration: 2, delay: 0.3 }}
-        >
-          道
-        </motion.div>
-
         <div className="max-w-5xl mx-auto">
-          <motion.p
-            className="text-accent text-sm tracking-widest"
-            initial={{ opacity: 0, y: 10 }}
-            animate={valuesInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
-          >
-            価値観
-          </motion.p>
           <motion.h2
-            className="text-2xl md:text-3xl mt-3 font-normal tracking-tight"
+            className="text-2xl md:text-3xl font-normal tracking-tight"
             initial={{ opacity: 0, y: 15 }}
             animate={valuesInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15 }}
@@ -418,10 +341,7 @@ export default function OurStories() {
                 </div>
 
                 <div>
-                  <p className="text-accent text-xs tracking-widest">
-                    {value.jp}
-                  </p>
-                  <h3 className="text-lg font-normal tracking-tight mt-2">
+                  <h3 className="text-lg font-normal tracking-tight">
                     {value.title}
                   </h3>
                   <p className="text-muted text-[17px] leading-relaxed mt-3">

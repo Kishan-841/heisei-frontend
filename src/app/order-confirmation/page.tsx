@@ -53,17 +53,6 @@ function OrderConfirmationContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
       >
-        {/* Decorative */}
-        <motion.div
-          className="absolute top-[5%] right-[5%] text-[200px] font-light select-none pointer-events-none leading-none hidden md:block"
-          style={{ fontFamily: "serif" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.04 }}
-          transition={{ duration: 2, delay: 0.3 }}
-        >
-          完
-        </motion.div>
-
         <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
           <motion.div
             className="w-16 h-16 rounded-full border-2 border-[#F7F6F2] flex items-center justify-center flex-shrink-0"
@@ -76,7 +65,6 @@ function OrderConfirmationContent() {
             </svg>
           </motion.div>
           <div>
-            <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-2">ご注文確認</p>
             <h1 className="text-3xl md:text-4xl font-light tracking-tight">Order Confirmed</h1>
             <p className="text-[#A8A29E] text-sm mt-3 max-w-md leading-relaxed">
               Thank you for your order. We&apos;ll start preparing it right away. You&apos;ll receive updates on your phone.
@@ -88,34 +76,31 @@ function OrderConfirmationContent() {
       {/* Order info grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-8">
         <motion.div
-          className="bg-white border border-text/10 p-6"
+          className="bg-bg border border-text/10 p-6"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
           <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase">Order ID</p>
           <p className="text-lg font-mono mt-2">#{order.id.slice(0, 8).toUpperCase()}</p>
-          <p className="text-[10px] text-accent tracking-widest mt-1">注文番号</p>
         </motion.div>
         <motion.div
-          className="bg-white border border-text/10 p-6"
+          className="bg-bg border border-text/10 p-6"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
           <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase">Status</p>
           <p className="text-lg mt-2">{order.status}</p>
-          <p className="text-[10px] text-accent tracking-widest mt-1">状態</p>
         </motion.div>
         <motion.div
-          className="bg-white border border-text/10 p-6"
+          className="bg-bg border border-text/10 p-6"
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase">Payment</p>
           <p className="text-lg mt-2">Paid Online</p>
-          <p className="text-[10px] text-accent tracking-widest mt-1">支払い</p>
         </motion.div>
       </div>
 
@@ -127,7 +112,7 @@ function OrderConfirmationContent() {
         transition={{ delay: 0.35 }}
       >
         {/* Items & totals (3 cols) */}
-        <div className="md:col-span-3 bg-white border border-text/10 p-6 md:p-8">
+        <div className="md:col-span-3 bg-bg border border-text/10 p-6 md:p-8">
           <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase mb-6">Items Ordered</p>
 
           <div className="space-y-4">
@@ -173,7 +158,7 @@ function OrderConfirmationContent() {
 
         {/* Shipping info (2 cols) */}
         <div className="md:col-span-2 space-y-4">
-          <div className="bg-white border border-text/10 p-6">
+          <div className="bg-bg border border-text/10 p-6">
             <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase mb-4">Shipping To</p>
             <p className="text-sm font-medium">{order.shippingName}</p>
             <p className="text-sm text-text/60 mt-1">{order.shippingAddress1}</p>
@@ -186,7 +171,7 @@ function OrderConfirmationContent() {
           </div>
 
           {/* What's next */}
-          <div className="bg-white border border-text/10 p-6">
+          <div className="bg-bg border border-text/10 p-6">
             <p className="text-[10px] text-text/55 tracking-[0.25em] uppercase mb-4">What&apos;s Next</p>
             <div className="space-y-4">
               {[
@@ -227,7 +212,7 @@ function OrderConfirmationContent() {
         </Link>
         <Link
           href="/account/orders"
-          className="flex-1 text-center py-4 bg-white border border-text/15 text-sm tracking-[0.15em] text-text/70 hover:border-text/40 hover:text-text transition-colors"
+          className="flex-1 text-center py-4 bg-bg border border-text/15 text-sm tracking-[0.15em] text-text/70 hover:border-text/40 hover:text-text transition-colors"
         >
           View All Orders
         </Link>

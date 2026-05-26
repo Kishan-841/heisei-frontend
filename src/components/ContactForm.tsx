@@ -19,28 +19,9 @@ export default function ContactForm() {
     <div className="bg-bg text-text min-h-screen">
       {/* HERO */}
       <section className="relative pt-24 md:pt-28 pb-8 md:pb-10 px-6 overflow-hidden">
-        {/* WATERMARK */}
-        <motion.div
-          className="absolute right-[5%] top-[5%] text-[220px] md:text-[380px] font-light select-none pointer-events-none leading-none hidden md:block"
-          style={{ fontFamily: "serif", color: "rgba(15,15,15,0.025)" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
-        >
-          連絡
-        </motion.div>
-
         <div className="max-w-5xl mx-auto">
-          <motion.p
-            className="text-accent text-sm tracking-widest"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-          >
-            お問い合わせ
-          </motion.p>
           <motion.h1
-            className="text-4xl md:text-6xl font-normal tracking-tight mt-4 leading-tight"
+            className="text-4xl md:text-6xl font-normal tracking-tight leading-tight"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15 }}
@@ -88,8 +69,7 @@ export default function ContactForm() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <p className="text-accent text-sm tracking-widest">送信完了</p>
-                <h3 className="text-2xl md:text-3xl font-normal tracking-tight mt-3">
+                <h3 className="text-2xl md:text-3xl font-normal tracking-tight">
                   Message Sent
                 </h3>
                 <p className="text-text/70 text-sm mt-4 max-w-sm mx-auto leading-relaxed">
@@ -224,10 +204,8 @@ export default function ContactForm() {
               </div>
             </div>
 
-            {/* JAPANESE ACCENT */}
             <div className="pt-4">
-              <p className="text-accent text-xs tracking-widest">お気軽にどうぞ</p>
-              <p className="text-text/60 text-[11px] mt-1">
+              <p className="text-text/60 text-[11px]">
                 Feel free to reach out
               </p>
             </div>

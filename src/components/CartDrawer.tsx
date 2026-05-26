@@ -54,7 +54,6 @@ export default function CartDrawer() {
                   <p className="text-sm tracking-widest uppercase">
                     Your cart is empty
                   </p>
-                  <p className="text-xs mt-2">空</p>
                 </div>
               ) : (
                 <div className="space-y-6">

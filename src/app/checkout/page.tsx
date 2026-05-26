@@ -268,8 +268,7 @@ export default function CheckoutPage() {
         <Navbar />
         <main className="min-h-screen bg-bg flex items-center justify-center px-6 pt-20">
           <div className="text-center">
-            <p className="text-muted text-sm tracking-widest uppercase mb-4">Your cart is empty</p>
-            <p className="text-xs text-muted mb-8">空</p>
+            <p className="text-muted text-sm tracking-widest uppercase mb-8">Your cart is empty</p>
             <Link href="/collection" className="inline-block border border-text px-8 py-3 text-sm tracking-widest hover:bg-text hover:text-bg transition-colors">
               Browse Collection
             </Link>
@@ -291,7 +290,6 @@ export default function CheckoutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-accent text-xs tracking-widest mb-2">チェックアウト</p>
             <h1 className="text-3xl font-normal tracking-tight">Checkout</h1>
           </motion.div>
 
@@ -365,7 +363,7 @@ export default function CheckoutPage() {
                           onClick={() => selectAddress(addr)}
                           className={`w-full text-left p-4 border transition-all duration-200 cursor-pointer relative overflow-hidden ${
                             selectedAddressId === addr.id && !useNewAddress
-                              ? "border-text bg-white"
+                              ? "border-text bg-bg"
                               : "border-text/10 bg-white/50 hover:border-text/20"
                           }`}
                           whileHover={{ y: -1 }}
@@ -409,7 +407,7 @@ export default function CheckoutPage() {
                         onClick={switchToNewAddress}
                         className={`w-full text-left p-4 border transition-all duration-200 cursor-pointer ${
                           useNewAddress
-                            ? "border-text bg-white"
+                            ? "border-text bg-bg"
                             : "border-text/10 bg-white/50 hover:border-text/20"
                         }`}
                         whileHover={{ y: -1 }}
@@ -587,7 +585,7 @@ export default function CheckoutPage() {
                 {/* Payment */}
                 <div className="space-y-4">
                   <h2 className="text-sm tracking-widest uppercase text-text/50">Payment</h2>
-                  <div className="p-4 bg-white border border-text/10">
+                  <div className="p-4 bg-bg border border-text/10">
                     <div className="flex items-center gap-3">
                       <div className="w-4 h-4 border-2 border-text rounded-full flex items-center justify-center">
                         <div className="w-2 h-2 bg-text rounded-full" />
@@ -629,7 +627,7 @@ export default function CheckoutPage() {
                 <div className="sticky top-24">
                   <h2 className="text-sm tracking-widest uppercase text-text/50 mb-6">Order Summary</h2>
 
-                  <div className="bg-white border border-text/10 p-6">
+                  <div className="bg-bg border border-text/10 p-6">
                     {/* Items */}
                     <div className="space-y-4 mb-6">
                       {items.map((item) => (

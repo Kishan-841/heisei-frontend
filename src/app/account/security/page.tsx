@@ -110,9 +110,6 @@ export default function SecurityPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-3">
-              セキュリティ
-            </p>
             <h1 className="text-[28px] md:text-[32px] font-light tracking-tight text-text/90">
               Change Password
             </h1>
@@ -124,7 +121,7 @@ export default function SecurityPage() {
 
           {/* Form card */}
           <motion.div
-            className="bg-white border border-text/10 p-6 md:p-8 rounded-sm"
+            className="bg-bg border border-text/10 p-6 md:p-8 rounded-sm"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
@@ -142,7 +139,6 @@ export default function SecurityPage() {
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <p className="text-accent text-[10px] tracking-[0.35em] uppercase mb-2">完了</p>
                   <h2 className="text-xl font-normal tracking-tight">Password changed</h2>
                   <p className="text-text/50 text-sm mt-3">Redirecting you back to your account&hellip;</p>
                 </motion.div>

@@ -8,7 +8,6 @@ import Footer from "@/components/Footer";
 const sections = [
   {
     title: "Information We Collect",
-    jp: "収集",
     content: [
       "When you create an account or place an order, we collect your name, phone number, shipping address, and order details. This information is necessary to fulfill your orders and provide customer support.",
       "We may also collect device information, browser type, and browsing patterns on our website to improve your experience. This data is collected through cookies and similar technologies.",
@@ -16,7 +15,6 @@ const sections = [
   },
   {
     title: "How We Use Your Information",
-    jp: "使用",
     content: [
       "Your personal information is used to process and deliver orders, manage your account, communicate order updates, and provide customer support.",
       "We may use your contact information to send you updates about new collections, promotions, or changes to our service. You can opt out of marketing communications at any time.",
@@ -24,7 +22,6 @@ const sections = [
   },
   {
     title: "Data Protection",
-    jp: "保護",
     content: [
       "We implement industry-standard security measures to protect your personal information. All data transmission is encrypted using SSL/TLS protocols. Your password is stored in a hashed format and is never accessible in plain text.",
       "We do not sell, trade, or rent your personal information to third parties. We may share your data with trusted service providers (such as shipping partners) solely for the purpose of fulfilling your orders.",
@@ -32,7 +29,6 @@ const sections = [
   },
   {
     title: "Cookies & Tracking",
-    jp: "追跡",
     content: [
       "Our website uses essential cookies to maintain your session, remember your cart, and keep you logged in. These are necessary for the website to function properly.",
       "We may use analytics cookies to understand how visitors interact with our website. This helps us improve the shopping experience. You can disable non-essential cookies through your browser settings.",
@@ -40,7 +36,6 @@ const sections = [
   },
   {
     title: "Your Rights",
-    jp: "権利",
     content: [
       "You have the right to access, update, or delete your personal information at any time through your account settings. You may also request a complete copy of all data we hold about you.",
       "If you wish to delete your account entirely, please contact our support team. We will process your request and remove your data within 30 days, except where retention is required by law.",
@@ -48,7 +43,6 @@ const sections = [
   },
   {
     title: "Data Retention",
-    jp: "保持",
     content: [
       "We retain your personal information for as long as your account is active or as needed to provide you services. Order records are kept for a minimum of 5 years for legal and tax compliance purposes.",
       "If you close your account, we will delete or anonymize your personal data within 30 days, except for information we are required to retain by applicable law.",
@@ -56,7 +50,6 @@ const sections = [
   },
   {
     title: "Changes to This Policy",
-    jp: "変更",
     content: [
       "We may update this privacy policy from time to time. Any changes will be posted on this page with an updated revision date. We encourage you to review this policy periodically.",
       "For significant changes, we will notify you through your registered contact information or through a prominent notice on our website.",
@@ -68,18 +61,9 @@ export default function PrivacyPolicyPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-[#ECECEC]">
+      <main className="min-h-screen bg-bg">
         {/* Dark Banner */}
         <div className="relative bg-[#0F0F0F] text-[#F7F6F2] overflow-hidden">
-          <motion.div
-            className="absolute top-[8%] right-[6%] text-[220px] font-light select-none pointer-events-none leading-none"
-            style={{ fontFamily: "serif" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.03 }}
-            transition={{ duration: 2 }}
-          >
-            秘
-          </motion.div>
           <motion.div
             className="absolute top-0 left-[40%] w-[1px] h-full bg-white"
             initial={{ scaleY: 0, opacity: 0 }}
@@ -101,7 +85,6 @@ export default function PrivacyPolicyPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <p className="text-[#C23B22] text-[10px] tracking-[0.35em] uppercase mb-3">プライバシーポリシー</p>
               <h1 className="text-3xl md:text-4xl font-normal tracking-tight">Privacy Policy</h1>
               <p className="text-[#A8A29E] text-sm mt-3 max-w-lg leading-relaxed">
                 Your trust matters. Here is how we handle your personal information with care and transparency.
@@ -115,7 +98,7 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-4xl mx-auto px-6 py-12">
           {/* Intro Card */}
           <motion.div
-            className="bg-white border border-text/10 p-4 sm:p-8 mb-8"
+            className="bg-bg border border-text/10 p-4 sm:p-8 mb-8"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
@@ -130,18 +113,15 @@ export default function PrivacyPolicyPage() {
             {sections.map((section, i) => (
               <motion.div
                 key={section.title}
-                className="bg-white border border-text/10 overflow-hidden"
+                className="bg-bg border border-text/10 overflow-hidden"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.15 + i * 0.05 }}
               >
                 {/* Section Header */}
-                <div className="px-4 sm:px-8 py-4 sm:py-5 border-b border-text/5 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-4">
-                    <span className="text-[10px] text-text/25 font-mono">{String(i + 1).padStart(2, "0")}</span>
-                    <h2 className="text-base font-medium tracking-tight">{section.title}</h2>
-                  </div>
-                  <span className="text-accent text-xs tracking-widest">{section.jp}</span>
+                <div className="px-4 sm:px-8 py-4 sm:py-5 border-b border-text/5 flex items-center gap-4">
+                  <span className="text-[10px] text-text/25 font-mono">{String(i + 1).padStart(2, "0")}</span>
+                  <h2 className="text-base font-medium tracking-tight">{section.title}</h2>
                 </div>
                 {/* Section Body */}
                 <div className="px-4 sm:px-8 py-5 sm:py-6 space-y-4">
@@ -157,7 +137,7 @@ export default function PrivacyPolicyPage() {
 
           {/* Contact Card */}
           <motion.div
-            className="bg-white border border-text/10 p-4 sm:p-8 mt-8"
+            className="bg-bg border border-text/10 p-4 sm:p-8 mt-8"
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
