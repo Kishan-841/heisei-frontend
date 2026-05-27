@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import MagneticButton from "@/components/MagneticButton";
 
 export default function Hero() {
   return (
@@ -19,7 +18,7 @@ export default function Hero() {
         />
         <Image
           src="/hero/hero.png"
-          alt="HEISEI — model seated in golden wheat field at sunset"
+          alt="HEISEI — Luxury Innerwear. Thoughtfully engineered, made for how you live."
           fill
           priority
           sizes="100vw"
@@ -30,53 +29,41 @@ export default function Hero() {
       {/* Top vignette — gives the transparent navbar a dark band to sit on */}
       <div className="absolute left-0 right-0 top-0 h-[32%] bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-      {/* Bottom vignette — anchors the CTA, also helps cover any watermark */}
+      {/* Bottom vignette — anchors the CTA */}
       <div className="absolute left-0 right-0 bottom-0 h-[35%] bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
-      {/* Bottom-right corner darkener — hides the Gemini watermark */}
-      <div
-        className="absolute bottom-0 right-0 w-[45%] h-[45%] pointer-events-none hidden sm:block"
-        style={{
-          background:
-            "radial-gradient(ellipse at bottom right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 35%, transparent 75%)",
-        }}
-      />
-
-      {/* CTA — centered, bottom */}
-      <div className="absolute inset-x-0 bottom-6 sm:bottom-8 md:bottom-10 flex justify-center pointer-events-none">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="pointer-events-auto"
+      {/* CTA — left-aligned, sits just below the image's baked-in subtext */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="absolute left-[6%] top-[46%] sm:top-[45%] z-[4]"
+      >
+        <a
+          href="/collection"
+          className="group inline-flex items-center gap-3 text-[#F5F1E8] text-[10px] sm:text-[11px] tracking-[0.3em] uppercase cursor-pointer [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]"
         >
-          <MagneticButton
-            as="a"
-            href="/collection"
-            className="group relative inline-flex items-center gap-3 px-8 py-3.5 bg-[#0F0F0F]/55 border border-[#F5F1E8]/40 backdrop-blur-md text-[11px] tracking-[0.3em] uppercase cursor-pointer overflow-hidden"
+          <span className="relative pb-1">
+            Discover HEISEI
+            <span className="absolute bottom-0 left-0 h-[1px] w-full bg-[#F5F1E8]/50 origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-0" />
+          </span>
+          <svg
+            width="26"
+            height="8"
+            viewBox="0 0 26 8"
+            fill="none"
+            className="text-[#F5F1E8] transition-transform duration-300 group-hover:translate-x-1.5"
           >
-            <span className="absolute inset-0 bg-[#F5F1E8] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" />
-            <span className="relative z-10 text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-500">
-              Shop Collection
-            </span>
-            <svg
-              width="14"
-              height="10"
-              viewBox="0 0 14 10"
-              fill="none"
-              className="relative z-10 text-[#F5F1E8] group-hover:text-[#0F0F0F] transition-colors duration-500"
-            >
-              <path
-                d="M1 5 H12 M8 1 L12 5 L8 9"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </MagneticButton>
-        </motion.div>
-      </div>
+            <path
+              d="M0 4 H24 M20 1 L24 4 L20 7"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </a>
+      </motion.div>
     </section>
   );
 }

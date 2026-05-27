@@ -23,7 +23,7 @@ type Slide = {
   halfImage?: boolean;
 };
 
-// Desktop: 3 slides — slide 3 is dual-image side-by-side.
+// Desktop: 4 slides — slide 3 is dual-image side-by-side, slide 4 is a collage.
 const slidesDesktop: Slide[] = [
   {
     // Watermark pre-cropped from the source PNG. object-bottom anchors the
@@ -34,8 +34,10 @@ const slidesDesktop: Slide[] = [
     imagePositions: ["object-bottom"],
   },
   {
+    // Watermark pre-cropped. Model reclines mid-frame, so object-center.
     images: ["/section-two/slide-2.png"],
-    alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
+    alts: ["Model reclining on a yacht at golden hour by the sea — editorial wide"],
+    imagePositions: ["object-center"],
     cropBottom: true,
   },
   {
@@ -47,9 +49,15 @@ const slidesDesktop: Slide[] = [
     imagePositions: ["object-center", "object-center"],
     cropBottom: true,
   },
+  {
+    // Square moodboard collage — branding baked in, no watermark.
+    images: ["/section-two/slide-4.png"],
+    alts: ["HEISEI editorial collage — product, fabric and campaign moments"],
+    imagePositions: ["object-center"],
+  },
 ];
 
-// Mobile: 4 slides — one image per slide, anchored center so the model
+// Mobile: 5 slides — one image per slide, anchored center so the model
 // stays in frame on portrait viewports.
 const slidesMobile: Slide[] = [
   {
@@ -59,7 +67,7 @@ const slidesMobile: Slide[] = [
   },
   {
     images: ["/section-two/slide-2.png"],
-    alts: ["Model wearing HEISEI boxer brief on a coastal terrace overlooking the sea"],
+    alts: ["Model reclining on a yacht at golden hour by the sea — editorial wide"],
     imagePositions: ["object-center"],
     cropBottom: true,
   },
@@ -74,6 +82,11 @@ const slidesMobile: Slide[] = [
     alts: ["Model wearing HEISEI boxer brief — half-frame editorial portrait"],
     imagePositions: ["object-center"],
     cropBottom: true,
+  },
+  {
+    images: ["/section-two/slide-4.png"],
+    alts: ["HEISEI editorial collage — product, fabric and campaign moments"],
+    imagePositions: ["object-center"],
   },
 ];
 
