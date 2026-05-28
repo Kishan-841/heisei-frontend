@@ -29,3 +29,11 @@ body {
   writing-mode: vertical-rl;
   text-orientation: mixed;
 }
+
+/* Disable native image dragging — when a user click-drags an image inside
+   an anchor, the browser falls back to dragging the link URL instead of
+   the raw image file. Same UX as Apple / premium brand sites. */
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}

@@ -100,13 +100,22 @@ export default function FeaturedCollection() {
                   className="block group"
                 >
                   <div className="relative aspect-[3/4] bg-bg overflow-hidden mb-4">
+                    {/* Flat product — visible by default, fades out on hover */}
                     <Image
                       src={product.img}
                       alt={`HEISEI ${product.color} ${product.name}`}
                       fill
                       sizes="(max-width: 768px) 50vw, 25vw"
-                      className={`${productImgClassName} transition-transform duration-500 ease-out group-hover:scale-[1.03]`}
+                      className={`${productImgClassName} transition-opacity duration-500 ease-out group-hover:opacity-0`}
                       style={productImgStyle}
+                    />
+                    {/* Model wearing it — fades in on hover */}
+                    <Image
+                      src={product.modelImg}
+                      alt={`Model wearing HEISEI ${product.color} ${product.name}`}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover object-center opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
                     />
                   </div>
 
