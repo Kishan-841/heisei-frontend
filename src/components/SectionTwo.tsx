@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const panels = [
   {
-    src: "/section-two/image 4.png",
+    src: "/section-two/image 1.png",
     alt: "Model wearing the HEISEI black boxer brief by the sea",
     label: "Engineered for Comfort",
   },
@@ -20,7 +20,7 @@ const panels = [
     label: "Timeless Essentials",
   },
   {
-    src: "/section-two/image 1.png",
+    src: "/section-two/image 4.png",
     alt: "HEISEI yacht under sail at golden hour",
     label: "Made for Real Life",
   },
@@ -37,7 +37,7 @@ export default function SectionTwo() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="relative aspect-[4/3] sm:aspect-auto sm:h-full overflow-hidden bg-surface group"
+            className="relative aspect-[2/3] sm:aspect-auto sm:h-full overflow-hidden bg-surface group"
           >
             <Image
               src={p.src}

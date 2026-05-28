@@ -14,8 +14,8 @@ export default function Home() {
     <>
       <Navbar />
       <Hero />
-      <SectionTwo />
       <ValuesStrip />
+      <SectionTwo />
       <FeaturedCollection />
       <AboutSection />
       <VideoSection />
