@@ -17,22 +17,22 @@ export default function AboutSection() {
         />
       </div>
 
-      {/* Bottom-left gradient — anchors the overlaid desc */}
+      {/* Left-side gradient — anchors the vertically-centered overlaid desc */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to top right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.35) 35%, transparent 65%)",
+            "linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.35) 35%, transparent 65%)",
         }}
       />
 
-      {/* OVERLAID CONTENT — bottom-left, editorial */}
+      {/* OVERLAID CONTENT — left-aligned, vertically centered */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.9, ease: "easeOut" }}
-        className="absolute left-6 right-6 sm:left-12 sm:right-12 md:left-20 md:right-20 lg:left-28 lg:right-28 bottom-12 md:bottom-20 max-w-xl space-y-5 [text-shadow:0_2px_28px_rgba(0,0,0,0.85)]"
+        className="absolute left-6 right-6 sm:left-12 sm:right-12 md:left-20 md:right-20 lg:left-28 lg:right-28 top-1/2 -translate-y-1/2 max-w-xl space-y-5 [text-shadow:0_2px_28px_rgba(0,0,0,0.85)]"
       >
         <h2 className="text-3xl md:text-4xl font-normal tracking-tight leading-tight text-[#F5F1E8]">
           About HEISEI

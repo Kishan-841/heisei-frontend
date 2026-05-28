@@ -11,10 +11,13 @@ function ZoomTile({
   src,
   alt,
   priority,
+  objectPosition = "center",
 }: {
   src: string;
   alt: string;
   priority?: boolean;
+  /** CSS object-position value (e.g. "center", "top", "50% 30%"). */
+  objectPosition?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [hovering, setHovering] = useState(false);
@@ -42,8 +45,9 @@ function ZoomTile({
         alt={alt}
         fill
         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 40vw"
-        className="object-cover object-center transition-transform duration-300 ease-out will-change-transform"
+        className="object-cover transition-transform duration-300 ease-out will-change-transform"
         style={{
+          objectPosition,
           transform: hovering ? "scale(2)" : "scale(1)",
           transformOrigin: `${origin.x}% ${origin.y}%`,
         }}
@@ -109,11 +113,15 @@ export default function ProductDetail({
   const toggle = (key: AccordionKey) =>
     setOpenSection((prev) => (prev === key ? null : key));
 
-  const gallery = [
-    product.img,
-    product.modelImg,
-    product.closeUpImg ?? product.modelImg,
-  ];
+  // Per-image object-position so tall model shots keep the head in frame.
+  const gallery: { src: string; pos: string }[] = [
+    { src: product.img,           pos: "center" },
+    { src: product.modelImg,      pos: "center" },
+    { src: product.modelFrontImg ?? "", pos: "top" },
+    { src: product.modelBackImg  ?? "", pos: "top" },
+    { src: product.detailImg     ?? "", pos: "center" },
+    { src: product.fabricImg     ?? "", pos: "center" },
+  ].filter((t) => Boolean(t.src));
   const itemNumber = `HEI-${product.slug.toUpperCase().replace(/-/g, "")}-001`;
 
   const accordionContent: Record<AccordionKey, React.ReactNode> = {
@@ -202,12 +210,13 @@ export default function ProductDetail({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
         >
-          {gallery.map((src, i) => (
+          {gallery.map(({ src, pos }, i) => (
             <ZoomTile
               key={`${src}-${i}`}
               src={src}
               alt={`HEISEI ${product.color} ${product.name} — view ${i + 1}`}
               priority={i === 0}
+              objectPosition={pos}
             />
           ))}
 
