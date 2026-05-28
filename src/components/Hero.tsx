@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const serifFamily = "Georgia, 'Times New Roman', serif";
 
@@ -22,7 +22,12 @@ const slides = [
 ];
 
 const SLIDE_INTERVAL_MS = 5000;
+const SLIDE_DURATION_MS = 1200;
 
+// direction = +1 → forward (next button or autoplay): new slide enters from
+//   the right, old slide exits to the left.
+// direction = -1 → backward (prev button): new slide enters from the left,
+//   old slide exits to the right.
 const slideVariants = {
   enter: (direction: number) => ({ x: direction > 0 ? "100%" : "-100%" }),
   center: { x: "0%" },
@@ -32,24 +37,45 @@ const slideVariants = {
 export default function Hero() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  // Guard against rapid-fire clicks queuing multiple in-flight transitions.
+  const isAnimating = useRef(false);
 
-  // Autoplay — restarts when `index` changes (including on manual nav) so
-  // the freshly-shown slide always gets a full SLIDE_INTERVAL_MS dwell.
+  // Preload every slide image on mount so wrap-around (last → first) and
+  // forward advances never trigger a network fetch mid-transition.
+  useEffect(() => {
+    const links: HTMLLinkElement[] = [];
+    slides.forEach((s) => {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = s.src;
+      document.head.appendChild(link);
+      links.push(link);
+    });
+    return () => links.forEach((l) => l.remove());
+  }, []);
+
+  // Autoplay — restarts when `index` changes (manual nav or wrap) so the
+  // freshly-shown slide always gets a full SLIDE_INTERVAL_MS dwell.
   useEffect(() => {
     const id = setInterval(() => {
+      if (isAnimating.current) return;
+      isAnimating.current = true;
       setDirection(1);
       setIndex((i) => (i + 1) % slides.length);
     }, SLIDE_INTERVAL_MS);
     return () => clearInterval(id);
   }, [index]);
 
-  // Manual navigation always animates in the same direction as autoplay —
-  // the new slide enters from the right, the old one exits to the left.
   const goPrev = () => {
-    setDirection(1);
+    if (isAnimating.current) return;
+    isAnimating.current = true;
+    setDirection(-1);
     setIndex((i) => (i - 1 + slides.length) % slides.length);
   };
   const goNext = () => {
+    if (isAnimating.current) return;
+    isAnimating.current = true;
     setDirection(1);
     setIndex((i) => (i + 1) % slides.length);
   };
@@ -78,14 +104,18 @@ export default function Hero() {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: SLIDE_DURATION_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
+            onAnimationComplete={(d) => {
+              if (d === "center") isAnimating.current = false;
+            }}
+            style={{ willChange: "transform" }}
             className="absolute inset-0"
           >
             <Image
               src={slides[index].src}
               alt={slides[index].alt}
               fill
-              priority={index === 0}
+              priority
               sizes="100vw"
               className="object-cover object-center"
             />
