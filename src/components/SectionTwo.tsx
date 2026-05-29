@@ -5,22 +5,22 @@ import Image from "next/image";
 
 const panels = [
   {
-    src: "/section-two/image 1.png",
+    src: "/section-two/image-1.png",
     alt: "Model wearing the HEISEI black boxer brief by the sea",
     label: "Engineered for Comfort",
   },
   {
-    src: "/section-two/image 2.png",
+    src: "/section-two/image-2.png",
     alt: "HEISEI packaging on draped natural linen",
     label: "Premium Material",
   },
   {
-    src: "/section-two/image 3.png",
+    src: "/section-two/image-3.png",
     alt: "Model in a fitted white HEISEI tee",
     label: "Timeless Essentials",
   },
   {
-    src: "/section-two/image 4.png",
+    src: "/section-two/image-4.png",
     alt: "HEISEI yacht under sail at golden hour",
     label: "Made for Real Life",
   },

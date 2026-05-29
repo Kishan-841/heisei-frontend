@@ -12,11 +12,11 @@ const slides = [
     alt: "HEISEI — yacht at golden hour by the sea",
   },
   {
-    src: "/hero/hero 2.png",
+    src: "/hero/hero-2.png",
     alt: "HEISEI — model in a sunlit onsen interior",
   },
   {
-    src: "/hero/hero 3.png",
+    src: "/hero/hero-3.png",
     alt: "HEISEI — model in black boxer brief on a coastal terrace at sunset",
   },
 ];
