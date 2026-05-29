@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
+import CollectionHero from "@/components/CollectionHero";
 import CollectionGrid from "@/components/CollectionGrid";
 import Footer from "@/components/Footer";
 
@@ -19,7 +20,8 @@ export default function CollectionPage() {
   return (
     <>
       <Navbar />
-      <main className="bg-bg text-text pt-20">
+      <CollectionHero />
+      <main className="bg-bg text-text">
         <CollectionGrid />
       </main>
       <Footer />

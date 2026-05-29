@@ -162,35 +162,7 @@ function ProductCard({
 
 export default function CollectionGrid() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-16 py-12 md:py-20">
-      {/* PAGE HEADER */}
-      <div className="mb-16 md:mb-24">
-        <motion.p
-          className="text-accent text-sm tracking-widest mb-3"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-        >
-          コレクション
-        </motion.p>
-        <motion.h1
-          className="text-4xl md:text-5xl font-normal tracking-tight"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-        >
-          The Collection
-        </motion.h1>
-        <motion.p
-          className="text-muted mt-4 max-w-md leading-relaxed"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
-        >
-          Quiet essentials designed with balance, softness, and intention.
-        </motion.p>
-      </div>
-
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-16 py-14 md:py-24">
       {/* CATEGORIES */}
       {categories.map((category, ci) => (
         <div key={category.name} className={ci > 0 ? "mt-20 md:mt-28" : ""}>
