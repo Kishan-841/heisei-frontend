@@ -83,7 +83,7 @@ export default function ValuesStrip() {
   return (
     <section
       ref={ref}
-      className="bg-surface/60 border-y border-muted/15 px-6 py-9 md:py-11 sm:h-[35vh] sm:flex sm:items-center"
+      className="bg-bg border-y border-muted/15 px-6 py-9 md:py-11 sm:h-[35vh] sm:flex sm:items-center"
     >
       <div className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-0">
         {values.map((v, i) => (
