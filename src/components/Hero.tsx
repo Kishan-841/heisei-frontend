@@ -137,24 +137,14 @@ export default function Hero() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute left-[6%] sm:left-[7%] md:left-[8%] top-1/2 -translate-y-1/2 max-w-[92%] sm:max-w-md z-[3] [text-shadow:0_2px_18px_rgba(0,0,0,0.5)]"
+        className="absolute left-[6%] sm:left-[7%] md:left-[8%] top-1/2 -translate-y-1/2 max-w-[92%] sm:max-w-xl z-[3] [text-shadow:0_2px_18px_rgba(0,0,0,0.5)]"
       >
         <h1
-          className="text-[#F5F1E8] text-5xl sm:text-6xl md:text-7xl font-normal leading-[1.05] tracking-tight"
+          className="text-[#F5F1E8] text-4xl sm:text-5xl md:text-6xl font-normal leading-[1.12] tracking-tight"
           style={{ fontFamily: serifFamily }}
         >
-          Luxury<br />Innerwear.
+          The finest thing you wear<br />should be the first thing<br />you wear.
         </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25 }}
-          className="mt-6 text-[#F5F1E8]/85 text-lg sm:text-xl leading-snug max-w-sm"
-          style={{ fontFamily: serifFamily }}
-        >
-          The finest thing you wear should<br />be the first thing you wear.
-        </motion.p>
 
         <motion.a
           href="/collection"
@@ -164,7 +154,7 @@ export default function Hero() {
           className="group mt-8 inline-flex items-center gap-3 text-[#F5F1E8] text-[10px] sm:text-[11px] tracking-[0.3em] uppercase cursor-pointer"
         >
           <span className="relative pb-1">
-            Discover HEISEI
+            Explore Collection
             <span className="absolute bottom-0 left-0 h-[1px] w-full bg-[#F5F1E8]/50 origin-left transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-0" />
           </span>
           <svg
