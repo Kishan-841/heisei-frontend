@@ -150,9 +150,10 @@ export default function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.25 }}
-          className="mt-6 text-[#F5F1E8]/85 text-sm sm:text-base leading-relaxed max-w-xs"
+          className="mt-6 text-[#F5F1E8]/85 text-lg sm:text-xl leading-snug max-w-sm"
+          style={{ fontFamily: serifFamily }}
         >
-          Refined essentials for<br />everyday living.
+          The finest thing you wear should<br />be the first thing you wear.
         </motion.p>
 
         <motion.a
