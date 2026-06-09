@@ -140,7 +140,7 @@ export default function Hero() {
         className="absolute left-[6%] sm:left-[7%] md:left-[8%] top-1/2 -translate-y-1/2 max-w-[92%] sm:max-w-xl z-[3] [text-shadow:0_2px_18px_rgba(0,0,0,0.5)]"
       >
         <h1
-          className="text-[#F5F1E8] text-4xl sm:text-5xl md:text-6xl font-normal leading-[1.12] tracking-tight"
+          className="text-[#F5F1E8] text-3xl sm:text-4xl md:text-5xl font-normal leading-[1.12] tracking-tight"
           style={{ fontFamily: serifFamily }}
         >
           The finest thing you wear<br />should be the first thing<br />you wear.
