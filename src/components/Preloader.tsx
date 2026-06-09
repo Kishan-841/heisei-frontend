@@ -34,18 +34,14 @@ export default function Preloader() {
 
             <div className="relative">
               {/* Grey base text */}
-              <span
-                className="text-5xl md:text-7xl font-normal tracking-[0.3em] text-muted/30"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
-              >
+              <span className="text-5xl md:text-7xl font-normal tracking-[0.35em] pl-[0.35em] text-muted/30">
                 HEISEI
               </span>
 
               {/* Red fill text — clipped and revealed left to right */}
               <motion.span
-                className="absolute inset-0 text-5xl md:text-7xl font-normal tracking-[0.3em] text-accent overflow-hidden"
+                className="absolute inset-0 text-5xl md:text-7xl font-normal tracking-[0.35em] pl-[0.35em] text-accent overflow-hidden"
                 style={{
-                  fontFamily: "Georgia, 'Times New Roman', serif",
                   clipPath: "inset(0 100% 0 0)",
                 }}
                 animate={{ clipPath: "inset(0 0% 0 0)" }}

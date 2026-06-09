@@ -69,10 +69,7 @@ export default function Navbar() {
             <span className="text-[11px] text-accent tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-accent/30">
               平成
             </span>
-            <span
-              className="text-2xl font-normal tracking-[0.1em]"
-              style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
+            <span className="text-2xl font-normal tracking-[0.35em] pl-[0.35em]">
               HEISEI
             </span>
           </a>
@@ -126,10 +123,7 @@ export default function Navbar() {
             <span className="text-[11px] text-accent tracking-[0.6em] pl-[0.6em] pb-[3px] mb-[4px] border-b border-accent/30">
               平成
             </span>
-            <span
-              className="text-xl font-normal tracking-[0.1em]"
-              style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
-            >
+            <span className="text-xl font-normal tracking-[0.35em] pl-[0.35em]">
               HEISEI
             </span>
           </a>
