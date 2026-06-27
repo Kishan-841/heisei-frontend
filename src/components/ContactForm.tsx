@@ -160,10 +160,10 @@ export default function ContactForm() {
                 Email
               </p>
               <a
-                href="mailto:hello@heisei.co"
+                href="mailto:hello@heisei.in"
                 className="text-sm hover:text-accent transition-colors duration-200"
               >
-                hello@heisei.co
+                hello@heisei.in
               </a>
             </div>
 
